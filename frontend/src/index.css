@@ -1,0 +1,47 @@
+
+.post_table{
+   margin-top: 3vh;
+   margin-left: 3vw;
+   margin-right: 3vw;
+}
+.left_nav{
+   margin-right: 50vw;
+}
+.right_nav{
+   position: absolute;
+   margin-left: 85vw;
+   top: 1.5vh;
+}
+.signUp_button{
+   margin-left: 1vw;
+}
+.filter_and_search{
+   display: flex;
+   flex-direction: row;
+}
+.filter{
+   padding-top: 3vh;
+   padding-left: 3vw;
+}
+.search{
+   padding-top: 3vh;
+   padding-left:70vw;
+}
+.login_title{
+   text-align: center;
+   padding-top: 17vh;
+}
+.login_page{
+   padding-left: 30vw;
+   padding-right: 30vw;
+   padding-top: 5vh;
+}
+.signUp_title{
+   text-align: center;
+   padding-top: 17vh;
+}
+.signUp_page{
+   padding-left: 27vw;
+   padding-right: 30vw;
+   padding-top: 5vh;
+}

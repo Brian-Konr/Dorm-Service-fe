@@ -112,3 +112,9 @@
     text-align: center;
     padding-top: 30vh;
  }
+ .cancel_button{
+   right: -80vw;
+ }
+ .send_button{
+   right: -82vw;
+ }

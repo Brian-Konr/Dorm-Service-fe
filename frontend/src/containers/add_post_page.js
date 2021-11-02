@@ -143,12 +143,6 @@ const Add_Post_Page = ({login,name,setCurrent,current}) => {
       </Form>
       <Button className="cancel_button">取消</Button>
       <Button type="primary" className="send_button">送出</Button>
-      {/*  .cancel_button{
-   right: -80vw;
- }
- .send_button{
-   right: -82vw;
- } */}
     </>
   );
 };

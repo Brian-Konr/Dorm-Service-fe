@@ -14,6 +14,7 @@ const Navigation = () => {
 
     return (
       <Menu onClick={handleClick} selectedKeys={current} mode="horizontal">
+        {/* tbd: replace with clicible logo */}
         <Menu.Item key="title" icon={<HomeOutlined />}>
           <Link to="/">Dormy 你的宿舍好幫手</Link>
         </Menu.Item>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form,Input,Select,Button } from 'antd';
+import { Link } from "react-router-dom";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -46,16 +47,17 @@ const SignUp_Page = () => {
     <>
     <h1 className="signUp_title">Sign Up</h1>
     <div className="signUp_page">
-        <Form
+        <Form 
         {...formItemLayout}
         form={form}
+        // layout="vertical"
         name="register"
         onFinish={onFinish}
         scrollToFirstError
         >
             <Form.Item
                 name="username"
-                label="Username"
+                label="User/name"
                 rules={[
                     {
                         required: true,
@@ -105,7 +107,7 @@ const SignUp_Page = () => {
                 }),
                 ]}
             >
-                <Input.Password />
+                <Input.Password  placeholder="Confirmed Password"/>
             </Form.Item>
 
             <Form.Item
@@ -122,6 +124,7 @@ const SignUp_Page = () => {
             >
                 <Input 
                     addonBefore="https://"
+                    placeholder="facebook.com/yourname"
                 />
             </Form.Item>
 
@@ -192,12 +195,16 @@ const SignUp_Page = () => {
             </Form.Item>
 
             <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">
-                Register
+                <Button type="primary" htmlType="submit" className = "wide-form-button">
+                {/* Register */}
+                {/* Todo: 如果成功註冊的話跳message */}
+                    <Link to="/login">Sign Up</Link>
                 </Button>
+                Already have an Account?  <a href="/login">Login</a>
             </Form.Item>
         </Form>
     </div>
+
     </>
   );
 };

@@ -54,9 +54,10 @@ const Login_Page = () => {
             </Form.Item>
 
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button">
-                    <Link to="/welcome">Log in</Link>
+                <Button type="primary" htmlType="submit" className="wide-form-button">
+                    <Link to="/welcome">Login</Link>
                 </Button>
+                Don't have an Account?  <a href="/signUp">Sign Up</a>
             </Form.Item>
         </Form>
     </div>

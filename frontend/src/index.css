@@ -41,7 +41,15 @@
    padding-top: 17vh;
 }
 .signUp_page{
-   padding-left: 27vw;
-   padding-right: 30vw;
+   padding-left: 15vw;
+   padding-right: 33vw;
    padding-top: 5vh;
+   /* padding-top: 5vh; */
+   padding-bottom: 5vh;
 }
+
+
+.wide-form-button {
+   width: 100%;
+   /* color: red; */
+ }

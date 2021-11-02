@@ -6,7 +6,7 @@ import Login_And_SignUp from '../components/login_and_signUp';
 import Login_And_SignUp_With_Login from '../components/login_and_signUp_with_login';
 
 
-const Navigation = ({login}) => {
+const Navigation = ({login,name}) => {
     
     const [current, setCurrent] = useState('title');
 
@@ -34,7 +34,7 @@ const Navigation = ({login}) => {
       </Menu>
       <Menu onClick={handleClick} selectedKeys={current} mode="horizontal" className = "right_nav">
         <div className="right_nav">
-          {login === false ? <Login_And_SignUp/>  : <Login_And_SignUp_With_Login/>}
+          {login === false ? <Login_And_SignUp/>  : <Login_And_SignUp_With_Login name={name}/>}
         </div> 
       </Menu>
       </div>

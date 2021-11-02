@@ -1,19 +1,22 @@
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
-import { useState } from 'react'
 
-const Login_Page = () => {
+const Login_Page = ({setLogin, setName}) => {
 
-  const [name, setName] = useState();
-  const onFinish = (values) => {
-     console.log('Received values of form: ', values);
-   };
-
-    const onChange = (e) => {
-        setName(e.target.value);
-        return(name);
+    const onFinish = (values) => {
+        console.log('Received values of form: ', values);
     };
+
+    var tempValue = "";
+    const onChange = (e) => {
+        tempValue = e.target.value;
+    };
+
+    const handleLogin = () => {
+        setName(tempValue);
+        setLogin(true);
+    }
 
   return (
     <>
@@ -54,8 +57,8 @@ const Login_Page = () => {
             </Form.Item>
 
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="wide-form-button">
-                    <Link to="/welcome">Login</Link>
+                <Button type="primary" htmlType="submit" className="wide-form-button" onClick={handleLogin}>
+                    <Link to="/">Login</Link>
                 </Button>
                 Don't have an Account?  <a href="/signUp">Sign Up</a>
             </Form.Item>

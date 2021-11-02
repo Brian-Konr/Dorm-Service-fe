@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 
 const { RangePicker } = DatePicker;
 
-const Add_Post_Page = ({login,name,setCurrent,current, key, setKey}) => {
-    // const [key, setKey] = useState();
+const Add_Post_Page = ({login,name,setCurrent,current}) => {
+    const [key, setKey] = useState();
     // console.log(key);
     const success = () => {
         message.success("您已成功刊登任務！")

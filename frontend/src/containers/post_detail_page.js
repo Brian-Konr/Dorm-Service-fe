@@ -6,10 +6,9 @@ import {Tag, Button} from 'antd';
 
 
 // 加一個參數 myPage
-const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, setKey}) => {
+const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf}) => {
   
-  // console.log("View Self", viewSelf);
-  // console.log("post detail page");
+  
   // 以下是需要跟後端接的資料
   let title = "打蟑螂ㄚㄚㄚ";
   const startActTime = "2020.05.18";
@@ -34,8 +33,8 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, setKey}) => {
   //以上是需要跟後端接的資料
 
   let { serviceId } = useParams();
-  setKey(serviceId);
-  // console.log(key);
+  
+  
   // 共同區域
 
   const navBar = (

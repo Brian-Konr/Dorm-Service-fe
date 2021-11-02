@@ -3,11 +3,11 @@ import Service_Filter from '../components/service_filter';
 import Title_Search from '../components/title_search';
 import Post_Table from '../components/post_table';
 
-const Main_Page = ({login,name}) => {
+const Main_Page = ({login,name,setCurrent,current}) => {
     return (
         <div id="root">
           <header>
-              <div><Navigation login={login} name={name}/></div>
+              <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
           </header> 
           <div className="filter_and_search">
               <div className="filter"><Service_Filter/></div>

@@ -1,8 +1,10 @@
 import { Table, Tag, Button } from 'antd';
 import { useState } from 'react'
 import { ArrowRightOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const Post_Table = () => {
+    // console.log("post table");
     const [index, setIndex] = useState(0); //待改，每輸入一筆資料 setIndex(index+1)
     const columns = [
     {
@@ -60,13 +62,36 @@ const Post_Table = () => {
                     let component;
                     
                     if (tag === '打蟑螂') {
-                        component = <Button key={index} type="default" shape="circle" href="/post_detail/kill_cockroach" icon={<ArrowRightOutlined />}/>;
+                        // component = <Button key={index} type="default" shape="circle" href="/post_detail/kill_cockroach" icon={<ArrowRightOutlined />}/>;
+                        component = (
+                            <Button  key={index} type="default" shape="circle" >
+                                <Link to="/post_detail/kill_cockroach">➜</Link>
+                            </Button>
+                        )
                     } if (tag === '物品搬運') {
-                        component = <Button key={index} type="default" shape="circle" href="/post_detail/heavylifting" icon={<ArrowRightOutlined />}/>;
+                        // component = <Button key={index} type="default" shape="circle" href="/post_detail/heavylifting" icon={<ArrowRightOutlined />}/>;
+                        component = (
+                            <Button  key={index} type="default" shape="circle" >
+                                <Link to="/post_detail/heavylifting">➜</Link>
+                            </Button>
+                        )
                     } if (tag === '載人服務') {
-                        component = <Button key={index} type="default" shape="circle" href="/post_detail/drive" icon={<ArrowRightOutlined />}/>;
+                        component = (
+                            <Button  key={index} type="default" shape="circle" >
+                                <Link to="/post_detail/drive">➜</Link>
+                            </Button>
+                        )
                     } if (tag === '辦活動') {
-                        component = <Button key={index} type="default" shape="circle" href="/post_detail/host" icon={<ArrowRightOutlined />}/>;
+                        // component = <Button key={index} type="default" shape="circle" href="/post_detail/drive" icon={<ArrowRightOutlined />}/>;
+                        component = (
+                            <Button  key={index} type="default" shape="circle" >
+                                <Link to="/post_detail/host">➜</Link>
+                            </Button>
+                        )
+
+                        // <Link to="/addPost">+ 新增任務</Link>
+                        // component = <Button key={index} type="default" shape="circle" href="/post_detail/host" icon={<ArrowRightOutlined />}/>;
+                        
                     }
                     return (
                         component

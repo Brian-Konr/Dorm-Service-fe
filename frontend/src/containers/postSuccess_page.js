@@ -5,13 +5,7 @@ import { Button } from 'antd';
 
 
 const postSuccess_page = () => {
-    // const navBar = (
-    //     <header>
-    //       <div><Navigation login = {false}/></div>
-    //     </header> 
-    //   )
 
-    // <Icon icon="akar-icons:check-box" height="50" />
     return (
         <div className="succes_page">
             <Icon icon="akar-icons:check-box" color="green"height="150" />

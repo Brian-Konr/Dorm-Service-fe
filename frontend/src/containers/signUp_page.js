@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form,Input,Select,Button } from 'antd';
+import { Form,Input,Select,Button, message } from 'antd';
 import { Link } from "react-router-dom";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
@@ -38,6 +38,10 @@ const tailFormItemLayout = {
 
 const SignUp_Page = () => {
   const [form] = Form.useForm();
+
+  const success = () => {
+      message.success("您已成功註冊！")
+  }
 
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
@@ -195,7 +199,7 @@ const SignUp_Page = () => {
             </Form.Item>
 
             <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" className = "wide-form-button">
+                <Button type="primary" htmlType="submit" className = "wide-form-button" onClick={success}>
                 {/* Register */}
                 {/* Todo: 如果成功註冊的話跳message */}
                     <Link to="/login">Sign Up</Link>

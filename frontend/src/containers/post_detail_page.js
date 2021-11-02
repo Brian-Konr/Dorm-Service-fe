@@ -1,13 +1,15 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Divider } from 'antd';
 import Navigation from '../containers/navigation';
 import { Icon } from '@iconify/react';
 import {Tag, Button} from 'antd';
 
 
-
-const Post_Detail_Page = () => {
-
+// 加一個參數 myPage
+const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, setKey}) => {
+  
+  // console.log("View Self", viewSelf);
+  // console.log("post detail page");
   // 以下是需要跟後端接的資料
   let title = "打蟑螂ㄚㄚㄚ";
   const startActTime = "2020.05.18";
@@ -32,12 +34,14 @@ const Post_Detail_Page = () => {
   //以上是需要跟後端接的資料
 
   let { serviceId } = useParams();
+  setKey(serviceId);
+  // console.log(key);
   // 共同區域
 
   const navBar = (
     <header>
-      <div><Navigation login = {false}/></div>
-    </header> 
+    <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
+    </header>
   )
   const item = (title, description) => {
     return(
@@ -50,7 +54,7 @@ const Post_Detail_Page = () => {
     )
   }
   
-  // <Icon icon="ic:baseline-arrow-right"  vFlip={true} />
+
 
 
   const taskTitle = (
@@ -197,13 +201,21 @@ const Post_Detail_Page = () => {
     <div>
         {navBar}
         {titleArea}
+        {/* 新增編輯按鈕 */}
+        {viewSelf === true && (<div className="detail_button">
+          <Button type="primary">
+          <Link to="/addPost">編輯</Link>
+            </Button> 
+        </div>)
+        }
         {basicArea}
         {taskArea}
-        <div className="detail_button">
+        {viewSelf === false && (<div className="detail_button">
           <Button type="primary">
           <a href="/postSuccess">{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
             </Button>
-        </div>
+        </div>)
+        }
     </div>
   )
 };

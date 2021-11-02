@@ -9,7 +9,7 @@ import Login_And_SignUp_With_Login from '../components/login_and_signUp_with_log
 const Navigation = ({login,name,setCurrent,current}) => {
 
     const handleClick = (e) => {
-        // console.log('click ', e);
+        console.log('click ', e);
         setCurrent(e.key);
     };
 

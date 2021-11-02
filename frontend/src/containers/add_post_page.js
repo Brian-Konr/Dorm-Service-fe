@@ -1,12 +1,18 @@
 import React from 'react';
-import { Form,Input,Select,DatePicker,Switch,Button,Divider } from 'antd';
+import { Form,Input,Select,DatePicker,Switch,Button,Divider, message } from 'antd';
 import Navigation from '../containers/navigation';
 import { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const { RangePicker } = DatePicker;
 
-const Add_Post_Page = ({login,name,setCurrent,current}) => {
-    const [key, setKey] = useState();
+const Add_Post_Page = ({login,name,setCurrent,current, key, setKey}) => {
+    // const [key, setKey] = useState();
+    // console.log(key);
+    const success = () => {
+        message.success("您已成功刊登任務！")
+    }
+
     const rangeConfig = {
         rules: [
           {
@@ -141,8 +147,8 @@ const Add_Post_Page = ({login,name,setCurrent,current}) => {
         ):null
       }
       </Form>
-      <Button className="cancel_button">取消</Button>
-      <Button type="primary" className="send_button">送出</Button>
+      <Button className="cancel_button"><Link to="/">取消</Link></Button>
+      <Button type="primary" className="send_button"　onClick={success}><Link to="/">送出</Link></Button>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Divider } from 'antd';
-import Navigation from '../components/navigation';
+import Navigation from '../containers/navigation';
 import { Icon } from '@iconify/react';
 import {Tag, Button} from 'antd';
 
@@ -200,7 +200,9 @@ const Post_Detail_Page = () => {
         {basicArea}
         {taskArea}
         <div className="detail_button">
-          <Button type="primary">{serviceId !== 'host' ? "我要應徵": "我要參加"}</Button>
+          <Button type="primary">
+          <a href="/postSuccess">{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
+            </Button>
         </div>
     </div>
   )

@@ -5,6 +5,7 @@ import Login_Page from './containers/login_page';
 import SignUp_Page from './containers/signUp_page';
 import Add_Post_Page from './containers/add_post_page';
 import Post_Detail_Page from './containers/post_detail_page';
+import Post_Success_Page from './containers/postSuccess_page';
 import { useState } from 'react'
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/login" component={() => <Login_Page setLogin={setLogin} setName={setName}/>}/>
           <Route path="/signUp" component={SignUp_Page}/>
           <Route path="/post_detail/:serviceId" component={Post_Detail_Page}/>
+          <Route path="/postSuccess" component={Post_Success_Page}/>
       </div>
     </Router>
   );

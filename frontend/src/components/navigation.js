@@ -2,8 +2,11 @@ import { Menu } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { useState } from 'react'
 import { Link } from "react-router-dom";
+import Login_And_SignUp from '../components/login_and_signUp';
+import Login_And_SignUp_With_Login from '../components/login_and_signUp_with_login';
 
-const Navigation = () => {
+
+const Navigation = ({login}) => {
     
     const [current, setCurrent] = useState('title');
 
@@ -13,7 +16,8 @@ const Navigation = () => {
     };
 
     return (
-      <Menu onClick={handleClick} selectedKeys={current} mode="horizontal">
+      <div className = "nav">
+        <Menu onClick={handleClick} selectedKeys={current} mode="horizontal" className = "left_nav">
         {/* tbd: replace with clicible logo */}
         <Menu.Item key="title" icon={<HomeOutlined />}>
           <Link to="/">Dormy 你的宿舍好幫手</Link>
@@ -28,6 +32,14 @@ const Navigation = () => {
           歷史紀錄
         </Menu.Item>
       </Menu>
+      <Menu onClick={handleClick} selectedKeys={current} mode="horizontal" className = "right_nav">
+        <div className="right_nav">
+          {login === false ? <Login_And_SignUp/>  : <Login_And_SignUp_With_Login/>}
+        </div> 
+      </Menu>
+      </div>
+
+
     );
 }
 

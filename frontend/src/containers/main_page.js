@@ -7,17 +7,17 @@ import Post_Table from '../components/post_table';
 const Main_Page = () => {
     return (
         <div id="root">
-          <header className="nav">
-              <div className="left_nav"><Navigation/></div>
-              <div className="right_nav"><Login_And_SignUp/></div>
-          </header>
+          <header>
+              <div><Navigation login = {false}/></div>
+              {/* <div className="right_nav"><Login_And_SignUp/></div> */}
+          </header> 
           <div className="filter_and_search">
               <div className="filter"><Service_Filter/></div>
               <div className="search"><Title_Search/></div>
           </div>
           <div className="post_table"><Post_Table/></div>
         </div>
-      );
+      ); 
 }
 
 export default Main_Page;

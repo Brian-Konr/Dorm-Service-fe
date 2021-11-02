@@ -7,9 +7,10 @@ import Post_Table from '../components/post_table';
 const Main_With_Login_Page = () => {
     return (
         <div id="root">
-          <header className="nav">
-              <div className="left_nav"><Navigation/></div>
-              <div className="right_nav"><Login_And_SignUp_With_Login/></div>
+          <header>
+            <div><Navigation login = {true}/></div>
+              {/* <div className="left_nav"><Navigation/></div> */}
+              {/* <div className="right_nav"><Login_And_SignUp_With_Login/></div> */}
           </header>
           <div className="filter_and_search">
               <div className="filter"><Service_Filter/></div>

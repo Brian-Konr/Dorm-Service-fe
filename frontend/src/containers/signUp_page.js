@@ -57,7 +57,7 @@ const SignUp_Page = () => {
         >
             <Form.Item
                 name="username"
-                label="User/name"
+                label="Username"
                 rules={[
                     {
                         required: true,

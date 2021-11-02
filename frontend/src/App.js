@@ -13,7 +13,7 @@ const App = () => {
   const [login, setLogin] = useState(false);
   const [name, setName] = useState('');
   const [viewSelf, setViewSelf] = useState(false);
-  const [key, setKey] = useState("yyy");
+  const [key, setKey] = useState("");
 
   // console.log("key", key);
   return (

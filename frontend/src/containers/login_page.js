@@ -1,7 +1,8 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useHistory } from "react-router-dom";
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 
 const Login_Page = ({login, setLogin, setName}) => {
 
@@ -13,16 +14,31 @@ const Login_Page = ({login, setLogin, setName}) => {
     // const onChange = (e) => {
     //     setUserName(e.target.value);
     // };
-    const handleLogin = () => {
-        if(userName === "aaa" && password === "bbb") { //connect to api
-            setName(userName);
-            setLogin(true);
-            history.push("/");
+    async function handleLogin(){
+        try {
+            // GET api
+            let res = await axios.post("http://127.0.0.1:8000/users/login", {
+                userName: userName,
+                password: password
+            });
+            //If login is performed successfully, we have to record this user's id, which will be res.data
+            message.success("Login successfully!")
+            if(res.status === 200) history.push("/");
+            return;
+        } catch (error) {
+            console.log(error);
+            //Here we need to handle the situation that login failed
         }
-        else {
-            setLogin(false);
-            console.log("not ok");
-        }
+
+        // if(userName === "aaa" && password === "bbb") { //connect to api
+        //     setName(userName);
+        //     setLogin(true);
+        //     // history.push("/");
+        // }
+        // else {
+        //     setLogin(false);
+        //     console.log("not ok");
+        // }
     }
     return (
         <>

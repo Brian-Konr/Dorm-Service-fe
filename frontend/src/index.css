@@ -118,3 +118,27 @@
  .send_button{
    right: -82vw;
  }
+ .personal_Name{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    margin-left: 6vh;
+    height: 17vh;
+    width: 10vw;
+    border: solid 1px grey;
+    border-radius: 100%;
+    text-align: center;
+    padding-top: 4vh;
+    font-size: 5vh;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    
+ }
+ .medal_part{
+    margin-left: 6vw;
+   display: flex;
+   flex-direction: row;
+   /* justify-content: space-between; */
+ }
+.medal{
+   margin-left: 2vw;
+   text-align: center;
+}

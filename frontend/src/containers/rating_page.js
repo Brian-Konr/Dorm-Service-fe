@@ -4,7 +4,7 @@ import { Rate } from 'antd';
 import { useState } from 'react';
 
 
-const Rating_page = ({login,name,setCurrent,current}) => {
+const Rating_Page = ({login,name,setCurrent,current}) => {
 
     const navBar = (
         <header>
@@ -44,7 +44,7 @@ const Rating_page = ({login,name,setCurrent,current}) => {
 
 }
 
-export default Rating_page
+export default Rating_Page
 
 
 

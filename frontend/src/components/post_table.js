@@ -121,8 +121,8 @@ const Post_Table = () => {
                                 title: e.title,
                                 activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11),
                                 activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11),
-                                service_item: ['打蟑螂'],
-                                click: ['打蟑螂']
+                                service_item: ['載人服務'],
+                                click: ['載人服務']
                             }
                         }
                         else if(e.service_id == 2){
@@ -141,8 +141,8 @@ const Post_Table = () => {
                                 title: e.title,
                                 activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11),
                                 activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11),
-                                service_item: ['載人服務'],
-                                click: ['載人服務']
+                                service_item: ['打蟑螂'],
+                                click: ['打蟑螂']
                             }
                         }
                         else if(e.service_id == 4){

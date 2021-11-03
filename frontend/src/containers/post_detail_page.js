@@ -211,8 +211,9 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf}) => {
         {taskArea}
         {viewSelf === false && (<div className="detail_button">
           <Button type="primary">
-          <a href="/postSuccess">{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
-            </Button>
+            <a href="/postSuccess">{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
+            {/* <Link to="/rating">我要參加</Link> */}
+          </Button>
         </div>)
         }
     </div>

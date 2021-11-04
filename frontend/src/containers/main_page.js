@@ -15,7 +15,7 @@ const Main_Page = ({login,name,setCurrent,current, setViewSelf}) => {
               <div className="filter"><Service_Filter/></div>
               <div className="search"><Title_Search/></div>
           </div>
-          <div className="post_table"><Post_Table/></div>
+          <div className="post_table"><Post_Table  isMainPage = {true}/></div>
         </div>
       ); 
 }

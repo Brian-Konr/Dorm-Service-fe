@@ -4,7 +4,7 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Post_Table = () => {
+const Post_Table = ({isMainPage}) => {
     // console.log("post table");
     const [index, setIndex] = useState(0); //待改，每輸入一筆資料 setIndex(index+1)
     const [dataList, setDataList] = useState([]);
@@ -110,6 +110,16 @@ const Post_Table = () => {
         try {
             // GET api
             let res = await axios.get("http://127.0.0.1:8000/requests/available");
+            if(isMainPage){
+                res = await axios.get("http://127.0.0.1:8000/requests/available");
+            }
+            else{
+                res = await axios.get("http://127.0.0.1:8000/requests");
+                // 應更正為 -> /requests/ongoing/{requesterId}
+                // 等待後端寫完就可以接上
+            }
+
+            
             
             
             if(res.status === 200) {

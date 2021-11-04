@@ -109,7 +109,7 @@ const Post_Table = () => {
     async function getRequestData(){
         try {
             // GET api
-            let res = await axios.get("http://127.0.0.1:8000/requests");
+            let res = await axios.get("http://127.0.0.1:8000/requests/available");
             
             
             if(res.status === 200) {

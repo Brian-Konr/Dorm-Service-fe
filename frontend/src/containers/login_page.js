@@ -7,7 +7,6 @@ import axios from 'axios';
 const Login_Page = ({login, setLogin, setName}) => {
 
     let history = useHistory();
-
     const[userName, setUserName] = useState("");
     const[password, setPassword] = useState("");
 
@@ -32,17 +31,9 @@ const Login_Page = ({login, setLogin, setName}) => {
         } catch (error) {
             console.log(error);
             //Here we need to handle the situation that login failed
+            if(userName === "" || password === "") message.error("Username or password cannot be empty!");
+            else message.error("Your username or password is wrong!");
         }
-
-        // if(userName === "aaa" && password === "bbb") { //connect to api
-        //     setName(userName);
-        //     setLogin(true);
-        //     // history.push("/");
-        // }
-        // else {
-        //     setLogin(false);
-        //     console.log("not ok");
-        // }
     }
     return (
         <>

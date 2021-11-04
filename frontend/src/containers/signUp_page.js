@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form,Input,Select,Button, message } from 'antd';
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -37,14 +38,55 @@ const tailFormItemLayout = {
 };
 
 const SignUp_Page = () => {
+  let history = useHistory();
   const [form] = Form.useForm();
 
-  const success = () => {
-      message.success("您已成功註冊！")
-  }
-
-  const onFinish = (values) => {
+  async function onFinish(values) {
     console.log('Received values of form: ', values);
+    try {
+        let res = await axios.get("http://127.0.0.1:8000/locations/2");
+        console.log(res.data);
+        let dormId = res.data.find(location => location.location_name === values.dorm).location_id;
+        console.log(dormId);
+        console.log(values.facebook_url);
+        if(dormId !== undefined) {
+            // var params = {
+            //     userName: values.username,
+            //     password: values.password,
+            //     gender: values.gender,
+            //     phoneNum: values.phone_number,
+            //     fbUrl: `https://${values.facebook_url}`,
+            //     dormID: dormId
+            // };
+            // console.log(params);
+            try {
+                let res = await axios.post("http://127.0.0.1:8000/users", {
+                    userName: values.username,
+                    password: values.password,
+                    gender: values.gender,
+                    phoneNum: values.phone_number,
+                    fbUrl: `https://${values.facebook_url}`,
+                    dormID: dormId
+                })
+                if(res.status === 201) {
+                    message.success("註冊成功!");
+                    history.push("/login");
+                }
+                return;
+            } catch (error) {
+                console.log(error.response.data);
+                if(error.response.data.detail === 'User name already exists') message.error("Username already exists")
+                return;
+            }
+        }
+        else {
+            console.log("Can't find corresponding location!");
+            message.error("Can't find corresponding location!");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    // let userName = values.username,
   };
 
   return (
@@ -56,7 +98,7 @@ const SignUp_Page = () => {
         form={form}
         // layout="vertical"
         name="register"
-        onFinish={onFinish}
+        onFinish={(values) => onFinish(values)}
         scrollToFirstError
         >
             <Form.Item
@@ -115,8 +157,8 @@ const SignUp_Page = () => {
             </Form.Item>
 
             <Form.Item
-                name="facebook-url"
-                label="Facebook-Url"
+                name="facebook_url"
+                label="Facebook_Url"
                 tooltip="Please input valid FB-URL, so that other people can find you!"
                 rules={[
                 {
@@ -157,9 +199,9 @@ const SignUp_Page = () => {
                 ]}
             >
                 <Select placeholder="select your gender">
-                <Option value="male">Male</Option>
-                <Option value="female">Female</Option>
-                <Option value="other">Other</Option>
+                <Option value="M">Male</Option>
+                <Option value="F">Female</Option>
+                <Option value="O">Other</Option>
                 </Select>
             </Form.Item>
 
@@ -174,35 +216,36 @@ const SignUp_Page = () => {
                 ]}
             >
                 <Select placeholder="select your dorm">
-                <Option value="male_1">男一舍</Option>
-                <Option value="male_2">男二舍</Option>
-                <Option value="male_3">男三舍</Option>
-                <Option value="male_4">男四舍</Option>
-                <Option value="male_5">男五舍</Option>
-                <Option value="male_6">男六舍</Option>
-                <Option value="male_7">男七舍</Option>
-                <Option value="male_8">男八舍</Option>
-                <Option value="master_male">研一男舍</Option>
-                <Option value="master_female">研一女舍</Option>
-                <Option value="master_3">研三舍</Option>
-                <Option value="fresh_female">大一女舍</Option>
-                <Option value="female_1">女一舍</Option>
-                <Option value="female_2">女二舍</Option>
-                <Option value="female_3">女三舍</Option>
-                <Option value="female_4">女四舍</Option>
-                <Option value="female_5">女五舍</Option>
-                <Option value="female_6">女六舍</Option>
-                <Option value="female_7">女七舍</Option>
-                <Option value="female_8">女八舍</Option>
-                <Option value="female_9">女九舍</Option>
+                <Option value="男一舍">男一舍</Option>
+                <Option value="男二舍">男二舍</Option>
+                <Option value="男三舍">男三舍</Option>
+                <Option value="男四宿舍">男四舍</Option>
+                <Option value="男五舍">男五舍</Option>
+                <Option value="男六舍">男六舍</Option>
+                <Option value="男七舍">男七舍</Option>
+                <Option value="男八舍">男八舍</Option>
+                <Option value="第一男研究生宿舍">研一男舍</Option>
+                <Option value="第一女研究生宿舍">研一女舍</Option>
+                <Option value="maste第三研究生宿舍r_3">研三舍</Option>
+                <Option value="大一女舍">大一女舍</Option>
+                <Option value="女一舍">女一舍</Option>
+                <Option value="女二舍">女二舍</Option>
+                <Option value="女三舍">女三舍</Option>
+                <Option value="女四舍">女四舍</Option>
+                <Option value="女五舍">女五舍</Option>
+                <Option value="女六舍">女六舍</Option>
+                <Option value="女七舍">女七舍</Option>
+                <Option value="女八舍">女八舍</Option>
+                <Option value="女九舍">女九舍</Option>
                 </Select>
             </Form.Item>
 
             <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" className = "wide-form-button" onClick={success}>
-                {/* Register */}
-                {/* Todo: 如果成功註冊的話跳message */}
-                    <Link to="/login">Sign Up</Link>
+                <Button type="primary" htmlType="submit" className = "wide-form-button">
+                    {/* Register */}
+                    {/* Todo: 如果成功註冊的話跳message */}
+                    {/* <Link to="/login">Sign Up</Link> */}
+                    Sign Up
                 </Button>
                 Already have an Account?  <a href="/login">Login</a>
             </Form.Item>

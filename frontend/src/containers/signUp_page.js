@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form,Input,Select,Button, message } from 'antd';
+import { Form,Input,Select,Button, message, notification} from 'antd';
 import { useHistory } from "react-router-dom";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
@@ -43,6 +43,7 @@ const SignUp_Page = () => {
 
   async function onFinish(values) {
     console.log('Received values of form: ', values);
+
     try {
         let res = await axios.get("http://127.0.0.1:8000/locations/2");
         console.log(res.data);
@@ -50,15 +51,6 @@ const SignUp_Page = () => {
         console.log(dormId);
         console.log(values.facebook_url);
         if(dormId !== undefined) {
-            // var params = {
-            //     userName: values.username,
-            //     password: values.password,
-            //     gender: values.gender,
-            //     phoneNum: values.phone_number,
-            //     fbUrl: `https://${values.facebook_url}`,
-            //     dormID: dormId
-            // };
-            // console.log(params);
             try {
                 let res = await axios.post("http://127.0.0.1:8000/users", {
                     userName: values.username,
@@ -69,8 +61,16 @@ const SignUp_Page = () => {
                     dormID: dormId
                 })
                 if(res.status === 201) {
-                    message.success("註冊成功!");
                     
+                    (() => {
+                        notification['success']({
+                            message: "Registered Successfully!",
+                            description: "You will be redirected to Login Page after 3 sceonds.",
+                            placement: "topLeft",
+                            duration: 2.2
+                        })
+                    })()
+
                     setTimeout(() => {
                         history.push("/login");
                     }, 3000)
@@ -89,7 +89,6 @@ const SignUp_Page = () => {
     } catch (error) {
         console.log(error);
     }
-    // let userName = values.username,
   };
 
   return (

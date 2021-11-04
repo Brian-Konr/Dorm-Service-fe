@@ -23,7 +23,11 @@ const Login_Page = ({login, setLogin, setName}) => {
             });
             //If login is performed successfully, we have to record this user's id, which will be res.data
             message.success("Login successfully!")
-            if(res.status === 200) history.push("/");
+            if(res.status === 200) {
+                history.push("/");
+                setLogin(true);
+                setName(userName);
+            }
             return;
         } catch (error) {
             console.log(error);

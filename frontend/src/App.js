@@ -15,7 +15,12 @@ const App = () => {
   const [login, setLogin] = useState(false);
   const [name, setName] = useState('');
   const [viewSelf, setViewSelf] = useState(false);
-
+/*
+/, /myPost, /post_detail :小伊
+/login, /signUp, /rating :郭
+/personal, /addPost: 沛
+/notification, /history: 巫
+*/
   
   return (
     <Router>

@@ -70,7 +70,10 @@ const SignUp_Page = () => {
                 })
                 if(res.status === 201) {
                     message.success("註冊成功!");
-                    history.push("/login");
+                    
+                    setTimeout(() => {
+                        history.push("/login");
+                    }, 3000)
                 }
                 return;
             } catch (error) {

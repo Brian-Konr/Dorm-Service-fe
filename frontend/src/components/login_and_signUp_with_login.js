@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const Login_And_SignUp_With_Login = ({name}) => {
 
+    //利用notification button, 開啟list
     return(
     <>
         <Button><Link to="/addPost">+ 新增任務</Link></Button>

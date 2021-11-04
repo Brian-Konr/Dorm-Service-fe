@@ -11,7 +11,7 @@ const My_Posting_Page = ({login,name,setCurrent,current, setViewSelf}) => {
               <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
           </header> 
           <div className="post_subTitle">以下為您刊登中的任務列表：</div>
-          <div className="post_table"><Post_Table/></div>
+          <div className="post_table"><Post_Table isMainPage = {false}/></div>
         </div>
       ); 
 }

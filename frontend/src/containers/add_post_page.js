@@ -1,24 +1,27 @@
 import React from 'react';
-import { Form,Input,Select,DatePicker,Switch,Button,Divider, message } from 'antd';
+import { Form,Input,Select,DatePicker,Button,Divider, message } from 'antd';
 import Navigation from '../containers/navigation';
 import { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 import Location from '../components/location';
 import axios from 'axios';
 
 const { RangePicker } = DatePicker;
 
 const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
+    let history = useHistory();
     const [form] = Form.useForm();
     const [key, setKey] = useState();
     const [location, setLocation] = useState();
+    const [startlocation, setStartLocation] = useState();
+    const [endlocation, setEndLocation] = useState();
     
     
     const success = () => {
         message.success("您已成功刊登任務！")
     }
     async function onFinish(values) {
-        console.log('Received values of form: ', values);       
+        
         try {
             // GET api
             var res;
@@ -26,28 +29,59 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
                 res = await axios.post("http://127.0.0.1:8000/requests/kill", {
                     requesterId: userId,
                     title: values.title,
+                    endTime: values.time._d,
+                    actStartTime: values.act_time[0]._d,
+                    actEndTime: values.act_time[1]._d,
                     reward: values.reward,
                     description: values.detail,
-                    requesterLocationId: `${location}`,
+                    requesterLocationId: location,
                 });
             }
             if(key === 'heavylifting'){
                 res = await axios.post("http://127.0.0.1:8000/requests/heavyLifting", {
                     requesterId: userId,
                     title: values.title,
+                    endTime: values.time._d,
+                    actStartTime: values.act_time[0]._d,
+                    actEndTime: values.act_time[1]._d,
                     reward: values.reward,
                     description: values.detail,
-                    requesterLocationId: `${location}`,
+                    fromId: startlocation,
+                    toId: endlocation,
+                    item: values.item,
+                    itemWeight: values.itemWeight,
                 });
             }
             if(key === 'drive'){
-                res = await axios.post("http://127.0.0.1:8000/requests/drive");
+                res = await axios.post("http://127.0.0.1:8000/requests/drive", {
+                    requesterId: userId,
+                    title: values.title,
+                    endTime: values.time._d,
+                    actStartTime: values.act_time[0]._d,
+                    actEndTime: values.act_time[1]._d,
+                    reward: values.reward,
+                    description: values.detail,
+                    fromId: startlocation,
+                    toId: endlocation,
+                });
             }
             if(key === 'host'){
-                res = await axios.post("http://127.0.0.1:8000/requests/hostEvent");
+                res = await axios.post("http://127.0.0.1:8000/requests/hostEvent", {
+                    requesterId: userId,
+                    title: values.title,
+                    endTime: values.time._d,
+                    actStartTime: values.act_time[0]._d,
+                    actEndTime: values.act_time[1]._d,
+                    description: values.detail,
+                    eventLocationId: location,
+                    locationDetail: values.location_detail,
+                });
             }
             
-            if(res.status === 200) {
+            if(res.status === 201) {
+                setTimeout(() => {
+                    history.push("/");
+                }, 3000)
             }
             return;
         } catch (error) {
@@ -98,17 +132,18 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
           <Input placeholder="請輸入標題"/>
         </Form.Item>
 
-        <Form.Item name="range-picker" label="活動區間" {...rangeConfig}>
+        <Form.Item name="act_time" label="活動區間" {...rangeConfig}>
             <RangePicker />
         </Form.Item>
 
-        <Form.Item name="range-picker" label="徵求區間" {...rangeConfig}>
-            <RangePicker />
+        <Form.Item name="time" label="徵求截止時間">
+            <DatePicker />
         </Form.Item>
 
+        {key==='kill_cockroach'||key==='heavylifting'||key==='drive'?
         <Form.Item label="願付金額" name="reward">
           <Input placeholder="請輸入台幣"/>
-        </Form.Item>
+        </Form.Item>:null}
         
         <Form.Item
             name="detail"
@@ -123,22 +158,22 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
         <>
             <Divider orientation="left" plain>任務資訊</Divider>
             <Form.Item label="出沒地點" name="location">
-                <Location/>
+                <Location setLocation={setLocation}/>
             </Form.Item>
         </>
         ):key==='heavylifting'?(
         <>
             <Divider orientation="left" plain>任務資訊</Divider>
-            <Form.Item label="預估起點">
-                <Location/>
+            <Form.Item label="預估起點" name="start_location">
+                <Location setLocation={setStartLocation}/>
             </Form.Item>
-            <Form.Item label="預估終點">
-                <Location/>
+            <Form.Item label="預估終點" name="end_location">
+                <Location setLocation={setEndLocation}/>
             </Form.Item>
-            <Form.Item label="物件種類" >
+            <Form.Item label="物件種類" name="item">
                 <Input />
             </Form.Item>
-            <Form.Item label="預估重量" >
+            <Form.Item label="預估重量" name="itemWeight">
                 <Input />
             </Form.Item>
             
@@ -146,43 +181,30 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
         ):key==='drive'?(
             <>
             <Divider orientation="left" plain>任務資訊</Divider>
-            <Form.Item label="預估起點">
-                <Select placeholder="Please select">
-                    <Select.Option value="kill_cockroach">打蟑螂</Select.Option>
-                    <Select.Option value="heavylifting">物品搬運</Select.Option>
-                    <Select.Option value="drive">載人服務</Select.Option>
-                    <Select.Option value="host">辦活動</Select.Option>
-                </Select>
+            <Form.Item label="預估起點" name="start_location">
+                <Location setLocation={setStartLocation}/>
             </Form.Item>
-            <Form.Item label="預估終點">
-                <Select placeholder="Please select">
-                    <Select.Option value="kill_cockroach">打蟑螂</Select.Option>
-                    <Select.Option value="heavylifting">物品搬運</Select.Option>
-                    <Select.Option value="drive">載人服務</Select.Option>
-                    <Select.Option value="host">辦活動</Select.Option>
-                </Select>
+            <Form.Item label="預估終點" name="end_location">
+                <Location setLocation={setEndLocation}/>
             </Form.Item>    
         </>
         ):key==='host'?(
         <>
             <Divider orientation="left" plain>任務資訊</Divider>
-            <Form.Item label="預估地點">
-                <Select placeholder="Please select">
-                    <Select.Option value="kill_cockroach">打蟑螂</Select.Option>
-                    <Select.Option value="heavylifting">物品搬運</Select.Option>
-                    <Select.Option value="drive">載人服務</Select.Option>
-                    <Select.Option value="host">辦活動</Select.Option>
-                </Select>
-            </Form.Item>  
+            <Form.Item label="預估地點" name="location">
+                <Location setLocation={setLocation}/>
+            </Form.Item> 
+            <Form.Item label="地點詳細資訊" name="location_detail">
+                <Input />
+            </Form.Item> 
         </>
         ):null
       }
         <Form.Item>
             <Button className="cancel_button"><Link to="/">取消</Link></Button>
-            <Button type="primary" className="send_button"　htmlType="submit" >送出</Button>
+            <Button type="primary" className="send_button"　htmlType="submit" onClick={success}>送出</Button>
         </Form.Item>
       </Form>
-      {/* onClick={success} */}
     </>
   );
 };

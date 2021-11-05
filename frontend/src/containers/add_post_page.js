@@ -4,25 +4,55 @@ import Navigation from '../containers/navigation';
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
 import Location from '../components/location';
+import axios from 'axios';
 
 const { RangePicker } = DatePicker;
 
-const Add_Post_Page = ({login,name,setCurrent,current}) => {
+const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
     const [form] = Form.useForm();
     const [key, setKey] = useState();
-    const [title, setTitle] = useState();
-    // console.log(key);
+    const [location, setLocation] = useState();
+    
     
     const success = () => {
         message.success("您已成功刊登任務！")
     }
     async function onFinish(values) {
-        console.log('Received values of form: ', values);
-        console.log("hello");
-        //console.log(form.getFieldsValue( [ 'title' ] ))
-        // if(key === 'kill_cockroach'){
-        //     let res = await axios.post("http://127.0.0.1:8000/requests/kill");
-        // }
+        console.log('Received values of form: ', values);       
+        try {
+            // GET api
+            var res;
+            if(key === 'kill_cockroach'){
+                res = await axios.post("http://127.0.0.1:8000/requests/kill", {
+                    requesterId: userId,
+                    title: values.title,
+                    reward: values.reward,
+                    description: values.detail,
+                    requesterLocationId: `${location}`,
+                });
+            }
+            if(key === 'heavylifting'){
+                res = await axios.post("http://127.0.0.1:8000/requests/heavyLifting", {
+                    requesterId: userId,
+                    title: values.title,
+                    reward: values.reward,
+                    description: values.detail,
+                    requesterLocationId: `${location}`,
+                });
+            }
+            if(key === 'drive'){
+                res = await axios.post("http://127.0.0.1:8000/requests/drive");
+            }
+            if(key === 'host'){
+                res = await axios.post("http://127.0.0.1:8000/requests/hostEvent");
+            }
+            
+            if(res.status === 200) {
+            }
+            return;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const rangeConfig = {

@@ -27,7 +27,7 @@ const App = () => {
     <Router>
       <div className="App"> 
           <Route path="/" exact component={() => <Main_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf}/>}/>
-          <Route path="/addPost" exact component={() => <Add_Post_Page login={login} name={name} setCurrent={setCurrent} current={current}/>}/>
+          <Route path="/addPost" exact component={() => <Add_Post_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
           <Route path="/myPost" component={() => <My_Posting_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf}/>}/>
           <Route path="/login" component={() => <Login_Page login = {login} setLogin={setLogin} setName={setName} setUserId={setUserId}/>}/>
           <Route path="/signUp" component={SignUp_Page}/>

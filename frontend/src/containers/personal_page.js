@@ -2,31 +2,46 @@ import { Divider } from 'antd';
 import Navigation from '../containers/navigation';
 import { Icon } from '@iconify/react';
 import axios from 'axios';
+import { useState, useEffect } from 'react'
 
 const Personal_Page = ({login,name,setCurrent,current, userId}) => {
-    console.log(userId);
+
+    const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="50" />,<Icon icon="fa-solid:medal" color="#c9c9c9" height="50" />,<Icon icon="whh:medalbronze" color="#d3976e" height="50" />,<Icon icon="whh:medalsilver" color="#b2c1c0" height="50" />,<Icon icon="whh:medalgold" color="#e9a012" height="50" />];
+    const medal_name = ['實習生','新星','達人','專家','大師']
+    
+    const [level, setLevel] = useState([]);
+    const [gender, setGender] = useState("");
+    const [phoneNumber, setPhoneNum] = useState("");
+    const [fbUrl, setFbUrl] = useState("");
+    const [start, setStart] = useState(true);
+    const [temp, setTemp] = useState();
+    
     // 以下是需要跟後端接的資料
-    var userId = 1;
     async function personalDetail(){
         try {
             // GET api
             let res = await axios.get(`http://127.0.0.1:8000/users/${userId}`, {});
-                if(res.status === 200) {  
-                    res.data.map(e => { 
-                        console.log(e);
+                if(res.status === 200) { 
+                    // console.log(res.data); 
+                    setGender(res.data.gender);
+                    setPhoneNum(res.data.phoneNum);
+                    setFbUrl(res.data.fbUrl);
+                    res.data.userPoints.map( e => {
+                        let data = e.service_id;
+                        setLevel([...level,data]);
+                        console.log("hello");
+                        console.log(data);
                     })
-                    
                 }
             return;
         } catch (error) {
             console.log(error);
         }
     }
-    personalDetail();
-    const gender = "女";
-    const phoneNumber = "0912345678";
-    const fbUrl = "https://facebook.com/thisIsMyName";
-    const serviceId = "打蟑螂";
+    if(start){
+        personalDetail();
+        setStart(false);
+    }
 
     const item = (title, description) => {
         return(
@@ -47,25 +62,24 @@ const Personal_Page = ({login,name,setCurrent,current, userId}) => {
             <div className="personal_Name">{name}</div>
             <Divider orientation="left" plain>勳章牆</Divider>
             <div className="medal_part">
+                {
+                    // console.log(temp)
+                }
                 <div className="medal">
-                    <Icon icon="whh:medalgold" color="#e9a012" height="50" />
-                    <div>{serviceId}大師</div>
+                    {medal_component[level[0]-1]}
+                    <div>打蟑螂{medal_name[level[0]-1]}</div>
                 </div>
                 <div className="medal">
-                    <Icon icon="whh:medalsilver" color="#b2c1c0" height="50" />
-                    <div>{serviceId}專家</div>
+                    {medal_component[level[1]-1]}
+                    <div>物品搬運{medal_name[level[1]-1]}</div>
                 </div>
                 <div className="medal">
-                    <Icon icon="whh:medalbronze" color="#d3976e" height="50" />
-                    <div>{serviceId}達人</div>
+                    {medal_component[level[2]-1]}
+                    <div>載人{medal_name[level[2]-1]}</div>
                 </div>
                 <div className="medal">
-                    <Icon icon="fa-solid:medal" color="#c9c9c9" height="50" />
-                    <div>{serviceId}新星</div>
-                </div>
-                <div className="medal">
-                    <Icon icon="whh:medal" color="#c9c9c9" height="50" />
-                    <div>{serviceId}實習生</div>
+                    {medal_component[level[3]-1]}
+                    <div>辦活動{medal_name[level[3]-1]}</div>
                 </div>
             </div>
 

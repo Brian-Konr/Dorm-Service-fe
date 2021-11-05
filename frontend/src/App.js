@@ -16,6 +16,7 @@ const App = () => {
   const [login, setLogin] = useState(false);
   const [name, setName] = useState('');
   const [viewSelf, setViewSelf] = useState(false);
+  const [userId, setUserId] = useState('');
 /*
 /, /myPost, /post_detail :小伊
 /login, /signUp, /rating :郭
@@ -27,16 +28,16 @@ const App = () => {
     <Router>
       <div className="App"> 
           <Route path="/" exact component={() => <Main_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf}/>}/>
-          <Route path="/addPost" exact component={() => <Add_Post_Page login={login} name={name} setCurrent={setCurrent} current={current}/>}/>
+          <Route path="/addPost" exact component={() => <Add_Post_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
           <Route path="/myPost" component={() => <My_Posting_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf}/>}/>
-          <Route path="/login" component={() => <Login_Page login = {login} setLogin={setLogin} setName={setName}/>}/>
+          <Route path="/login" component={() => <Login_Page login = {login} setLogin={setLogin} setName={setName} setUserId={setUserId}/>}/>
           <Route path="/signUp" component={SignUp_Page}/>
           <Route path="/post_detail/:serviceId/:requestId" component={() => <Post_Detail_Page login={login} name={name} setCurrent={setCurrent} current={current} viewSelf={viewSelf}/>}/>
           {/* <Route path="/post_detail/:serviceId" component={Post_Detail_Page}/> */}
           <Route path="/postSuccess" component={Post_Success_Page}/>
           <Route path="/rating" component={() => <Rating_Page login={login} name={name} setCurrent={setCurrent} current={current}/>}/>
-          <Route path="/personal" component={() => <Personal_Page login={login} name={name} setCurrent={setCurrent} current={current}/>}/>
           <Route path="/history" component={() => <History login={login} name={name} setCurrent={setCurrent} current={current}/>}/>
+          <Route path="/personal" component={() => <Personal_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
       </div>
     </Router>
   );

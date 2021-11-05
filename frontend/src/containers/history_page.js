@@ -16,7 +16,7 @@ const History = ({login,name,setCurrent,current}) => {
             <div className="filter"><Service_Filter  setserviceStatus = {setserviceStatus}/></div>
             <div className="search"><Title_Search/></div>
           </div>
-          <div className="post_table"><Post_Table Page = {"history"}/></div>
+          <div className="post_table"><Post_Table Page = {"history"} serviceStatus = {serviceStatus}/></div>
         </div>
       ); 
 }

@@ -125,8 +125,8 @@ const [start, setStart] = useState(true);
         {item("預估終點",[(<p>{endDestination}</p>)])}
         {item("預估距離",[(<p>{distance}</p>)])}
         {item("有無電梯",[(<p>{elevatorText}</p>)])}
-        {item("物件種類",[(<p>{type}</p>)])}
-        {item("預估重量",[(<p>{weight}</p>)])}
+        {item("物件種類",[(<p>{requestDetail.length == 0 ? type : requestDetail[0].type}</p>)])}
+        {item("預估重量",[(<p>{requestDetail.length == 0 ? weight : requestDetail[0].weight}</p>)])}
     </div>
     )
 
@@ -305,7 +305,9 @@ async function getaHeavyLiftingRequest(){
                       endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
-                      title: e.Request.title
+                      title: e.Request.title,
+                      type: e.HeavyliftingServicePost.item,
+                      weight: e.HeavyliftingServicePost.item_weight
                   }
               })
           )

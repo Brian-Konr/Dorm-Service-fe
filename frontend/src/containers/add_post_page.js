@@ -3,14 +3,26 @@ import { Form,Input,Select,DatePicker,Switch,Button,Divider, message } from 'ant
 import Navigation from '../containers/navigation';
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
+import Location from '../components/location';
 
 const { RangePicker } = DatePicker;
 
 const Add_Post_Page = ({login,name,setCurrent,current}) => {
+    const [form] = Form.useForm();
     const [key, setKey] = useState();
+    const [title, setTitle] = useState();
     // console.log(key);
+    
     const success = () => {
         message.success("您已成功刊登任務！")
+    }
+    async function onFinish(values) {
+        console.log('Received values of form: ', values);
+        console.log("hello");
+        //console.log(form.getFieldsValue( [ 'title' ] ))
+        // if(key === 'kill_cockroach'){
+        //     let res = await axios.post("http://127.0.0.1:8000/requests/kill");
+        // }
     }
 
     const rangeConfig = {
@@ -30,10 +42,14 @@ const Add_Post_Page = ({login,name,setCurrent,current}) => {
       </header>
       <Divider orientation="left" plain>基本資訊</Divider>
       <Form
+        form={form}
         labelCol={{span: 4}}
         wrapperCol={{span: 14}}
-        layout="horizontal">
-        <Form.Item label="任務類別" 
+        layout="horizontal"
+        onFinish={(values) => onFinish(values)}
+        >
+        <Form.Item label="任務類別"
+            name="service_type" 
             rules={[
             {
                 required: true,
@@ -48,6 +64,10 @@ const Add_Post_Page = ({login,name,setCurrent,current}) => {
           </Select>
         </Form.Item>
 
+        <Form.Item label="任務標題" name="title">
+          <Input placeholder="請輸入標題"/>
+        </Form.Item>
+
         <Form.Item name="range-picker" label="活動區間" {...rangeConfig}>
             <RangePicker />
         </Form.Item>
@@ -56,12 +76,12 @@ const Add_Post_Page = ({login,name,setCurrent,current}) => {
             <RangePicker />
         </Form.Item>
 
-        <Form.Item label="願付金額" >
+        <Form.Item label="願付金額" name="reward">
           <Input placeholder="請輸入台幣"/>
         </Form.Item>
         
         <Form.Item
-            name="詳細資訊"
+            name="detail"
             label="詳細資訊"
             rules={[{ required: true, message: 'Please input Intro' }]}
         >
@@ -72,37 +92,18 @@ const Add_Post_Page = ({login,name,setCurrent,current}) => {
         key==='kill_cockroach'?(
         <>
             <Divider orientation="left" plain>任務資訊</Divider>
-            <Form.Item label="蟑螂類型" >
-                <Input />
-            </Form.Item>
-            <Form.Item label="出沒地點" >
-                <Input />
-            </Form.Item>
-            <Form.Item label="會不會飛" valuePropName="checked">
-                <Switch />
+            <Form.Item label="出沒地點" name="location">
+                <Location/>
             </Form.Item>
         </>
         ):key==='heavylifting'?(
         <>
             <Divider orientation="left" plain>任務資訊</Divider>
             <Form.Item label="預估起點">
-                <Select placeholder="Please select">
-                    <Select.Option value="kill_cockroach">打蟑螂</Select.Option>
-                    <Select.Option value="heavylifting">物品搬運</Select.Option>
-                    <Select.Option value="drive">載人服務</Select.Option>
-                    <Select.Option value="host">辦活動</Select.Option>
-                </Select>
+                <Location/>
             </Form.Item>
             <Form.Item label="預估終點">
-                <Select placeholder="Please select">
-                    <Select.Option value="kill_cockroach">打蟑螂</Select.Option>
-                    <Select.Option value="heavylifting">物品搬運</Select.Option>
-                    <Select.Option value="drive">載人服務</Select.Option>
-                    <Select.Option value="host">辦活動</Select.Option>
-                </Select>
-            </Form.Item>
-            <Form.Item label="有無電梯" valuePropName="checked">
-                <Switch />
+                <Location/>
             </Form.Item>
             <Form.Item label="物件種類" >
                 <Input />
@@ -148,7 +149,8 @@ const Add_Post_Page = ({login,name,setCurrent,current}) => {
       }
       </Form>
       <Button className="cancel_button"><Link to="/">取消</Link></Button>
-      <Button type="primary" className="send_button"　onClick={success}><Link to="/">送出</Link></Button>
+      <Button type="primary" className="send_button"　htmlType="submit" >送出</Button> 
+      {/* onClick={success} */}
     </>
   );
 };

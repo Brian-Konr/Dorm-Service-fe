@@ -30,7 +30,7 @@ const App = () => {
           <Route path="/myPost" component={() => <My_Posting_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf}/>}/>
           <Route path="/login" component={() => <Login_Page login = {login} setLogin={setLogin} setName={setName}/>}/>
           <Route path="/signUp" component={SignUp_Page}/>
-          <Route path="/post_detail/:serviceId" component={() => <Post_Detail_Page login={login} name={name} setCurrent={setCurrent} current={current} viewSelf={viewSelf}/>}/>
+          <Route path="/post_detail/:serviceId/:requestId" component={() => <Post_Detail_Page login={login} name={name} setCurrent={setCurrent} current={current} viewSelf={viewSelf}/>}/>
           {/* <Route path="/post_detail/:serviceId" component={Post_Detail_Page}/> */}
           <Route path="/postSuccess" component={Post_Success_Page}/>
           <Route path="/rating" component={() => <Rating_Page login={login} name={name} setCurrent={setCurrent} current={current}/>}/>

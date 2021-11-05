@@ -60,47 +60,28 @@ const Post_Table = ({isMainPage}) => {
         //         <Button type="default" shape="circle" href="/post_detail/th" icon={<ArrowRightOutlined />}/>
         //     );
         // },
-        render: click => (
+        render: (_, rows) => (
             <>
-                {click.map(tag => {
-                    let component;
-                    
-                    if (tag === '打蟑螂') {
-                        // component = <Button key={index} type="default" shape="circle" href="/post_detail/kill_cockroach" icon={<ArrowRightOutlined />}/>;
-                        component = (
-                            <Button  key={index} type="default" shape="circle" >
-                                <Link to="/post_detail/kill_cockroach">➜</Link>
-                            </Button>
-                        )
-                    } if (tag === '物品搬運') {
-                        // component = <Button key={index} type="default" shape="circle" href="/post_detail/heavylifting" icon={<ArrowRightOutlined />}/>;
-                        component = (
-                            <Button  key={index} type="default" shape="circle" >
-                                <Link to="/post_detail/heavylifting">➜</Link>
-                            </Button>
-                        )
-                    } if (tag === '載人服務') {
-                        component = (
-                            <Button  key={index} type="default" shape="circle" >
-                                <Link to="/post_detail/drive">➜</Link>
-                            </Button>
-                        )
-                    } if (tag === '辦活動') {
-                        // component = <Button key={index} type="default" shape="circle" href="/post_detail/drive" icon={<ArrowRightOutlined />}/>;
-                        component = (
-                            <Button  key={index} type="default" shape="circle" >
-                                <Link to="/post_detail/host">➜</Link>
-                            </Button>
-                        )
-
-                        // <Link to="/addPost">+ 新增任務</Link>
-                        // component = <Button key={index} type="default" shape="circle" href="/post_detail/host" icon={<ArrowRightOutlined />}/>;
-                        
-                    }
-                    return (
-                        component
-                    );
-                })}
+                {
+                    rows.click[0] === '打蟑螂' ?  
+                    (<Button  key={index} type="default" shape="circle" >
+                            <Link to= {`/post_detail/kill_cockroach/${rows.key}`}>➜</Link>
+                    </Button>) 
+                    : rows.click[0] === '物品搬運' ?
+                    (<Button  key={index} type="default" shape="circle" >
+                            <Link to= {`/post_detail/heavylifting/${rows.key}`}>➜</Link>
+                    </Button>)
+                    : rows.click[0] === '載人服務' ?
+                    (<Button  key={index} type="default" shape="circle" >
+                            <Link to= {`/post_detail/drive/${rows.key}`}>➜</Link>
+                    </Button>)
+                    : 
+                    (<Button  key={index} type="default" shape="circle" >
+                            <Link to= {`/post_detail/host/${rows.key}`}>➜</Link>
+                    </Button>)
+                }
+                
+                
             </>
             ),
     },
@@ -109,7 +90,7 @@ const Post_Table = ({isMainPage}) => {
     async function getRequestData(){
         try {
             // GET api
-            let res = await axios.get("http://127.0.0.1:8000/requests/available");
+            let res;
             if(isMainPage){
                 res = await axios.get("http://127.0.0.1:8000/requests/available");
             }
@@ -179,7 +160,6 @@ const Post_Table = ({isMainPage}) => {
         getRequestData();
         setStart(false);
     }
-    setInterval(getRequestData, 30000);
 
     // const data = [
     // {

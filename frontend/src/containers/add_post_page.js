@@ -4,6 +4,7 @@ import Navigation from '../containers/navigation';
 import { useState } from 'react'
 import { Link,useHistory } from 'react-router-dom';
 import Location from '../components/location';
+import Location_With_Floor from '../components/location_with_floor';
 import axios from 'axios';
 
 const { RangePicker } = DatePicker;
@@ -15,6 +16,8 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
     const [location, setLocation] = useState();
     const [startlocation, setStartLocation] = useState();
     const [endlocation, setEndLocation] = useState();
+    const [startfloor, setStartFloor] = useState(0);
+    const [endfloor, setEndFloor] = useState(0);
     
     
     const success = () => {
@@ -47,7 +50,9 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
                     reward: values.reward,
                     description: values.detail,
                     fromId: startlocation,
+                    fromFloor: startfloor,
                     toId: endlocation,
+                    toFloor: endfloor,
                     item: values.item,
                     itemWeight: values.itemWeight,
                 });
@@ -165,10 +170,10 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
         <>
             <Divider orientation="left" plain>任務資訊</Divider>
             <Form.Item label="預估起點" name="start_location">
-                <Location setLocation={setStartLocation}/>
+                <Location_With_Floor setLocation={setStartLocation} setFloor={setStartFloor}/>
             </Form.Item>
             <Form.Item label="預估終點" name="end_location">
-                <Location setLocation={setEndLocation}/>
+                <Location_With_Floor setLocation={setEndLocation} setFloor={setEndFloor}/>
             </Form.Item>
             <Form.Item label="物件種類" name="item">
                 <Input />

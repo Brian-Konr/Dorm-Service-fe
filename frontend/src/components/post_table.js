@@ -4,7 +4,7 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Post_Table = ({isMainPage}) => {
+const Post_Table = ({isMainPage, serviceStatus}) => {
     // console.log("post table");
     const [index, setIndex] = useState(0); //待改，每輸入一筆資料 setIndex(index+1)
     const [dataList, setDataList] = useState([]);
@@ -161,96 +161,25 @@ const Post_Table = ({isMainPage}) => {
         setStart(false);
     }
 
-    // const data = [
-    // {
-    //     key: '1',
-    //     title: '啊啊啊啊 德國大蟑螂 我好怕啊',
-    //     activity_start_time: '2021 / 05 / 18 21:00',
-    //     activity_end_time: '2021 / 05 / 20 22:00',
-    //     service_item: ['打蟑螂'],
-    //     click: ['打蟑螂'],
-    // },
-    // {
-    //     key: '2',
-    //     title: '資管週道具搬運人力徵求',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18',
-    //     service_item: ['物品搬運'],
-    //     click: ['物品搬運'],
-    // },
-    // {
-    //     key: '3',
-    //     title: '大一女到水源劇場，腳踏車有坐墊佳',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 21:00',
-    //     service_item: ['載人服務'],
-    //     click: ['載人服務'],
-    // },
-    // {
-    //     key: '4',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '5',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '6',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '7',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '8',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '9',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '10',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '11',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // ];
+    
+
+    if(serviceStatus === "all"){
+        return <Table columns={columns} dataSource={dataList} />
+    }
+    else if(serviceStatus === "kill_cockroach"){
+        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] === '打蟑螂')} />
+    }
+    else if(serviceStatus === "heavylifting"){
+        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '物品搬運')} />
+    }
+    else if(serviceStatus === "drive"){
+        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '載人服務')} />
+    }
+    else if(serviceStatus === "host"){
+        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '辦活動')} />
+    }
+
+    
 
     return <Table columns={columns} dataSource={dataList} />
 }

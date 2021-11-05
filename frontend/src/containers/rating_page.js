@@ -1,6 +1,6 @@
 import React from 'react'
 import Navigation from './navigation'
-import { Rate, Card,List, Avatar, Space, Button, PageHeader } from 'antd';
+import { Rate, Card,List, Avatar, Space, Button, PageHeader, message } from 'antd';
 import { useState } from 'react';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { Icon } from '@iconify/react';
@@ -41,6 +41,13 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
     let values = [];
     for(let i = 0;i < appliersNumber;i++){
       values.push(rate[i].value);
+    }
+
+    const handleStarPost = () => {
+      //do POST request
+      message.success("成功送出評分!");
+      // window.history.back();
+
     }
     
     //testing
@@ -91,8 +98,8 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
                 )}
                 />
             </div>
-            <Button className="cancel_button"><Link to="/">取消</Link></Button>
-            <Button type="primary" className="send_button"><Link to="/">送出</Link></Button>
+            <Button className="cancel_button" onClick={() => window.history.back()}>取消</Button>
+            <Button type="primary" className="send_button" onClick={handleStarPost}><Link to="/history">送出</Link></Button>
 
 
             </div>

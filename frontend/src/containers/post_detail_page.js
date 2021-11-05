@@ -236,6 +236,59 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
 
 
 
+//以下是應徵者相關資料
+// requestId
+const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" />,<Icon icon="fa-solid:medal" color="#c9c9c9" height="20" />,<Icon icon="whh:medalbronze" color="#d3976e" height="20" />,<Icon icon="whh:medalsilver" color="#b2c1c0" height="20" />,<Icon icon="whh:medalgold" color="#e9a012" height="20" />];
+const medal_name = ['實習生','新星','達人','專家','大師']
+const task_label = ["打蟑螂", "物品搬運", "載人", "辦活動"]
+const requesterName = ["Jenny", "James"];
+const requesterGender = ["Female", "Male"];
+const requesterPhone = ["0912345678", "0987654321"];
+const requesterFB = ["https://facebook.com/wpbag", "https://facebook.com/wpbag1"];
+const reward = [[1,3,2,4],[2,2,3,4]]
+const accept = [false, true];
+//一次輸入一整排
+const medalPart = (levels) => {
+  let i = -1;
+  levels.map(
+    level => {
+      i++;
+      return(
+        <div>
+          {medal_component[levels[i]-1]}
+          <p>{task_label[i]}{medal_name[levels[i]-1]}</p>
+        </div>
+      )
+    }
+  )
+}
+  
+  const format = (
+    <div>
+      <Divider orientation="left" plain>
+      應徵者1
+      </Divider>
+
+      {item("用戶姓名",['巫芊瑩'])}
+      {/* 勳章 */}
+      
+      {item("用戶性別",['Female' === 'Female' ? '女' : '男'])}
+      {accept[0] 
+      ? <div>{item("用戶電話",['0912345678'])}{item("用戶臉書",['facebook.com'])}</div>
+      : <div ><Button>拒絕</Button><Button type="primary">接受</Button></div>
+      }
+    </div>
+  )
+
+
+
+// const requesterArea = []
+// for(var i = 0;i < requesterName.length;i++){
+//   requesterArea.push(item("用戶姓名",[(<p>{requesterName[i]}</p>)]));
+// }
+
+//以上是應徵者相關資料
+
 // 接 API 的 function
 async function getaDriveRequest(){
   try {
@@ -414,7 +467,8 @@ async function applyaRequest(applierId){
               {taskArea}
             </Panel>
             <Panel header="應徵者資訊" key="2">
-              <p>Hello</p>
+              {/* <p>Hello</p> */}
+              {format}
               {/* unfinish */}
             </Panel>
           </Collapse>
@@ -425,7 +479,8 @@ async function applyaRequest(applierId){
           {taskArea}
         </div>
         }
-
+        {/* 應徵者資訊 */}
+ 
 
         {viewSelf === false && login === true && (<div className="detail_button">
           <Button type="primary" onClick = { () => applyaRequest(userId)}>

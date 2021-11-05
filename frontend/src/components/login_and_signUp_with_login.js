@@ -9,7 +9,7 @@ const Login_And_SignUp_With_Login = ({name}) => {
     <>
         <Button><Link to="/addPost">+ 新增任務</Link></Button>
         <Button type="text"><Icon icon="ci:notification" rotate={2} vFlip={true} /></Button>
-        <Button type="text">{name}</Button>
+        <Button type="text"><Link to="/personal">{name}</Link></Button>
     </>
     );
 }

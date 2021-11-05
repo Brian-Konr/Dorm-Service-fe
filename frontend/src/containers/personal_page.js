@@ -1,6 +1,7 @@
 import { Divider } from 'antd';
 import Navigation from '../containers/navigation';
 import { Icon } from '@iconify/react';
+import axios from 'axios';
 
 const Personal_Page = ({login,name,setCurrent,current}) => {
     // 以下是需要跟後端接的資料

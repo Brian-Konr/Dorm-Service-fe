@@ -9,6 +9,7 @@ import Post_Success_Page from './containers/postSuccess_page';
 import Rating_Page from "./containers/rating_page";
 import Personal_Page from "./containers/personal_page";
 import { useState } from 'react'
+import History from "./containers/history_page";
 
 const App = () => {
   const [current, setCurrent] = useState('title');
@@ -26,15 +27,16 @@ const App = () => {
   return (
     <Router>
       <div className="App"> 
-          <Route path="/" exact component={() => <Main_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf}/>}/>
+          <Route path="/" exact component={() => <Main_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf} userId={userId}/>}/>
           <Route path="/addPost" exact component={() => <Add_Post_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
-          <Route path="/myPost" component={() => <My_Posting_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf}/>}/>
+          <Route path="/myPost" component={() => <My_Posting_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf} userId={userId}/>}/>
           <Route path="/login" component={() => <Login_Page login = {login} setLogin={setLogin} setName={setName} setUserId={setUserId}/>}/>
           <Route path="/signUp" component={SignUp_Page}/>
-          <Route path="/post_detail/:serviceId/:requestId" component={() => <Post_Detail_Page login={login} name={name} setCurrent={setCurrent} current={current} viewSelf={viewSelf}/>}/>
+          <Route path="/post_detail/:serviceId/:requestId" component={() => <Post_Detail_Page login={login} name={name} setCurrent={setCurrent} current={current} viewSelf={viewSelf} userId={userId}/>}/>
           {/* <Route path="/post_detail/:serviceId" component={Post_Detail_Page}/> */}
           <Route path="/postSuccess" component={Post_Success_Page}/>
           <Route path="/rating" component={() => <Rating_Page login={login} name={name} setCurrent={setCurrent} current={current}/>}/>
+          <Route path="/history" component={() => <History login={login} name={name} setCurrent={setCurrent} current={current}/>}/>
           <Route path="/personal" component={() => <Personal_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
       </div>
     </Router>

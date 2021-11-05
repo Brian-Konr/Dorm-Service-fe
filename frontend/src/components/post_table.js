@@ -1,10 +1,10 @@
-import { Table, Tag, Button } from 'antd';
+import { Table, Tag, Button, message } from 'antd';
 import { useState } from 'react'
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Post_Table = ({isMainPage}) => {
+const Post_Table = ({Page, serviceStatus, userId}) => {
     // console.log("post table");
     const [index, setIndex] = useState(0); //待改，每輸入一筆資料 setIndex(index+1)
     const [dataList, setDataList] = useState([]);
@@ -50,56 +50,87 @@ const Post_Table = ({isMainPage}) => {
         </>
         ),
     },
-    {
-        title: '',
-        dataIndex: 'click',
-        key: 'click',
-        // render: icon => <a>{icon}</a>,
-        // render: () => {  
-        //     return (
-        //         <Button type="default" shape="circle" href="/post_detail/th" icon={<ArrowRightOutlined />}/>
-        //     );
-        // },
-        render: (_, rows) => (
-            <>
-                {
-                    rows.click[0] === '打蟑螂' ?  
-                    (<Button  key={index} type="default" shape="circle" >
-                            <Link to= {`/post_detail/kill_cockroach/${rows.key}`}>➜</Link>
-                    </Button>) 
-                    : rows.click[0] === '物品搬運' ?
-                    (<Button  key={index} type="default" shape="circle" >
-                            <Link to= {`/post_detail/heavylifting/${rows.key}`}>➜</Link>
-                    </Button>)
-                    : rows.click[0] === '載人服務' ?
-                    (<Button  key={index} type="default" shape="circle" >
-                            <Link to= {`/post_detail/drive/${rows.key}`}>➜</Link>
-                    </Button>)
-                    : 
-                    (<Button  key={index} type="default" shape="circle" >
-                            <Link to= {`/post_detail/host/${rows.key}`}>➜</Link>
-                    </Button>)
-                }
-                
-                
-            </>
-            ),
-    },
     ];
+
+    //判斷最右側按鈕是檢視詳細資料，或是有評分功能
+    if(Page === "history"){
+        const arrowIcon ={
+            title: '',
+            dataIndex: 'click',
+            key: 'click',
+            // render: icon => <a>{icon}</a>,
+            // render: () => {  
+            //     return (
+            //         <Button type="default" shape="circle" href="/post_detail/th" icon={<ArrowRightOutlined />}/>
+            //     );
+            // },
+            render: (_, rows) => (
+                <>
+                    <Button type="secondary">
+                        <Link to ={'/rating'}>我要評分</Link>
+                    </Button>
+                </>
+                ),
+        }
+        columns.push(arrowIcon);
+    }
+    else{
+        const arrowIcon ={
+            title: '',
+            dataIndex: 'click',
+            key: 'click',
+            // render: icon => <a>{icon}</a>,
+            // render: () => {  
+            //     return (
+            //         <Button type="default" shape="circle" href="/post_detail/th" icon={<ArrowRightOutlined />}/>
+            //     );
+            // },
+            render: (_, rows) => (
+                <>
+                    {
+                        rows.click[0] === '打蟑螂' ?  
+                        (<Button  key={index} type="default" shape="circle" >
+                                <Link to= {`/post_detail/kill_cockroach/${rows.key}`}>➜</Link>
+                        </Button>) 
+                        : rows.click[0] === '物品搬運' ?
+                        (<Button  key={index} type="default" shape="circle" >
+                                <Link to= {`/post_detail/heavylifting/${rows.key}`}>➜</Link>
+                        </Button>)
+                        : rows.click[0] === '載人服務' ?
+                        (<Button  key={index} type="default" shape="circle" >
+                                <Link to= {`/post_detail/drive/${rows.key}`}>➜</Link>
+                        </Button>)
+                        : 
+                        (<Button  key={index} type="default" shape="circle" >
+                                <Link to= {`/post_detail/host/${rows.key}`}>➜</Link>
+                        </Button>)
+                    }
+                    
+                    
+                </>
+                ),
+        }
+        columns.push(arrowIcon);
+    }
 
     async function getRequestData(){
         try {
             // GET api
             let res;
-            if(isMainPage){
+            if(Page === "main"){
                 res = await axios.get("http://127.0.0.1:8000/requests/available");
             }
-            else{
-                res = await axios.get("http://127.0.0.1:8000/requests");
+            else if(Page === "myPost" && userId != ""){
+                res = await axios.get(`http://127.0.0.1:8000/requests/ongoing/${userId}`);
                 // 應更正為 -> /requests/ongoing/{requesterId}
                 // 等待後端寫完就可以接上
             }
+            //新增history模式，代更正get 內容
+            else{
+                res = await axios.get("http://127.0.0.1:8000/requests");
+            }
 
+            
             
             
             
@@ -153,6 +184,10 @@ const Post_Table = ({isMainPage}) => {
             return;
         } catch (error) {
             console.log(error);
+            if(Page === "myPost" && error.response.status == 404){
+                console.log("There are no ongoing request from this user.");
+                message.error("You have no ongoing request now.");
+            }
         }
     }
 
@@ -161,96 +196,25 @@ const Post_Table = ({isMainPage}) => {
         setStart(false);
     }
 
-    // const data = [
-    // {
-    //     key: '1',
-    //     title: '啊啊啊啊 德國大蟑螂 我好怕啊',
-    //     activity_start_time: '2021 / 05 / 18 21:00',
-    //     activity_end_time: '2021 / 05 / 20 22:00',
-    //     service_item: ['打蟑螂'],
-    //     click: ['打蟑螂'],
-    // },
-    // {
-    //     key: '2',
-    //     title: '資管週道具搬運人力徵求',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18',
-    //     service_item: ['物品搬運'],
-    //     click: ['物品搬運'],
-    // },
-    // {
-    //     key: '3',
-    //     title: '大一女到水源劇場，腳踏車有坐墊佳',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 21:00',
-    //     service_item: ['載人服務'],
-    //     click: ['載人服務'],
-    // },
-    // {
-    //     key: '4',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '5',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '6',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '7',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '8',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '9',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '10',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // {
-    //     key: '11',
-    //     title: '周末夜狼人殺競賽 12人成團',
-    //     activity_start_time: '2021 / 05 / 18',
-    //     activity_end_time: '2021 / 05 / 18 23:00',
-    //     service_item: ['辦活動'],
-    //     click: ['辦活動'],
-    // },
-    // ];
+    
+
+    if(serviceStatus === "all"){
+        return <Table columns={columns} dataSource={dataList} />
+    }
+    else if(serviceStatus === "kill_cockroach"){
+        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] === '打蟑螂')} />
+    }
+    else if(serviceStatus === "heavylifting"){
+        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '物品搬運')} />
+    }
+    else if(serviceStatus === "drive"){
+        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '載人服務')} />
+    }
+    else if(serviceStatus === "host"){
+        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '辦活動')} />
+    }
+
+    
 
     return <Table columns={columns} dataSource={dataList} />
 }

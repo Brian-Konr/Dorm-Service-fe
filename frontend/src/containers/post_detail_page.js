@@ -1,5 +1,5 @@
-import { useParams, Link } from "react-router-dom";
-import { Divider } from 'antd';
+import { useParams, Link, useHistory} from "react-router-dom";
+import { Divider, message, Collapse } from 'antd';
 import { useState, useEffect } from 'react'
 import Navigation from '../containers/navigation';
 import { Icon } from '@iconify/react';
@@ -8,9 +8,10 @@ import axios from 'axios';
 
 
 // 加一個參數 myPage
-const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf}) => {
-const [requestDetail, setRequestDetail] = useState([]);
-const [start, setStart] = useState(true);
+const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
+  const [requestDetail, setRequestDetail] = useState([]);
+  const [start, setStart] = useState(true);
+  let history = useHistory();
   
   
   // 以下勿刪除！
@@ -40,7 +41,7 @@ const [start, setStart] = useState(true);
 
 
   let {serviceId, requestId} = useParams();
-  console.log(serviceId, requestId);
+  // console.log(serviceId, requestId);
   
   
   // 共同區域
@@ -62,7 +63,8 @@ const [start, setStart] = useState(true);
   }
 
   
-  
+  const { Panel } = Collapse;
+
   
   const contentShow_Kill = () => {
     const type = "五隻德國大蟑螂";
@@ -75,7 +77,7 @@ const [start, setStart] = useState(true);
       setStart(false);
     }
 
-    console.log(requestDetail.length === 0 ? title : requestDetail[0].title);
+    
 
     titleArea = (
       <h1 className = "detail_title_Area">
@@ -360,24 +362,74 @@ useEffect(() => {
   }
 }, [requestDetail]);
 
+async function applyaRequest(applierId){
+  try {
+      // GET api
+      let res = await axios.post("http://127.0.0.1:8000/appliers/apply", {
+        "applierId": applierId,
+        "requestId": requestId
+    });
+    if(res.status === 201) {
+        console.log("apply success!");
+        history.push("/postSuccess");
+    }
+    return;
+  } catch (error) {
+      console.log(error.response.status)
+      if(error.response.status === 409){
+        message.error("You have already applied this request before!");
+      }
+      else if(applierId === ""){
+        message.error("Please login first!");
+      }
+      else {
+        console.log("applierId", applierId)
+        console.log("requestId", requestId)
+        message.error("There are some mistakes with your application!");
+      }
+    }
+}
+
+
   // return 要寫在這邊
   return (
     
     <div>
         {navBar}
-        {titleArea}
-        {/* 新增編輯按鈕 */}
-        {viewSelf === true && (<div className="detail_button">
-          <Button type="primary">
-          <Link to="/addPost">編輯</Link>
-            </Button> 
-        </div>)
+        <div className="detail_header">
+          {titleArea}
+          {viewSelf === true && (<div className="detail_button">
+            <Button type="primary">
+            <Link to="/addPost">編輯</Link>
+              </Button> 
+          </div>)
+          }
+        </div>
+        {viewSelf
+        ?      
+        <div className="collapse_position"  defaultActiveKey={['1']}>
+          <Collapse accordion >
+            <Panel header="任務資訊" key="1">
+              {basicArea}
+              {taskArea}
+            </Panel>
+            <Panel header="應徵者資訊" key="2">
+              <p>Hello</p>
+              {/* unfinish */}
+            </Panel>
+          </Collapse>
+        </div>
+        : 
+        <div>
+          {basicArea}
+          {taskArea}
+        </div>
         }
-        {basicArea}
-        {taskArea}
-        {viewSelf === false && (<div className="detail_button">
-          <Button type="primary">
-            <a href="/postSuccess">{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
+
+
+        {viewSelf === false && login === true && (<div className="detail_button">
+          <Button type="primary" onClick = { () => applyaRequest(userId)}>
+            <a>{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
             {/* <Link to="/rating">我要參加</Link> */}
           </Button>
         </div>)
@@ -385,6 +437,5 @@ useEffect(() => {
     </div>
   )
 };
-
 
 export default Post_Detail_Page;

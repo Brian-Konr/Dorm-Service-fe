@@ -13,6 +13,12 @@ const Navigation = ({login,name,setCurrent,current}) => {
         setCurrent(e.key);
     };
 
+    const menuItemAfterLogin = [
+      (<Menu.Item key="my_post"><Link to="/myPost">檢視發起中任務</Link></Menu.Item>),
+      (<Menu.Item key="history"><Link to="/history">歷史紀錄</Link></Menu.Item>)
+      ]
+    
+
     return (
       <div className = "nav">
         <Menu onClick={handleClick} selectedKeys={current} mode="horizontal" className = "left_nav">
@@ -23,12 +29,13 @@ const Navigation = ({login,name,setCurrent,current}) => {
         <Menu.Item key="post">
           <Link to="/">刊登中任務</Link>
         </Menu.Item>
-        <Menu.Item key="my_post">
-          <Link to="/myPost">檢視發起中任務</Link>
-        </Menu.Item>
-        <Menu.Item key="history">
-          歷史紀錄
-        </Menu.Item>
+        {login === true
+        ?menuItemAfterLogin.map(
+          item => {
+            return item;
+          }
+        )
+        :<></>}
       </Menu>
       <Menu mode="horizontal" className = "right_nav">
         <div className="right_nav">

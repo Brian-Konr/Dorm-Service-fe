@@ -26,6 +26,7 @@ const Login_Page = ({login, setLogin, setName, setUserId}) => {
                 history.push("/");
                 setLogin(true);
                 setName(userName);
+                setUserId(res.data);
             }
             return;
         } catch (error) {

@@ -35,7 +35,7 @@ const App = () => {
           {/* <Route path="/post_detail/:serviceId" component={Post_Detail_Page}/> */}
           <Route path="/postSuccess" component={Post_Success_Page}/>
           <Route path="/rating" component={() => <Rating_Page login={login} name={name} setCurrent={setCurrent} current={current}/>}/>
-          <Route path="/personal" component={() => <Personal_Page login={login} name={name} setCurrent={setCurrent} current={current}/>}/>
+          <Route path="/personal" component={() => <Personal_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
       </div>
     </Router>
   );

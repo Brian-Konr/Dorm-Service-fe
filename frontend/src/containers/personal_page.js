@@ -3,7 +3,8 @@ import Navigation from '../containers/navigation';
 import { Icon } from '@iconify/react';
 import axios from 'axios';
 
-const Personal_Page = ({login,name,setCurrent,current}) => {
+const Personal_Page = ({login,name,setCurrent,current, userId}) => {
+    console.log(userId);
     // 以下是需要跟後端接的資料
     var userId = 1;
     async function personalDetail(){

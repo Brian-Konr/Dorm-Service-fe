@@ -11,6 +11,8 @@ import axios from 'axios';
 const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   const [requestDetail, setRequestDetail] = useState([]);
   const [start, setStart] = useState(true);
+  const [location, setLocation] = useState([]);
+  const [dorm, setDorm] = useState([]);
   let history = useHistory();
   
   
@@ -25,6 +27,57 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   // 以上勿刪除！
 
 
+  // get location detail
+  async function getLocation(){
+    try {
+        // GET api
+        let res = await axios.get("http://127.0.0.1:8000/locations");
+        
+        if(res.status === 200) {
+          setLocation(
+                res.data.map(e => {
+                      return{
+                        location_name: e.location_name,
+                        location_id: e.location_id,
+                        longitude: e.longitude,
+                        _class: e._class,
+                        latitude: e.latitude
+                    }
+                })
+            )
+        }
+        return;
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  async function getDorm(){
+    try {
+        // GET api
+        let res = await axios.get("http://127.0.0.1:8000/locations/dormitory");
+        
+        if(res.status === 200) {
+          setLocation(
+                res.data.map(e => {
+                      return{
+                        location_name: e.location_name,
+                        location_id: e.location_id,
+                        longitude: e.longitude,
+                        _class: e._class,
+                        latitude: e.latitude
+                    }
+                })
+            )
+        }
+        return;
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  
+  console.log(location);
 
 
 
@@ -67,14 +120,22 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
 
   
   const contentShow_Kill = () => {
-    const type = "五隻德國大蟑螂";
-    const place = "女一208 浴室ㄉ角落";
-    const fly = true;
-    const flyText = fly ? "會" : "不會"; 
+    // const type = "五隻德國大蟑螂";
+    let place = "c";
+    // const fly = true;
+    // const flyText = fly ? "會" : "不會"; 
 
     if(start){
+      getLocation();
       getaKillRequest();
       setStart(false);
+    }
+    
+
+    if(location.length != 0 && requestDetail.length != 0){
+      location.map(e => {
+        e.location_id == requestDetail[0].requester_location_id ? place = e.location_name : place = place
+      })
     }
 
     
@@ -90,17 +151,17 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
           <div className="detailTitle">
             {taskTitle}
           </div>
-          {item("蟑螂類型",[(<p>{type}</p>)])}
+          {/* {item("蟑螂類型",[(<p>{type}</p>)])} */}
           {item("出沒地點",[(<p>{place}</p>)])}
-          {item("會不會飛",[(<p>{flyText}</p>)])}
+          {/* {item("會不會飛",[(<p>{flyText}</p>)])} */}
       </div>
       )
   }
 
   const contentShow_HeavyLifting = () => {
-    const startDestination = "女一舍 5樓";
-    const endDestination = "女一舍 1樓";
-    const distance = "100 m";
+    const startDestination = "place";
+    const endDestination = "place";
+    // const distance = "100 m";
     const elevator = true;
     const elevatorText = elevator ? "有" : "沒有"; 
     const type = "十張桌子"
@@ -108,6 +169,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
    
 
     if(start){
+      getLocation();
       getaHeavyLiftingRequest();
       setStart(false);
     }
@@ -125,7 +187,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
         </div>
         {item("預估起點",[(<p>{startDestination}</p>)])}
         {item("預估終點",[(<p>{endDestination}</p>)])}
-        {item("預估距離",[(<p>{distance}</p>)])}
+        {/* {item("預估距離",[(<p>{distance}</p>)])} */}
         {item("有無電梯",[(<p>{elevatorText}</p>)])}
         {item("物件種類",[(<p>{requestDetail.length == 0 ? type : requestDetail[0].type}</p>)])}
         {item("預估重量",[(<p>{requestDetail.length == 0 ? weight : requestDetail[0].weight}</p>)])}
@@ -137,9 +199,10 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   const contentShow_Drive = () => {
     const startDestination = "女一舍 5樓";
     const endDestination = "女一舍 1樓";
-    const distance = "100 m";
+    // const distance = "100 m";
 
     if(start){
+      getLocation();
       getaDriveRequest();
       setStart(false);
     }
@@ -159,7 +222,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
         </div>
         {item("預估起點",[(<p>{startDestination}</p>)])}
         {item("預估終點",[(<p>{endDestination}</p>)])}
-        {item("預估距離",[(<p>{distance}</p>)])}
+        {/* {item("預估距離",[(<p>{distance}</p>)])} */}
     </div>
     )
   }
@@ -168,6 +231,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
     const place = "女一舍 交誼廳";
 
     if(start){
+      getLocation();
       getaHostEventRequest();
       setStart(false);
     }
@@ -300,10 +364,10 @@ async function getaDriveRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title
@@ -327,13 +391,14 @@ async function getaKillRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
-                      title: e.Request.title
+                      title: e.Request.title,
+                      requester_location_id: e.KillCockroachServicePost.requester_location_id
                   }
               })
           )
@@ -354,10 +419,10 @@ async function getaHeavyLiftingRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
@@ -383,10 +448,10 @@ async function getaHostEventRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title
@@ -413,7 +478,7 @@ useEffect(() => {
   if(serviceId === 'host'){
     contentShow_Host();
   }
-}, [requestDetail]);
+}, [requestDetail, location]);
 
 async function applyaRequest(applierId){
   try {

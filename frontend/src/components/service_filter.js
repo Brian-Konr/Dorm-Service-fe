@@ -12,7 +12,7 @@ const Service_Filter = ({setserviceStatus}) => {
 
     return(
     <>
-        <Select defaultValue="服務項目" style={{ width: 120 }} onChange={handleChange}>
+        <Select defaultValue="全部" style={{ width: 120 }} onChange={handleChange}>
             <Option value="all">全部</Option>
             <Option value="kill_cockroach">打蟑螂</Option>
             <Option value="heavylifting">物品搬運</Option>

@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
-const Login_Page = ({login, setLogin, setName}) => {
+const Login_Page = ({login, setLogin, setName, setUserId}) => {
 
     let history = useHistory();
     const[userName, setUserName] = useState("");

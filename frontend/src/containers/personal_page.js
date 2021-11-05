@@ -5,6 +5,23 @@ import axios from 'axios';
 
 const Personal_Page = ({login,name,setCurrent,current}) => {
     // 以下是需要跟後端接的資料
+    var userId = 1;
+    async function personalDetail(){
+        try {
+            // GET api
+            let res = await axios.get(`http://127.0.0.1:8000/users/${userId}`, {});
+                if(res.status === 200) {  
+                    res.data.map(e => { 
+                        console.log(e);
+                    })
+                    
+                }
+            return;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    personalDetail();
     const gender = "女";
     const phoneNumber = "0912345678";
     const fbUrl = "https://facebook.com/thisIsMyName";

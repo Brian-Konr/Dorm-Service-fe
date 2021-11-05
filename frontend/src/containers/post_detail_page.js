@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { Divider } from 'antd';
+import { Divider, Collapse  } from 'antd';
 import { useState, useEffect } from 'react'
 import Navigation from '../containers/navigation';
 import { Icon } from '@iconify/react';
@@ -11,6 +11,8 @@ import axios from 'axios';
 const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf}) => {
 const [requestDetail, setRequestDetail] = useState([]);
 const [start, setStart] = useState(true);
+const { Panel } = Collapse;
+
   
   
   // 以下勿刪除！
@@ -366,15 +368,32 @@ useEffect(() => {
     <div>
         {navBar}
         {titleArea}
-        {/* 新增編輯按鈕 */}
         {viewSelf === true && (<div className="detail_button">
           <Button type="primary">
           <Link to="/addPost">編輯</Link>
             </Button> 
         </div>)
         }
-        {basicArea}
-        {taskArea}
+        {viewSelf
+        ?         
+        <Collapse accordion>
+          <Panel header="任務資訊" key="1">
+            {basicArea}
+            {taskArea}
+          </Panel>
+          <Panel header="應徵者資訊" key="2">
+            <p>Hello</p>
+            {/* unfinish */}
+          </Panel>
+        </Collapse>
+        : 
+        <div>
+          {basicArea}
+          {taskArea}
+        </div>
+        }
+
+
         {viewSelf === false && (<div className="detail_button">
           <Button type="primary">
             <a href="/postSuccess">{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>

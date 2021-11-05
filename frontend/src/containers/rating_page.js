@@ -19,7 +19,7 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
 
     //variable
     // const appliersId = ['11','22','33']
-    const appliersName = ["陳大大","林中中","黃小小","陳大中","林中小","黃小大","陳大大","林中中","黃小小","陳大大","林中中","黃小小"]
+    const appliersName = ["Jenny","Andy","wendy","Timmy","Fish","Banana","Apple","Pie","Kiwi","Cake","Mango","Juice"]
     const appliersGender = ['Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male']
     const appliersNumber = appliersName.length;
 

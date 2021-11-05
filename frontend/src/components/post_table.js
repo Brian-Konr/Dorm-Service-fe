@@ -52,7 +52,7 @@ const Post_Table = ({Page, serviceStatus}) => {
     },
     ];
 
-    //判斷是檢視詳細資料，或是有評分功能
+    //判斷最右側按鈕是檢視詳細資料，或是有評分功能
     if(Page === "history"){
         const arrowIcon ={
             title: '',

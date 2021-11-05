@@ -1,10 +1,10 @@
-import { Table, Tag, Button } from 'antd';
+import { Table, Tag, Button, message } from 'antd';
 import { useState } from 'react'
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Post_Table = ({Page, serviceStatus}) => {
+const Post_Table = ({Page, serviceStatus, userId}) => {
     // console.log("post table");
     const [index, setIndex] = useState(0); //待改，每輸入一筆資料 setIndex(index+1)
     const [dataList, setDataList] = useState([]);
@@ -120,8 +120,8 @@ const Post_Table = ({Page, serviceStatus}) => {
             if(Page === "main"){
                 res = await axios.get("http://127.0.0.1:8000/requests/available");
             }
-            else if(Page === "myPost"){
-                res = await axios.get("http://127.0.0.1:8000/requests");
+            else if(Page === "myPost" && userId != ""){
+                res = await axios.get(`http://127.0.0.1:8000/requests/ongoing/${userId}`);
                 // 應更正為 -> /requests/ongoing/{requesterId}
                 // 等待後端寫完就可以接上
             }
@@ -130,6 +130,7 @@ const Post_Table = ({Page, serviceStatus}) => {
                 res = await axios.get("http://127.0.0.1:8000/requests");
             }
 
+            
             
             
             
@@ -183,6 +184,10 @@ const Post_Table = ({Page, serviceStatus}) => {
             return;
         } catch (error) {
             console.log(error);
+            if(Page === "myPost" && error.response.status == 404){
+                console.log("There are no ongoing request from this user.");
+                message.error("You have no ongoing request now.");
+            }
         }
     }
 

@@ -27,7 +27,7 @@ const Navigation = ({login,name,setCurrent,current}) => {
           <Link to="/myPost">檢視發起中任務</Link>
         </Menu.Item>
         <Menu.Item key="history">
-          歷史紀錄
+        <Link to="/history">歷史紀錄</Link>
         </Menu.Item>
       </Menu>
       <Menu mode="horizontal" className = "right_nav">

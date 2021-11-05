@@ -10,10 +10,11 @@ const My_Posting_Page = ({login,name,setCurrent,current, setViewSelf}) => {
           <header> 
               <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
           </header> 
-          <div className="post_subTitle">以下為您刊登中的任務列表：</div>
-          <div className="post_table"><Post_Table isMainPage = {false}/></div>
+          <h1 className="page_title">檢視發起中任務</h1>
+          {/* <div className="post_subTitle">以下為您刊登中的任務列表：</div> */}
+          <div className="post_table"><Post_Table Page = {"myPost"}/></div>
         </div>
-      ); 
+      );  
 }
 
 export default My_Posting_Page;

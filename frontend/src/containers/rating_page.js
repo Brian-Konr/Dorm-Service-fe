@@ -64,6 +64,7 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
             {/* 這邊再加一個 */}
             <PageHeader
             onBack={() => window.history.back()}
+            // title="返回歷史紀錄"
             subTitle="返回歷史紀錄"
             />
             <div className="rating_frame">

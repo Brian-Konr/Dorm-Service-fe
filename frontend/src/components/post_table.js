@@ -4,7 +4,7 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Post_Table = ({isMainPage}) => {
+const Post_Table = ({Page}) => {
     // console.log("post table");
     const [index, setIndex] = useState(0); //待改，每輸入一筆資料 setIndex(index+1)
     const [dataList, setDataList] = useState([]);
@@ -50,54 +50,84 @@ const Post_Table = ({isMainPage}) => {
         </>
         ),
     },
-    {
-        title: '',
-        dataIndex: 'click',
-        key: 'click',
-        // render: icon => <a>{icon}</a>,
-        // render: () => {  
-        //     return (
-        //         <Button type="default" shape="circle" href="/post_detail/th" icon={<ArrowRightOutlined />}/>
-        //     );
-        // },
-        render: (_, rows) => (
-            <>
-                {
-                    rows.click[0] === '打蟑螂' ?  
-                    (<Button  key={index} type="default" shape="circle" >
-                            <Link to= {`/post_detail/kill_cockroach/${rows.key}`}>➜</Link>
-                    </Button>) 
-                    : rows.click[0] === '物品搬運' ?
-                    (<Button  key={index} type="default" shape="circle" >
-                            <Link to= {`/post_detail/heavylifting/${rows.key}`}>➜</Link>
-                    </Button>)
-                    : rows.click[0] === '載人服務' ?
-                    (<Button  key={index} type="default" shape="circle" >
-                            <Link to= {`/post_detail/drive/${rows.key}`}>➜</Link>
-                    </Button>)
-                    : 
-                    (<Button  key={index} type="default" shape="circle" >
-                            <Link to= {`/post_detail/host/${rows.key}`}>➜</Link>
-                    </Button>)
-                }
-                
-                
-            </>
-            ),
-    },
     ];
+
+    //判斷是檢視詳細資料，或是有評分功能
+    if(Page === "history"){
+        const arrowIcon ={
+            title: '',
+            dataIndex: 'click',
+            key: 'click',
+            // render: icon => <a>{icon}</a>,
+            // render: () => {  
+            //     return (
+            //         <Button type="default" shape="circle" href="/post_detail/th" icon={<ArrowRightOutlined />}/>
+            //     );
+            // },
+            render: (_, rows) => (
+                <>
+                    <Button type="secondary">
+                        <Link to ={'/rating'}>我要評分</Link>
+                    </Button>
+                </>
+                ),
+        }
+        columns.push(arrowIcon);
+    }
+    else{
+        const arrowIcon ={
+            title: '',
+            dataIndex: 'click',
+            key: 'click',
+            // render: icon => <a>{icon}</a>,
+            // render: () => {  
+            //     return (
+            //         <Button type="default" shape="circle" href="/post_detail/th" icon={<ArrowRightOutlined />}/>
+            //     );
+            // },
+            render: (_, rows) => (
+                <>
+                    {
+                        rows.click[0] === '打蟑螂' ?  
+                        (<Button  key={index} type="default" shape="circle" >
+                                <Link to= {`/post_detail/kill_cockroach/${rows.key}`}>➜</Link>
+                        </Button>) 
+                        : rows.click[0] === '物品搬運' ?
+                        (<Button  key={index} type="default" shape="circle" >
+                                <Link to= {`/post_detail/heavylifting/${rows.key}`}>➜</Link>
+                        </Button>)
+                        : rows.click[0] === '載人服務' ?
+                        (<Button  key={index} type="default" shape="circle" >
+                                <Link to= {`/post_detail/drive/${rows.key}`}>➜</Link>
+                        </Button>)
+                        : 
+                        (<Button  key={index} type="default" shape="circle" >
+                                <Link to= {`/post_detail/host/${rows.key}`}>➜</Link>
+                        </Button>)
+                    }
+                    
+                    
+                </>
+                ),
+        }
+        columns.push(arrowIcon);
+    }
 
     async function getRequestData(){
         try {
             // GET api
             let res;
-            if(isMainPage){
+            if(Page === "main"){
                 res = await axios.get("http://127.0.0.1:8000/requests/available");
             }
-            else{
+            else if(Page === "myPost"){
                 res = await axios.get("http://127.0.0.1:8000/requests");
                 // 應更正為 -> /requests/ongoing/{requesterId}
                 // 等待後端寫完就可以接上
+            }
+            //新增history模式，代更正get 內容
+            else{
+                res = await axios.get("http://127.0.0.1:8000/requests");
             }
 
             

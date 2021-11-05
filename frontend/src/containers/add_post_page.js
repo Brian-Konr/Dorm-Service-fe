@@ -147,9 +147,11 @@ const Add_Post_Page = ({login,name,setCurrent,current}) => {
         </>
         ):null
       }
+        <Form.Item>
+            <Button className="cancel_button"><Link to="/">取消</Link></Button>
+            <Button type="primary" className="send_button"　htmlType="submit" >送出</Button>
+        </Form.Item>
       </Form>
-      <Button className="cancel_button"><Link to="/">取消</Link></Button>
-      <Button type="primary" className="send_button"　htmlType="submit" >送出</Button> 
       {/* onClick={success} */}
     </>
   );

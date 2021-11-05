@@ -396,25 +396,29 @@ async function applyaRequest(applierId){
     
     <div>
         {navBar}
-        {titleArea}
-        {viewSelf === true && (<div className="detail_button">
-          <Button type="primary">
-          <Link to="/addPost">編輯</Link>
-            </Button> 
-        </div>)
-        }
+        <div className="detail_header">
+          {titleArea}
+          {viewSelf === true && (<div className="detail_button">
+            <Button type="primary">
+            <Link to="/addPost">編輯</Link>
+              </Button> 
+          </div>)
+          }
+        </div>
         {viewSelf
-        ?         
-        <Collapse accordion>
-          <Panel header="任務資訊" key="1">
-            {basicArea}
-            {taskArea}
-          </Panel>
-          <Panel header="應徵者資訊" key="2">
-            <p>Hello</p>
-            {/* unfinish */}
-          </Panel>
-        </Collapse>
+        ?      
+        <div className="collapse_position"  defaultActiveKey={['1']}>
+          <Collapse accordion >
+            <Panel header="任務資訊" key="1">
+              {basicArea}
+              {taskArea}
+            </Panel>
+            <Panel header="應徵者資訊" key="2">
+              <p>Hello</p>
+              {/* unfinish */}
+            </Panel>
+          </Collapse>
+        </div>
         : 
         <div>
           {basicArea}
@@ -423,7 +427,7 @@ async function applyaRequest(applierId){
         }
 
 
-        {viewSelf === false && (<div className="detail_button">
+        {viewSelf === false && login === true && (<div className="detail_button">
           <Button type="primary" onClick = { () => applyaRequest(userId)}>
             <a>{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
             {/* <Link to="/rating">我要參加</Link> */}

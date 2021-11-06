@@ -55,17 +55,16 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   async function getDorm(){
     try {
         // GET api
-        let res = await axios.get("http://127.0.0.1:8000/locations/dormitory");
+        let res = await axios.get("http://127.0.0.1:8000/locations/dormitory/");
         
         if(res.status === 200) {
-          setLocation(
+          setDorm(
                 res.data.map(e => {
                       return{
-                        location_name: e.location_name,
+                        elevator_exist: e.elevator_exist,
                         location_id: e.location_id,
-                        longitude: e.longitude,
-                        _class: e._class,
-                        latitude: e.latitude
+                        dorm_floor_count: e.dorm_floor_count,
+                        facilities: e.facilities
                     }
                 })
             )
@@ -77,7 +76,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   }
 
   
-  console.log(location);
+  console.log(dorm);
 
 
 
@@ -121,11 +120,12 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   
   const contentShow_Kill = () => {
     // const type = "五隻德國大蟑螂";
-    let place = "c";
+    let place = "place";
     // const fly = true;
     // const flyText = fly ? "會" : "不會"; 
 
     if(start){
+      getDorm();
       getLocation();
       getaKillRequest();
       setStart(false);
@@ -159,19 +159,29 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   }
 
   const contentShow_HeavyLifting = () => {
-    const startDestination = "place";
-    const endDestination = "place";
+    let startPoint = "place";
+    let endPoint = "place";
     // const distance = "100 m";
-    const elevator = true;
+    let elevator = true;
     const elevatorText = elevator ? "有" : "沒有"; 
     const type = "十張桌子"
     const weight = "10kg"
    
 
     if(start){
+      getDorm();
       getLocation();
       getaHeavyLiftingRequest();
       setStart(false);
+    }
+
+    if(location.length != 0 && requestDetail.length != 0){
+      location.map(e => {
+        e.location_id == requestDetail[0].to_id ? endPoint = e.location_name + " " +  requestDetail[0].to_floor + " 樓" : endPoint = endPoint
+      });
+      location.map(e => {
+        e.location_id == requestDetail[0].from_id ? startPoint = e.location_name + " " + requestDetail[0].from_floor + " 樓" : startPoint = startPoint
+      })
     }
 
     titleArea = (
@@ -185,10 +195,10 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
         <div className="detailTitle">
           {taskTitle}
         </div>
-        {item("預估起點",[(<p>{startDestination}</p>)])}
-        {item("預估終點",[(<p>{endDestination}</p>)])}
+        {item("預估起點",[(<p>{startPoint}</p>)])}
+        {item("預估終點",[(<p>{endPoint}</p>)])}
         {/* {item("預估距離",[(<p>{distance}</p>)])} */}
-        {item("有無電梯",[(<p>{elevatorText}</p>)])}
+        {/* {item("有無電梯",[(<p>{elevatorText}</p>)])} */}
         {item("物件種類",[(<p>{requestDetail.length == 0 ? type : requestDetail[0].type}</p>)])}
         {item("預估重量",[(<p>{requestDetail.length == 0 ? weight : requestDetail[0].weight}</p>)])}
     </div>
@@ -197,17 +207,25 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   }
 
   const contentShow_Drive = () => {
-    const startDestination = "女一舍 5樓";
-    const endDestination = "女一舍 1樓";
+    let startPoint = "place";
+    let endPoint = "place";
     // const distance = "100 m";
 
     if(start){
+      getDorm();
       getLocation();
       getaDriveRequest();
       setStart(false);
     }
 
-    
+    if(location.length != 0 && requestDetail.length != 0){
+      location.map(e => {
+        e.location_id == requestDetail[0].to_id ? endPoint = e.location_name : endPoint = endPoint
+      });
+      location.map(e => {
+        e.location_id == requestDetail[0].from_id ? startPoint = e.location_name : startPoint = startPoint
+      })
+    }
 
     titleArea = (
       <h1 className = "detail_title_Area">
@@ -220,20 +238,28 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
         <div className="detailTitle">
           {taskTitle}
         </div>
-        {item("預估起點",[(<p>{startDestination}</p>)])}
-        {item("預估終點",[(<p>{endDestination}</p>)])}
+        {item("預估起點",[(<p>{startPoint}</p>)])}
+        {item("預估終點",[(<p>{endPoint}</p>)])}
         {/* {item("預估距離",[(<p>{distance}</p>)])} */}
     </div>
     )
   }
 
   const contentShow_Host = () => {
-    const place = "女一舍 交誼廳";
+    let  place = "place";
+    const  location_detail = "no detail";
 
     if(start){
+      getDorm();
       getLocation();
       getaHostEventRequest();
       setStart(false);
+    }
+
+    if(location.length != 0 && requestDetail.length != 0){
+      location.map(e => {
+        e.location_id == requestDetail[0].event_location_id ? place = e.location_name : place = place
+      })
     }
 
     titleArea = (
@@ -248,6 +274,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
           {taskTitle}
         </div>
         {item("活動地點",[(<p>{place}</p>)])}
+        {item("詳細資訊",[(<p>{requestDetail.length === 0 ? location_detail : requestDetail[0].location_detail}</p>)])}
     </div>
     )
 
@@ -370,7 +397,9 @@ async function getaDriveRequest(){
                       endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
-                      title: e.Request.title
+                      title: e.Request.title,
+                      from_id: e.DriveServicePost.from_id,
+                      to_id:e.DriveServicePost.to_id
                   }
               })
           )
@@ -427,7 +456,11 @@ async function getaHeavyLiftingRequest(){
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
                       type: e.HeavyliftingServicePost.item,
-                      weight: e.HeavyliftingServicePost.item_weight
+                      weight: e.HeavyliftingServicePost.item_weight,
+                      to_id: e.HeavyliftingServicePost.to_id,
+                      to_floor: e.HeavyliftingServicePost.to_floor,
+                      from_id: e.HeavyliftingServicePost.from_id,
+                      from_floor: e.HeavyliftingServicePost.from_floor
                   }
               })
           )
@@ -454,7 +487,9 @@ async function getaHostEventRequest(){
                       endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
-                      title: e.Request.title
+                      title: e.Request.title,
+                      location_detail: e.HostEventPost.location_detail,
+                      event_location_id: e.HostEventPost.event_location_id
                   }
               })
           )

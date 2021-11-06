@@ -1,5 +1,5 @@
 import { useParams, Link, useHistory} from "react-router-dom";
-import { Divider, message, Collapse } from 'antd';
+import { Divider, message, Collapse, Popover } from 'antd';
 import { useState, useEffect } from 'react'
 import Navigation from '../containers/navigation';
 import { Icon } from '@iconify/react';
@@ -329,7 +329,12 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
 
 //以下是應徵者相關資料
 // requestId
-const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" />,<Icon icon="fa-solid:medal" color="#c9c9c9" height="20" />,<Icon icon="whh:medalbronze" color="#d3976e" height="20" />,<Icon icon="whh:medalsilver" color="#b2c1c0" height="20" />,<Icon icon="whh:medalgold" color="#e9a012" height="20" />];
+const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" className="medal_item" />,<Icon icon="fa-solid:medal" color="#c9c9c9" height="20" className="medal_item" />,<Icon icon="whh:medalbronze" color="#d3976e" height="20" className="medal_item"/>,<Icon icon="whh:medalsilver" color="#b2c1c0" height="20" className="medal_item"/>,<Icon icon="whh:medalgold" color="#e9a012" height="20" className="medal_item"/>];
+// const medal_component = () => {
+//   return(
+
+//   )
+// }
 const medal_name = ['實習生','新星','達人','專家','大師']
 const task_label = ["打蟑螂", "物品搬運", "載人", "辦活動"]
 const requesterName = ["Jenny", "James"];
@@ -337,21 +342,32 @@ const requesterGender = ["Female", "Male"];
 const requesterPhone = ["0912345678", "0987654321"];
 const requesterFB = ["https://facebook.com/wpbag", "https://facebook.com/wpbag1"];
 const reward = [[1,3,2,4],[2,2,3,4]]
-const accept = [false, true];
+const tempAccept = [false, true];
+// 這邊要讓他是hook
+// const [accept, setAccept] = useState(tempAccept);
+
 //一次輸入一整排
 const medalPart = (levels) => {
+  console.log(levels)
   let i = -1;
+  const returnValue = []
   levels.map(
     level => {
       i++;
-      return(
+      console.log(levels[i]-1)
+      console.log(task_label[i])
+      returnValue.push(
         <div>
-          {medal_component[levels[i]-1]}
-          <p>{task_label[i]}{medal_name[levels[i]-1]}</p>
+          <Popover content={task_label[i]+medal_name[levels[i]-1]}>
+            {medal_component[levels[i]-1]}
+          </Popover>
+          {/* 這邊加一個hover狀態的東西 */}
+          {/* <p>{task_label[i]}{medal_name[levels[i]-1]}</p> */}
         </div>
       )
     }
   )
+  return(returnValue)
 }
   
   const format = (
@@ -359,14 +375,16 @@ const medalPart = (levels) => {
       <Divider orientation="left" plain>
       應徵者1
       </Divider>
-
-      {item("用戶姓名",['巫芊瑩'])}
-      {/* 勳章 */}
-      
+      <div className="applier_name_area">
+        {item("用戶姓名",['巫芊瑩'])}
+        <div className="reward">
+          {[...medalPart(reward[0])]}
+        </div>
+      </div>
       {item("用戶性別",['Female' === 'Female' ? '女' : '男'])}
-      {accept[0] 
+      {tempAccept[0] 
       ? <div>{item("用戶電話",['0912345678'])}{item("用戶臉書",['facebook.com'])}</div>
-      : <div ><Button>拒絕</Button><Button type="primary">接受</Button></div>
+      : <div ><Button className="refuse_button">拒絕</Button><Button type="primary" className="accept_button">接受</Button></div>
       }
     </div>
   )

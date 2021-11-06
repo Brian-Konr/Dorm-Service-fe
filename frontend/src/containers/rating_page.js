@@ -4,12 +4,32 @@ import { Rate, Card,List, Avatar, Space, Button, PageHeader, message } from 'ant
 import { useState } from 'react';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { Icon } from '@iconify/react';
-import { Link } from 'react-router-dom';
-
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 const Rating_Page = ({login,name,setCurrent,current}) => {
 
+
+    let appliersName = [],
+        appliersGender = [],
+        appliersNumber = 0;
+
+    let {requestId} = useParams();
+    async function getAppliers() {
+      try {
+        let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`);
+        console.log(res.data);
+        // for(let i = 0; i < res.data.length; i++) {
+        //   appliersName.push(res.data[i].user_name);
+        //   appliersGender.push(res.data[i].gender)
+        // }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getAppliers();
     //default value
     const navBar = (
         <header>
@@ -19,9 +39,6 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
 
     //variable
     // const appliersId = ['11','22','33']
-    const appliersName = ["Jenny","Andy","wendy","Timmy","Fish","Banana","Apple","Pie","Kiwi","Cake","Mango","Juice"]
-    const appliersGender = ['Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male']
-    const appliersNumber = appliersName.length;
 
     //init everyone's rate to zero
     const tempArr = []
@@ -92,11 +109,12 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
                   >
                     <List.Item.Meta
                       title={item.title}
+                      avatar={item.avatar}
                       description={item.description}
                     />
                   </List.Item>
                 )}
-                />
+              />
             </div>
             <Button className="cancel_button" onClick={() => window.history.back()}>取消</Button>
             <Button type="primary" className="send_button" onClick={handleStarPost}><Link to="/history">送出</Link></Button>

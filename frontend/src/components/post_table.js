@@ -66,8 +66,9 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             // },
             render: (_, rows) => (
                 <>
-                    <Button type="secondary">
-                        <Link to ={'/rating'}>我要評分</Link>
+                    {console.log(rows)}
+                    <Button key = {index} type="secondary">
+                        <Link to ={`/rating/${rows.key}`}>我要評分</Link>
                     </Button>
                 </>
                 ),
@@ -122,11 +123,11 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             }
             else if(Page === "myPost" && userId != ""){
                 res = await axios.get(`http://127.0.0.1:8000/requests/ongoing/${userId}`);
-                
             }
             //新增history模式，代更正get 內容
             else{
-                res = await axios.get("http://127.0.0.1:8000/requests/");
+                console.log(userId);
+                res = await axios.get(`http://127.0.0.1:8000/requests/history/${userId}`);
             }
 
             

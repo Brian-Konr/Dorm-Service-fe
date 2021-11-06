@@ -2,8 +2,9 @@ import { useParams, Link, useHistory} from "react-router-dom";
 import { Divider, message, Collapse, Popover } from 'antd';
 import { useState, useEffect } from 'react'
 import Navigation from '../containers/navigation';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Icon } from '@iconify/react';
-import {Tag, Button} from 'antd';
+import {Tag, Button, Modal, Space} from 'antd';
 import axios from 'axios';
 
 
@@ -13,6 +14,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   const [start, setStart] = useState(true);
   const [location, setLocation] = useState([]);
   const [dorm, setDorm] = useState([]);
+  const { confirm } = Modal;
   let history = useHistory();
   
   
@@ -561,6 +563,22 @@ async function applyaRequest(applierId){
     }
 }
 
+  function showDeleteConfirm() {
+    confirm({
+      title: 'Are you sure delete this task?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Some descriptions',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
 
   // return 要寫在這邊
   return (
@@ -570,9 +588,13 @@ async function applyaRequest(applierId){
         <div className="detail_header">
           {titleArea}
           {viewSelf === true && (<div className="detail_button">
-            <Button type="primary">
-            <Link to="/addPost">編輯</Link>
-              </Button> 
+            <Space wrap>
+              <Button  onClick={showDeleteConfirm} type="primary" danger>
+                提早結束徵求
+              </Button>
+            </Space>
+            {/* <Modal title="確定要提早結束徵求嗎？" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            </Modal>  */}
           </div>)
           }
         </div>
@@ -610,5 +632,7 @@ async function applyaRequest(applierId){
     </div>
   )
 };
+
+
 
 export default Post_Detail_Page;

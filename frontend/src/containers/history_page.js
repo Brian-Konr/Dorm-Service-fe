@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Service_Filter from '../components/service_filter';
 import Title_Search from '../components/title_search';
  
-const History = ({login,name,setCurrent,current}) => {
+const History = ({login,name,setCurrent,current, userId}) => {
     const [serviceStatus, setserviceStatus] = useState("all");
     const [titleFilter, settitleFilter] = useState("");
     return (
@@ -17,7 +17,7 @@ const History = ({login,name,setCurrent,current}) => {
             <div className="filter"><Service_Filter  setserviceStatus = {setserviceStatus}/></div>
             <div className="search"><Title_Search settitleFilter = {settitleFilter}/></div>
           </div>
-          <div className="post_table"><Post_Table Page = {"history"} serviceStatus = {serviceStatus} titleFilter = {titleFilter}/></div>
+          <div className="post_table"><Post_Table Page = {"history"} serviceStatus = {serviceStatus} titleFilter = {titleFilter} userId = {userId}/></div>
         </div>
       ); 
 }

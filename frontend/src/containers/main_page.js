@@ -4,7 +4,7 @@ import Title_Search from '../components/title_search';
 import Post_Table from '../components/post_table';
 import { useState } from 'react'
  
-const Main_Page = ({login,name,setCurrent,current, setViewSelf}) => {
+const Main_Page = ({login,name,setCurrent,current, setViewSelf, userId}) => {
   setViewSelf(false);
   const [serviceStatus, setserviceStatus] = useState("all");
   const [titleFilter, settitleFilter] = useState("");
@@ -21,7 +21,7 @@ const Main_Page = ({login,name,setCurrent,current, setViewSelf}) => {
               <div className="search"><Title_Search  settitleFilter = {settitleFilter}/></div>
           </div>
           {/* <div className="post_table"><Post_Table  Page = {"main"}/></div> */}
-          <div className="post_table"><Post_Table  Page = {"main"} serviceStatus = {serviceStatus} titleFilter = {titleFilter} /></div>
+          <div className="post_table"><Post_Table  Page = {"main"} serviceStatus = {serviceStatus} userId = {userId} titleFilter = {titleFilter}/></div>
         </div>
       ); 
 }

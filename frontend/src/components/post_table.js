@@ -66,8 +66,9 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             // },
             render: (_, rows) => (
                 <>
-                    <Button type="secondary">
-                        <Link to ={'/rating'}>我要評分</Link>
+                    {console.log(rows)}
+                    <Button key = {index} type="secondary">
+                        <Link to ={`/rating/${rows.key}`}>我要評分</Link>
                     </Button>
                 </>
                 ),
@@ -122,11 +123,11 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             }
             else if(Page === "myPost" && userId != ""){
                 res = await axios.get(`http://127.0.0.1:8000/requests/ongoing/${userId}`);
-                
             }
             //新增history模式，代更正get 內容
             else{
-                res = await axios.get("http://127.0.0.1:8000/requests/");
+                console.log(userId);
+                res = await axios.get(`http://127.0.0.1:8000/requests/history/${userId}`);
             }
 
             
@@ -143,7 +144,8 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
                                 activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 19),
                                 activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 19),
                                 service_item: ['載人服務'],
-                                click: ['載人服務']
+                                click: ['載人服務'],
+                                requester_id: e.requester_id
                             }
                         }
                         else if(e.service_id == 2){
@@ -153,7 +155,8 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
                                 activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 19),
                                 activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 19),
                                 service_item: ['物品搬運'],
-                                click: ['物品搬運']
+                                click: ['物品搬運'],
+                                requester_id: e.requester_id
                             }
                         }
                         else if(e.service_id == 3){
@@ -163,7 +166,8 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
                                 activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 19),
                                 activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 19),
                                 service_item: ['打蟑螂'],
-                                click: ['打蟑螂']
+                                click: ['打蟑螂'],
+                                requester_id: e.requester_id
                             }
                         }
                         else if(e.service_id == 4){
@@ -173,7 +177,8 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
                                 activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 19),
                                 activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 19),
                                 service_item: ['辦活動'],
-                                click: ['辦活動']
+                                click: ['辦活動'],
+                                requester_id: e.requester_id
                             }
                         }
                         
@@ -214,6 +219,23 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '辦活動' && request.title.includes(titleFilter))} />
         }
     }
+    // else if(Page === "main"){
+    //     if(serviceStatus === "all"){
+    //         return <Table columns={columns} dataSource={dataList.filter(request => request.requester_id !== userId)} />
+    //     }
+    //     else if(serviceStatus === "kill_cockroach"){
+    //         return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] === '打蟑螂' && request.requester_id !== userId)} />
+    //     }
+    //     else if(serviceStatus === "heavylifting"){
+    //         return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '物品搬運' && request.requester_id !== userId)} />
+    //     }
+    //     else if(serviceStatus === "drive"){
+    //         return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '載人服務' && request.requester_id !== userId)} />
+    //     }
+    //     else if(serviceStatus === "host"){
+    //         return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '辦活動' && request.requester_id !== userId)} />
+    //     }
+    // }
     else{
         if(serviceStatus === "all"){
             return <Table columns={columns} dataSource={dataList} />

@@ -80,7 +80,7 @@ const Personal_Page = ({login,name,setCurrent,current, userId}) => {
             <Divider orientation="left" plain>基本資料</Divider>
             <div>
                 {item("用戶姓名",[(<p>{name}</p>)])}
-                {item("用戶性別",[(<p>{gender==='O'?'Other':gender==='F'?'Female':gender==='M'?'Male':null}</p>)])}
+                {item("用戶性別",[(<p>{gender==='O'?'其他':gender==='F'?'女':gender==='M'?'男':null}</p>)])}
                 {item("手機號碼",[(<p>{phoneNumber}</p>)])}
                 {item("臉書網址",[(<p>{fbUrl}</p>)])}
             </div>

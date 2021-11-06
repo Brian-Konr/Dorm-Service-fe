@@ -4,7 +4,9 @@
    margin-left: 3vw;
    margin-right: 3vw;
 }
-
+.body{
+   z-index: 2;
+}
 
 .nav{
    /* position:absolute;
@@ -205,4 +207,11 @@
 
 .medal_item{
    margin-right: 0.5vw;
+}
+.notification{
+   position:absolute;
+   width: 30vw;
+   left: 63vw;
+   /* left: 100vw; */
+   z-index:20;
 }

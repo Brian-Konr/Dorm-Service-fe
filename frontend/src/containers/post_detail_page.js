@@ -434,7 +434,8 @@ async function getaDriveRequest(){
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
                       from_id: e.DriveServicePost.from_id,
-                      to_id:e.DriveServicePost.to_id
+                      to_id:e.DriveServicePost.to_id,
+                      requester_id: e.Request.requester_id
                   }
               })
           )
@@ -462,7 +463,8 @@ async function getaKillRequest(){
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
-                      requester_location_id: e.KillCockroachServicePost.requester_location_id
+                      requester_location_id: e.KillCockroachServicePost.requester_location_id,
+                      requester_id: e.Request.requester_id
                   }
               })
           )
@@ -495,7 +497,8 @@ async function getaHeavyLiftingRequest(){
                       to_id: e.HeavyliftingServicePost.to_id,
                       to_floor: e.HeavyliftingServicePost.to_floor,
                       from_id: e.HeavyliftingServicePost.from_id,
-                      from_floor: e.HeavyliftingServicePost.from_floor
+                      from_floor: e.HeavyliftingServicePost.from_floor,
+                      requester_id: e.Request.requester_id
                   }
               })
           )
@@ -524,7 +527,8 @@ async function getaHostEventRequest(){
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
                       location_detail: e.HostEventPost.location_detail,
-                      event_location_id: e.HostEventPost.event_location_id
+                      event_location_id: e.HostEventPost.event_location_id,
+                      requester_id: e.Request.requester_id
                   }
               })
           )
@@ -595,6 +599,39 @@ function showDeleteConfirm() {
   });
 }
 
+async function stopaRequest(){
+  try {
+      // GET api
+      let res = await axios.patch(`http://127.0.0.1:8000/requests/stop/${requestId}`);
+      if(res.status === 200) {
+          console.log("stop success!");
+          history.push("/myPost");
+      }
+    return;
+  } catch (error) {
+      console.log(error)
+      console.log(error.response.status)
+    }
+}
+
+  function showDeleteConfirm() {
+    confirm({
+      title: '確定要提早結束徵求嗎?',
+      icon: <ExclamationCircleOutlined />,
+      content: '一旦執行就不可回溯',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        console.log('OK');
+        stopaRequest();
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
   // return 要寫在這邊
   return (
     
@@ -645,10 +682,18 @@ function showDeleteConfirm() {
  
 
         {viewSelf === false && login === true && (<div className="detail_button">
-          <Button type="primary" onClick = { () => applyaRequest(userId)}>
+          {requestDetail.length !== 0 && requestDetail[0].requester_id != userId ?
+            <Button type="primary" onClick = {() => applyaRequest(userId)} >
             <a>{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
             {/* <Link to="/rating">我要參加</Link> */}
-          </Button>
+            </Button>
+            :
+            <Button type="primary" onClick = {() => applyaRequest(userId)} disabled>
+            <a>{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
+            {/* <Link to="/rating">我要參加</Link> */}
+            </Button>
+          }
+          
         </div>)
         }
     </div>

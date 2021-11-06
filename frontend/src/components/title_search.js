@@ -1,11 +1,11 @@
 import { Input, Space } from 'antd';
 
-const Title_Search = ( {setstitleFilter}) => {
+const Title_Search = ( {settitleFilter}) => {
     const { Search } = Input;
 
     const onSearch = value => {
         console.log(value);
-        setstitleFilter(value);
+        settitleFilter(value);
     };
 
     return(

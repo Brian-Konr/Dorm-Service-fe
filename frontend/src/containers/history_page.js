@@ -6,6 +6,7 @@ import Title_Search from '../components/title_search';
  
 const History = ({login,name,setCurrent,current}) => {
     const [serviceStatus, setserviceStatus] = useState("all");
+    const [titleFilter, settitleFilter] = useState("");
     return (
         <div id="root">
           <header> 
@@ -14,9 +15,9 @@ const History = ({login,name,setCurrent,current}) => {
           <h1 className="page_title">歷史紀錄</h1>
           <div className="filter_and_search">
             <div className="filter"><Service_Filter  setserviceStatus = {setserviceStatus}/></div>
-            <div className="search"><Title_Search/></div>
+            <div className="search"><Title_Search settitleFilter = {settitleFilter}/></div>
           </div>
-          <div className="post_table"><Post_Table Page = {"history"} serviceStatus = {serviceStatus}/></div>
+          <div className="post_table"><Post_Table Page = {"history"} serviceStatus = {serviceStatus} titleFilter = {titleFilter}/></div>
         </div>
       ); 
 }

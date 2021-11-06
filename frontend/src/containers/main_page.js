@@ -7,7 +7,7 @@ import { useState } from 'react'
 const Main_Page = ({login,name,setCurrent,current, setViewSelf}) => {
   setViewSelf(false);
   const [serviceStatus, setserviceStatus] = useState("all");
-  const [titleFilter, setstitleFilter] = useState("");
+  const [titleFilter, settitleFilter] = useState("");
 
   // console.log("main page");
     return (
@@ -18,7 +18,7 @@ const Main_Page = ({login,name,setCurrent,current, setViewSelf}) => {
           <h1 className="page_title">刊登中任務</h1>
           <div className="filter_and_search">
               <div className="filter"><Service_Filter  setserviceStatus = {setserviceStatus}/></div>
-              <div className="search"><Title_Search  setstitleFilter = {setstitleFilter}/></div>
+              <div className="search"><Title_Search  settitleFilter = {settitleFilter}/></div>
           </div>
           {/* <div className="post_table"><Post_Table  Page = {"main"}/></div> */}
           <div className="post_table"><Post_Table  Page = {"main"} serviceStatus = {serviceStatus} titleFilter = {titleFilter} /></div>

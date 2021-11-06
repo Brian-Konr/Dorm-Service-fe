@@ -196,7 +196,7 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
     }
 
     
-    if(titleFilter != "" && Page != "myPost"){
+    if(titleFilter != "" && Page === "main"){
         console.log("titleFilter  ", {titleFilter});
         if(serviceStatus === "all"){
             return <Table columns={columns} dataSource={dataList.filter(request => request.title.includes(titleFilter))} />

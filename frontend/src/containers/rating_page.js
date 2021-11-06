@@ -15,7 +15,6 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
     const [dataDone, setDataDone] = useState(false);
     const [values, setValues] = useState([]);
     const [valueDone, setValueDone] = useState(false);
-    const [isModalVisible, setIsModalVisible] = useState(false);
     //default value
     const navBar = (
         <header>
@@ -25,15 +24,6 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
     // let appliersName = ["Jenny","Andy","wendy","Timmy","Fish","Banana","Apple","Pie","Kiwi","Cake","Mango","Juice"]
     // let appliersGender = ['Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male']
     // let appliersNumber = appliersName.length;
-
-    function handleStar(i, value) {
-      let tempAppliers = Array.from(appliers);
-      if(tempAppliers[i] !== undefined) {
-        tempAppliers[i].score = value;
-        setAppliers(tempAppliers);
-      }
-      console.log(appliers);
-    }
 
     if(!valueDone) setVal();
 
@@ -65,7 +55,6 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
           avatar: e.gender === "M" ? (<Icon icon="noto-v1:boy-light-skin-tone" color="#c9c9c9" height="20" />) : (<Icon icon="noto:girl-light-skin-tone" color="#c9c9c9" height="20" />),
           description: <div>
             <Rate onChange = {(value) => handleRate(index, value)}></Rate>
-            {/* <Button onClick={() => showInfo()}>查看</Button> */}
           </div>
         }
       })
@@ -73,20 +62,10 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
       setDataDone(true);
     }
 
-    function showInfo() {
-      setIsModalVisible(true);
-      console.log(values);
-    }
     function handleRate(index, value) {
       let temp = Array.from(values);
       temp[index] = value;
       setValues(temp);
-    }
-    function handleOk() {
-      setIsModalVisible(false);
-    }
-    function handleClose() {
-      setIsModalVisible(false);
     }
 
     async function handleStarPost() {
@@ -116,9 +95,6 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
             // title="返回歷史紀錄"
             subTitle="返回歷史紀錄"
             />
-            <Modal visible={isModalVisible} onOk={() => handleOk()} onCancel = {() => handleClose()}>
-              {values}
-            </Modal>
             <div className="rating_frame">
               <List
                 className="rating_list"

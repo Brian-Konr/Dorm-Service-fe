@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { Component, useEffect } from 'react'
 import Navigation from './navigation'
-import { Rate, Card,List, Avatar, Space, Button, PageHeader, message } from 'antd';
+import { Rate, Card,List, Avatar, Space, Button, PageHeader, message, Modal } from 'antd';
 import { useState } from 'react';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { Icon } from '@iconify/react';
@@ -10,78 +10,103 @@ import axios from 'axios';
 
 const Rating_Page = ({login,name,setCurrent,current}) => {
 
-
-    let appliersName = [],
-        appliersGender = [],
-        appliersNumber = 0;
-
     let {requestId} = useParams();
-    async function getAppliers() {
-      try {
-        let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`);
-        console.log(res.data);
-        // for(let i = 0; i < res.data.length; i++) {
-        //   appliersName.push(res.data[i].user_name);
-        //   appliersGender.push(res.data[i].gender)
-        // }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getAppliers();
+    const [appliers, setAppliers] = useState([]);
+    const [dataDone, setDataDone] = useState(false);
+    const [values, setValues] = useState([]);
+    const [valueDone, setValueDone] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
     //default value
     const navBar = (
         <header>
         <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
         </header>
       )
+    // let appliersName = ["Jenny","Andy","wendy","Timmy","Fish","Banana","Apple","Pie","Kiwi","Cake","Mango","Juice"]
+    // let appliersGender = ['Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male']
+    // let appliersNumber = appliersName.length;
 
-    //variable
-    // const appliersId = ['11','22','33']
-
-    //init everyone's rate to zero
-    const tempArr = []
-    for(var i = 0;i < appliersNumber;i++){
-        tempArr.push({value: 0});
-    }
-    const [rate, setRate] = useState(tempArr)
-
-
-    const handleStar = (id, inputValue) => {
-      let newArr = [...rate]; // copying the old datas array
-      newArr[id] = {value: inputValue};
-      setRate(newArr);
+    function handleStar(i, value) {
+      let tempAppliers = Array.from(appliers);
+      if(tempAppliers[i] !== undefined) {
+        tempAppliers[i].score = value;
+        setAppliers(tempAppliers);
+      }
+      console.log(appliers);
     }
 
-    //星星顯示 and 最後應該POST上去的數值
-    let values = [];
-    for(let i = 0;i < appliersNumber;i++){
-      values.push(rate[i].value);
+    if(!valueDone) setVal();
+
+    async function setVal() {
+      try {
+        let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`);
+        console.log(res.data);
+        let temp = []
+        for(let i = 0; i < res.data.length; i++) {
+          temp.push(3);
+        }
+        setValues(temp);
+        setValueDone(true);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    useEffect(() => {
+      setValueDone(true);
+    }, [values])
+    
+    if(valueDone && !dataDone && values.length !== 0) getData();
+    async function getData() {
+      let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`);
+      let list = res.data.map((e, index) => {
+        return {
+          title: e.user_name,
+          id: e.user_id,
+          avatar: e.gender === "M" ? (<Icon icon="noto-v1:boy-light-skin-tone" color="#c9c9c9" height="20" />) : (<Icon icon="noto:girl-light-skin-tone" color="#c9c9c9" height="20" />),
+          description: <div>
+            <Rate onChange = {(value) => handleRate(index, value)}></Rate>
+            {/* <Button onClick={() => showInfo()}>查看</Button> */}
+          </div>
+        }
+      })
+      setAppliers(list);
+      setDataDone(true);
     }
 
-    const handleStarPost = () => {
+    function showInfo() {
+      setIsModalVisible(true);
+      console.log(values);
+    }
+    function handleRate(index, value) {
+      let temp = Array.from(values);
+      temp[index] = value;
+      setValues(temp);
+    }
+    function handleOk() {
+      setIsModalVisible(false);
+    }
+    function handleClose() {
+      setIsModalVisible(false);
+    }
+
+    async function handleStarPost() {
+      console.log(appliers, values);
       //do POST request
-      message.success("成功送出評分!");
-      // window.history.back();
-
+      try {
+        for(let i = 0; i < values.length; i++) {
+          let res = await axios.patch("http://127.0.0.1:8000/users/rateRequest", {
+            requestId: requestId,
+            applierId: appliers[i].id,
+            score: values[i]
+          });
+        }
+        message.success("成功送出評分!");
+        window.history.back();
+      } catch(e) {
+        console.log(e);
+      }
     }
     
-    //testing
-    const listData = [];
-    for (let i = 0; i < appliersNumber; i++) {
-      listData.push({
-        title: appliersName[i],
-        avatar: appliersGender[i] === 'Male' ? (<Icon icon="noto-v1:boy-light-skin-tone" color="#c9c9c9" height="20" />): (<Icon icon="noto:girl-light-skin-tone" color="#c9c9c9" height="20" />),
-        description:
-          (
-            <div style={{display: 'inline-box'}}> 
-              <Rate onChange={(value) => handleStar(i, value)} value={values[i]} />
-            </div>
-          )
-      });
-    }
-
       return(
           <div className="rating">
             {navBar}
@@ -91,6 +116,9 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
             // title="返回歷史紀錄"
             subTitle="返回歷史紀錄"
             />
+            <Modal visible={isModalVisible} onOk={() => handleOk()} onCancel = {() => handleClose()}>
+              {values}
+            </Modal>
             <div className="rating_frame">
               <List
                 className="rating_list"
@@ -102,7 +130,7 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
                   },
                   pageSize: 5,
                 }}
-                dataSource={listData}
+                dataSource={appliers}
                 renderItem={item => (
                   <List.Item
                     key={item.title}
@@ -110,17 +138,17 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
                     <List.Item.Meta
                       title={item.title}
                       avatar={item.avatar}
-                      description={item.description}
+                      description= {item.description}
                     />
                   </List.Item>
                 )}
               />
             </div>
             <Button className="cancel_button" onClick={() => window.history.back()}>取消</Button>
-            <Button type="primary" className="send_button" onClick={handleStarPost}><Link to="/history">送出</Link></Button>
+            <Button type="primary" className="send_button" onClick={() => handleStarPost()}>送出</Button>
 
 
-            </div>
+          </div>
     )
 
 

@@ -66,7 +66,6 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             // },
             render: (_, rows) => (
                 <>
-                    {console.log(rows)}
                     <Button key = {index} type="secondary">
                         <Link to ={`/rating/${rows.key}`}>我要評分</Link>
                     </Button>

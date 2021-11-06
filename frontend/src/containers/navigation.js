@@ -1,17 +1,24 @@
-import { Menu } from 'antd';
+import { Menu,List } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { useState } from 'react'
 import { Link } from "react-router-dom";
 import Login_And_SignUp from '../components/login_and_signUp';
 import Login_And_SignUp_With_Login from '../components/login_and_signUp_with_login';
-
+import Notification from '../components/notification';
 
 const Navigation = ({login,name,setCurrent,current}) => {
-
+    const [click,setClick] = useState(false);
     const handleClick = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
     };
+    //此處要跟後端拿資料
+    const data = [
+      'Racing car sprays burning fuel into crowd.',
+      'Japanese princess to wed commoner.',
+      'Australian walks 100km after outback crash.',
+      'Man charged over missing wedding girl.',
+    ];
 
     const menuItemAfterLogin = [
       (<Menu.Item key="my_post"><Link to="/myPost">檢視發起中任務</Link></Menu.Item>),
@@ -20,6 +27,7 @@ const Navigation = ({login,name,setCurrent,current}) => {
     
 
     return (
+      <>
       <div className = "nav">
         <Menu onClick={handleClick} selectedKeys={current} mode="horizontal" className = "left_nav">
         {/* tbd: replace with clicible logo */}
@@ -39,13 +47,26 @@ const Navigation = ({login,name,setCurrent,current}) => {
       </Menu>
       <Menu mode="horizontal" className = "right_nav">
         <div className="right_nav">
-          {login === false ? <Login_And_SignUp/>  : <Login_And_SignUp_With_Login name={name}/>}
+          {login === false ? <Login_And_SignUp/>  : <Login_And_SignUp_With_Login name={name} click={click} setClick={setClick}/>}
         </div> 
-      </Menu>
+      </Menu> 
       </div>
+      {click?<Notification/>:null}
+      </>
 
 
     );
 }
 
 export default Navigation;
+
+{/* <List
+            className="notification"
+            bordered
+            dataSource={data}
+            renderItem={item => (
+                <List.Item>
+                    {item}
+                </List.Item>
+            )}
+        /> */}

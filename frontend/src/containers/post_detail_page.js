@@ -333,7 +333,6 @@ const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" clas
 const medal_name = ['實習生','新星','達人','專家','大師']
 const task_label = ["載人", "物品搬運","打蟑螂", "辦活動"]
 
-const tempAccept = [false, true, false];
 // 這邊要讓他是hook
 // const [accept, setAccept] = useState(tempAccept);
 
@@ -347,6 +346,7 @@ const datas = [
     "gender": "F",
     "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
     "password": "pass2",
+    'status': 0
 },
   {
     "phone_num": "0913579222",
@@ -355,7 +355,8 @@ const datas = [
     "user_name": "小巫",
     "gender": "M",
     "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
-    "password": "pass2"
+    "password": "pass2",
+    'status': 1
 },
   {
     "phone_num": "0913579333",
@@ -364,10 +365,14 @@ const datas = [
     "user_name": "小葉",
     "gender": "F",
     "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
-    "password": "pass2"
+    "password": "pass2",
+    'status': 2
   }
 ]
 
+const handleDenyEvent = (e) => {
+  console.log(e.id);
+}
 
 //一次輸入一整排勳章
 const medalPart = (levels) => {
@@ -392,24 +397,26 @@ const tempApplier = [];
 
 const applierFormat = (data) => {
   console.log("user_name = ", data['user_name']);
-  tempApplier.push(
-    <div>
-    <Divider orientation="left" plain>
-    
-    </Divider>
-    <div className="applier_name_area">
-      {item("用戶姓名",[data['user_name']])}
-      {/* <div className="reward">
-        {[...medalPart(reward[0])]}
-      </div> */}
+  if(data['status'] !== 2){
+    tempApplier.push(
+      <div>
+      <Divider orientation="left" plain>
+      
+      </Divider>
+      <div className="applier_name_area">
+        {item("用戶姓名",[data['user_name']])}
+        {/* <div className="reward">
+          {[...medalPart(reward[0])]}
+        </div> */}
+      </div>
+      {item("用戶性別",[data['gender'] === 'F' ? '女' : '男'])}
+      {data['status'] === 1
+      ? <div>{item("用戶電話",[data['phone_num']])}{item("用戶臉書",[data['fb_url']])}</div>
+      : <div ><Button key={data['user_id']} className="refuse_button" onClick={(e) => handleDenyEvent(e)}>拒絕</Button><Button type="primary" className="accept_button">接受</Button></div>
+      }
     </div>
-    {item("用戶性別",[data['gender'] === 'F' ? '女' : '男'])}
-    {tempAccept[0] 
-    ? <div>{item("用戶電話",[data['phone_num']])}{item("用戶臉書",[data['fb_url']])}</div>
-    : <div ><Button id={data['user_id']} className="refuse_button">拒絕</Button><Button type="primary" className="accept_button">接受</Button></div>
-    }
-  </div>
-  )
+    )
+  }
 }
 
 
@@ -645,8 +652,6 @@ async function stopaRequest(){
                 提早結束徵求
               </Button>
             </Space>
-            {/* <Modal title="確定要提早結束徵求嗎？" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-            </Modal>  */}
             </div>)
           }
         </div>
@@ -659,16 +664,12 @@ async function stopaRequest(){
               {taskArea}
             </Panel>
             <Panel header="應徵者資訊" key="2">
-              {/* <p>Hello</p> */}
-              {/* {format} */}
               {datas.map(
                 (data) => {
-                  // console.log("INfunction = ",data);
                   applierFormat(data);
                 }
               )}
               {[...tempApplier]}
-              {/* unfinish */}
             </Panel>
           </Collapse>
         </div>

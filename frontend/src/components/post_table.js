@@ -122,8 +122,7 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             }
             else if(Page === "myPost" && userId != ""){
                 res = await axios.get(`http://127.0.0.1:8000/requests/ongoing/${userId}`);
-                // 應更正為 -> /requests/ongoing/{requesterId}
-                // 等待後端寫完就可以接上
+                
             }
             //新增history模式，代更正get 內容
             else{
@@ -197,7 +196,7 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
     }
 
     
-    if(titleFilter != ""){
+    if(titleFilter != "" && Page != "myPost"){
         console.log("titleFilter  ", {titleFilter});
         if(serviceStatus === "all"){
             return <Table columns={columns} dataSource={dataList.filter(request => request.title.includes(titleFilter))} />
@@ -232,8 +231,6 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '辦活動')} />
         }
     }
-
-    
 
     
 

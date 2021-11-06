@@ -126,7 +126,7 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             }
             //新增history模式，代更正get 內容
             else{
-                res = await axios.get("http://127.0.0.1:8000/requests");
+                res = await axios.get("http://127.0.0.1:8000/requests/");
             }
 
             

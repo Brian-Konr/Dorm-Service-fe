@@ -24,7 +24,13 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
         message.success("您已成功刊登任務！")
     }
     async function onFinish(values) {
-        
+        // console.log(values.time._d);
+        let substring_1 = String(values.act_time[0]._d).substring(0,String(values.act_time[0]._d).lastIndexOf(" "));
+        let final_1 = substring_1.substring(0,substring_1.lastIndexOf(" "));
+        let substring_2 = String(values.act_time[1]._d).substring(0,String(values.act_time[1]._d).lastIndexOf(" "));
+        let final_2 = substring_2.substring(0,substring_2.lastIndexOf(" "));
+        let substring_3 = String(values.time._d).substring(0,String(values.time._d).lastIndexOf(" "));
+        let final_3 = substring_3.substring(0,substring_3.lastIndexOf(" "));
         try {
             // GET api
             var res;
@@ -32,9 +38,9 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
                 res = await axios.post("http://127.0.0.1:8000/requests/kill", {
                     requesterId: userId,
                     title: values.title,
-                    endTime: values.time._d,
-                    actStartTime: values.act_time[0]._d,
-                    actEndTime: values.act_time[1]._d,
+                    endTime: final_3,
+                    actStartTime: final_1,
+                    actEndTime: final_2,
                     reward: values.reward,
                     description: values.detail,
                     requesterLocationId: location,
@@ -44,9 +50,9 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
                 res = await axios.post("http://127.0.0.1:8000/requests/heavyLifting", {
                     requesterId: userId,
                     title: values.title,
-                    endTime: values.time._d,
-                    actStartTime: values.act_time[0]._d,
-                    actEndTime: values.act_time[1]._d,
+                    endTime: final_3,
+                    actStartTime: final_1,
+                    actEndTime: final_2,
                     reward: values.reward,
                     description: values.detail,
                     fromId: startlocation,
@@ -61,9 +67,9 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
                 res = await axios.post("http://127.0.0.1:8000/requests/drive", {
                     requesterId: userId,
                     title: values.title,
-                    endTime: values.time._d,
-                    actStartTime: values.act_time[0]._d,
-                    actEndTime: values.act_time[1]._d,
+                    endTime: final_3,
+                    actStartTime: final_1,
+                    actEndTime: final_2,
                     reward: values.reward,
                     description: values.detail,
                     fromId: startlocation,
@@ -74,9 +80,9 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
                 res = await axios.post("http://127.0.0.1:8000/requests/hostEvent", {
                     requesterId: userId,
                     title: values.title,
-                    endTime: values.time._d,
-                    actStartTime: values.act_time[0]._d,
-                    actEndTime: values.act_time[1]._d,
+                    endTime: final_3,
+                    actStartTime: final_1,
+                    actEndTime: final_2,
                     description: values.detail,
                     eventLocationId: location,
                     locationDetail: values.location_detail,
@@ -137,17 +143,19 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
           <Input placeholder="請輸入標題"/>
         </Form.Item>
 
-        <Form.Item name="act_time" label="活動區間" {...rangeConfig}>
-            <RangePicker />
+        <Form.Item name="act_time" label="活動區間" {...rangeConfig} >
+            <RangePicker showTime={{ format: 'HH:mm' }}
+      format="YYYY-MM-DD HH:mm"/>
         </Form.Item>
 
         <Form.Item name="time" label="徵求截止時間">
-            <DatePicker />
+            <DatePicker showTime={{ format: 'HH:mm' }}
+      format="YYYY-MM-DD HH:mm"/>
         </Form.Item>
 
         {key==='kill_cockroach'||key==='heavylifting'||key==='drive'?
-        <Form.Item label="願付金額" name="reward">
-          <Input placeholder="請輸入台幣"/>
+        <Form.Item label="願付酬勞" name="reward">
+          <Input/>
         </Form.Item>:null}
         
         <Form.Item

@@ -333,8 +333,7 @@ const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" clas
 const medal_name = ['實習生','新星','達人','專家','大師']
 const task_label = ["載人", "物品搬運","打蟑螂", "辦活動"]
 
-// 這邊要讓他是hook
-// const [accept, setAccept] = useState(tempAccept);
+// let tempApplier = [];//裝載需要顯示的項目為何
 
 //接API
 const datas = [
@@ -366,12 +365,54 @@ const datas = [
     "gender": "F",
     "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
     "password": "pass2",
-    'status': 2
+    'status': 0
   }
 ]
 
+const tempAccept = {}
+datas.map(
+  data => {
+    tempAccept[data['user_id']] = data['status'];
+  }
+)
+//改變頁面狀態
+const [accept, setAccept] = useState(tempAccept);
+
+// console.log("accept = ", accept);
+
 const handleDenyEvent = (e) => {
-  console.log(e.id);
+  
+  const tempAccept = accept;
+  tempAccept[e] = 2;
+  setAccept(tempAccept);
+  console.log("accept", accept);
+  const changeApplierList = [];
+  console.log("data = ", datas);
+  datas.map(
+    (data) => {
+      applierFormat(changeApplierList, data);
+    }
+  )
+  setApplierList(changeApplierList);
+  console.log("newList = ", ApplierList)
+  //do POST request
+}
+
+const handleAcceptEvent = (e) => {
+  const tempAccept = accept;
+  tempAccept[e] = 1;
+  setAccept(tempAccept);
+  console.log(accept);
+  const changeApplierList = [];
+  console.log("data = ", datas);
+  datas.map(
+    (data) => {
+      applierFormat(changeApplierList, data);
+    }
+  )
+  setApplierList(changeApplierList);
+  console.log("newList = ", ApplierList)
+
 }
 
 //一次輸入一整排勳章
@@ -393,12 +434,13 @@ const medalPart = (levels) => {
   )
   return(returnValue)
 }
-const tempApplier = [];
 
-const applierFormat = (data) => {
-  console.log("user_name = ", data['user_name']);
-  if(data['status'] !== 2){
-    tempApplier.push(
+const applierFormat = (list, data) => {
+  console.log(data['user_name'],':',accept[data['user_id']] )
+  console.log("try")
+  console.log(accept[data['user_id']])
+  if(accept[data['user_id']] !== 2){
+    list.push(
       <div>
       <Divider orientation="left" plain>
       
@@ -410,14 +452,25 @@ const applierFormat = (data) => {
         </div> */}
       </div>
       {item("用戶性別",[data['gender'] === 'F' ? '女' : '男'])}
-      {data['status'] === 1
+      {accept[data['user_id']] === 1 
       ? <div>{item("用戶電話",[data['phone_num']])}{item("用戶臉書",[data['fb_url']])}</div>
-      : <div ><Button key={data['user_id']} className="refuse_button" onClick={(e) => handleDenyEvent(e)}>拒絕</Button><Button type="primary" className="accept_button">接受</Button></div>
+      : <div ><Button  className="refuse_button" onClick={() => handleDenyEvent(data['user_id'])}>拒絕</Button><Button type="primary" className="accept_button" onClick={() => handleAcceptEvent(data['user_id'])}>接受</Button></div>
       }
     </div>
     )
   }
 }
+
+const tempApplier = [];
+console.log("data = ", datas);
+datas.map(
+  (data) => {
+    applierFormat(tempApplier, data);
+  }
+)
+const [ApplierList, setApplierList] = useState(tempApplier)
+
+
 
 
 //以上是應徵者相關資料
@@ -664,12 +717,14 @@ async function stopaRequest(){
               {taskArea}
             </Panel>
             <Panel header="應徵者資訊" key="2">
-              {datas.map(
-                (data) => {
-                  applierFormat(data);
-                }
-              )}
-              {[...tempApplier]}
+              {/* {
+                datas.map(
+                  (data) => {
+                    applierFormat(data);
+                  }
+                )
+              } */}
+              {[...ApplierList]}
             </Panel>
           </Collapse>
         </div>
@@ -678,20 +733,16 @@ async function stopaRequest(){
           {basicArea}
           {taskArea}
         </div>
-        }
-        {/* 應徵者資訊 */}
- 
+        } 
 
         {viewSelf === false && login === true && (<div className="detail_button">
           {requestDetail.length !== 0 && requestDetail[0].requester_id != userId ?
             <Button type="primary" onClick = {() => applyaRequest(userId)} >
             <a>{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
-            {/* <Link to="/rating">我要參加</Link> */}
             </Button>
             :
             <Button type="primary" onClick = {() => applyaRequest(userId)} disabled>
             <a>{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
-            {/* <Link to="/rating">我要參加</Link> */}
             </Button>
           }
           

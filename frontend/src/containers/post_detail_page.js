@@ -338,7 +338,9 @@ const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" clas
 //   )
 // }
 const medal_name = ['實習生','新星','達人','專家','大師']
-const task_label = ["打蟑螂", "物品搬運", "載人", "辦活動"]
+const task_label = ["載人", "物品搬運","打蟑螂", "辦活動"]
+
+
 const requesterName = ["Jenny", "James"];
 const requesterGender = ["Female", "Male"];
 const requesterPhone = ["0912345678", "0987654321"];
@@ -393,10 +395,33 @@ const medalPart = (levels) => {
 
 
 
-// const requesterArea = []
-// for(var i = 0;i < requesterName.length;i++){
-//   requesterArea.push(item("用戶姓名",[(<p>{requesterName[i]}</p>)]));
-// }
+
+//接API
+const data = [
+  {
+    name: "Jenny",
+    gender: 'Female',
+    phone: '0912345678',
+    FB: 'facebook.com'
+  },
+  {
+    name: "James",
+    gender: 'Male',
+    phone: '0987654321',
+    FB: 'facebook.com/wpbag'
+  },
+  [
+    {
+      "phone_num": "0913579246",
+      "user_id": 2,
+      "dorm_id": 12,
+      "user_name": "小葉",
+      "gender": "F",
+      "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
+      "password": "pass2"
+    }
+  ]
+]
 
 //以上是應徵者相關資料
 
@@ -563,22 +588,22 @@ async function applyaRequest(applierId){
     }
 }
 
-  function showDeleteConfirm() {
-    confirm({
-      title: 'Are you sure delete this task?',
-      icon: <ExclamationCircleOutlined />,
-      content: 'Some descriptions',
-      okText: 'Yes',
-      okType: 'danger',
-      cancelText: 'No',
-      onOk() {
-        console.log('OK');
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
-  }
+function showDeleteConfirm() {
+  confirm({
+    title: '確定要提早結束徵求嗎?',
+    icon: <ExclamationCircleOutlined />,
+    content: '一旦執行就不可回溯',
+    okText: 'Yes',
+    okType: 'danger',
+    cancelText: 'No',
+    onOk() {
+      console.log('OK');
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
 
   // return 要寫在這邊
   return (
@@ -588,14 +613,14 @@ async function applyaRequest(applierId){
         <div className="detail_header">
           {titleArea}
           {viewSelf === true && (<div className="detail_button">
-            <Space wrap>
+          <Space wrap>
               <Button  onClick={showDeleteConfirm} type="primary" danger>
                 提早結束徵求
               </Button>
             </Space>
             {/* <Modal title="確定要提早結束徵求嗎？" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
             </Modal>  */}
-          </div>)
+            </div>)
           }
         </div>
         {viewSelf

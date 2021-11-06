@@ -10,6 +10,7 @@ import Rating_Page from "./containers/rating_page";
 import Personal_Page from "./containers/personal_page";
 import { useState } from 'react'
 import History from "./containers/history_page";
+import ApplySuccess from "./containers/applySucess_page";
 
 const App = () => {
   const [current, setCurrent] = useState('title');
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/rating/:requestId" component={() => <Rating_Page login={login} name={name} setCurrent={setCurrent} current={current} userId = {userId}/>}/>
           <Route path="/history" component={() => <History login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
           <Route path="/personal" component={() => <Personal_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
+          <Route path="/applySuccess" component={() => <ApplySuccess login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
       </div>
     </Router>
   );

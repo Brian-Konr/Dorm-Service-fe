@@ -27,7 +27,47 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   let fee = 100;
   let DetailInfo = "拜託趕快來嗚嗚"
   // 以上勿刪除！
+  
+//請勿刪除!以下為應徵者資料
+// requestId
+const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" className="medal_item" />,<Icon icon="fa-solid:medal" color="#c9c9c9" height="20" className="medal_item" />,<Icon icon="whh:medalbronze" color="#d3976e" height="20" className="medal_item"/>,<Icon icon="whh:medalsilver" color="#b2c1c0" height="20" className="medal_item"/>,<Icon icon="whh:medalgold" color="#e9a012" height="20" className="medal_item"/>];
+const medal_name = ['實習生','新星','達人','專家','大師']
+const task_label = ["載人", "物品搬運","打蟑螂", "辦活動"]
 
+const datas = [
+  {
+    "phone_num": "0913579111",
+    "user_id": 1,
+    "dorm_id": 12,
+    "user_name": "小陳",
+    "gender": "F",
+    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
+    "password": "pass2",
+    'status': 0
+},
+  {
+    "phone_num": "0913579222",
+    "user_id": 2,
+    "dorm_id": 12,
+    "user_name": "小巫",
+    "gender": "M",
+    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
+    "password": "pass2",
+    'status': 1
+},
+  {
+    "phone_num": "0913579333",
+    "user_id": 3,
+    "dorm_id": 12,
+    "user_name": "小葉",
+    "gender": "F",
+    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
+    "password": "pass2",
+    'status': 0
+  }
+]
+
+//請勿刪除!以上為應徵者資料
 
   // get location detail
   async function getLocation(){
@@ -73,12 +113,12 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
         }
         return;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
   }
 
   
-  console.log(dorm);
+  // console.log(dorm);
 
 
 
@@ -121,12 +161,10 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
 
   
   const contentShow_Kill = () => {
-    // const type = "五隻德國大蟑螂";
     let place = "place";
-    // const fly = true;
-    // const flyText = fly ? "會" : "不會"; 
 
     if(start){
+      getApplierList(); 
       getDorm();
       getLocation();
       getaKillRequest();
@@ -169,6 +207,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
    
 
     if(start){
+      getApplierList();
       getDorm();
       getLocation();
       getaHeavyLiftingRequest();
@@ -212,6 +251,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
     // const distance = "100 m";
 
     if(start){
+      getApplierList();
       getDorm();
       getLocation();
       getaDriveRequest();
@@ -250,6 +290,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
     const  location_detail = "no detail";
 
     if(start){
+      getApplierList();
       getDorm();
       getLocation();
       getaHostEventRequest();
@@ -327,47 +368,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
 
 
 
-//以下是應徵者相關資料
-// requestId
-const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" className="medal_item" />,<Icon icon="fa-solid:medal" color="#c9c9c9" height="20" className="medal_item" />,<Icon icon="whh:medalbronze" color="#d3976e" height="20" className="medal_item"/>,<Icon icon="whh:medalsilver" color="#b2c1c0" height="20" className="medal_item"/>,<Icon icon="whh:medalgold" color="#e9a012" height="20" className="medal_item"/>];
-const medal_name = ['實習生','新星','達人','專家','大師']
-const task_label = ["載人", "物品搬運","打蟑螂", "辦活動"]
 
-// let tempApplier = [];//裝載需要顯示的項目為何
-
-//接API
-const datas = [
-  {
-    "phone_num": "0913579111",
-    "user_id": 1,
-    "dorm_id": 12,
-    "user_name": "小陳",
-    "gender": "F",
-    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
-    "password": "pass2",
-    'status': 0
-},
-  {
-    "phone_num": "0913579222",
-    "user_id": 2,
-    "dorm_id": 12,
-    "user_name": "小巫",
-    "gender": "M",
-    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
-    "password": "pass2",
-    'status': 1
-},
-  {
-    "phone_num": "0913579333",
-    "user_id": 3,
-    "dorm_id": 12,
-    "user_name": "小葉",
-    "gender": "F",
-    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
-    "password": "pass2",
-    'status': 0
-  }
-]
 
 const tempAccept = {}
 datas.map(
@@ -378,40 +379,37 @@ datas.map(
 //改變頁面狀態
 const [accept, setAccept] = useState(tempAccept);
 
-// console.log("accept = ", accept);
 
 const handleDenyEvent = (e) => {
   
+  //更新接受狀態。tbd: 回傳結果
   const tempAccept = accept;
   tempAccept[e] = 2;
   setAccept(tempAccept);
-  console.log("accept", accept);
+  //更新顯示內容
   const changeApplierList = [];
-  console.log("data = ", datas);
   datas.map(
     (data) => {
       applierFormat(changeApplierList, data);
     }
   )
   setApplierList(changeApplierList);
-  console.log("newList = ", ApplierList)
   //do POST request
 }
 
 const handleAcceptEvent = (e) => {
+  //更新接受狀態。tbd: 回傳結果
   const tempAccept = accept;
   tempAccept[e] = 1;
   setAccept(tempAccept);
-  console.log(accept);
   const changeApplierList = [];
-  console.log("data = ", datas);
+  //更新顯示內容
   datas.map(
     (data) => {
       applierFormat(changeApplierList, data);
     }
   )
   setApplierList(changeApplierList);
-  console.log("newList = ", ApplierList)
 
 }
 
@@ -436,9 +434,6 @@ const medalPart = (levels) => {
 }
 
 const applierFormat = (list, data) => {
-  console.log(data['user_name'],':',accept[data['user_id']] )
-  console.log("try")
-  console.log(accept[data['user_id']])
   if(accept[data['user_id']] !== 2){
     list.push(
       <div>
@@ -462,7 +457,6 @@ const applierFormat = (list, data) => {
 }
 
 const tempApplier = [];
-console.log("data = ", datas);
 datas.map(
   (data) => {
     applierFormat(tempApplier, data);
@@ -476,6 +470,40 @@ const [ApplierList, setApplierList] = useState(tempApplier)
 //以上是應徵者相關資料
 
 // 接 API 的 function
+async function getApplierList(){
+  try {
+      // GET api
+      let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`);
+      
+      if(res.status === 200) {
+          console.log("success")
+          setRequestDetail(
+              res.data.map(e => {
+                console.log("success")
+                    console.log(e);
+                    // return{
+                      // key: e.Request.request_id,
+                      // startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
+                      // endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
+                      // startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
+                      // endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
+                      // fee : e.Request.reward,
+                      // DetailInfo: e.Request.description,
+                      // title: e.Request.title,
+                      // from_id: e.DriveServicePost.from_id,
+                      // to_id:e.DriveServicePost.to_id,
+                      // requester_id: e.Request.requester_id
+                  // }
+              })
+          )
+      }
+      return;
+  } catch (error) {
+      console.log(error);
+  }
+}
+
+
 async function getaDriveRequest(){
   try {
       // GET api
@@ -622,12 +650,12 @@ async function applyaRequest(applierId){
         "requestId": requestId
     });
     if(res.status === 201) {
-        console.log("apply success!");
+        // console.log("apply success!");
         history.push("/postSuccess");
     }
     return;
   } catch (error) {
-      console.log(error.response.status)
+      // console.log(error.response.status)
       if(error.response.status === 409){
         message.error("You have already applied this request before!");
       }
@@ -635,8 +663,8 @@ async function applyaRequest(applierId){
         message.error("Please login first!");
       }
       else {
-        console.log("applierId", applierId)
-        console.log("requestId", requestId)
+        // console.log("applierId", applierId)
+        // console.log("requestId", requestId)
         message.error("There are some mistakes with your application!");
       }
     }
@@ -651,10 +679,10 @@ function showDeleteConfirm() {
     okType: 'danger',
     cancelText: 'No',
     onOk() {
-      console.log('OK');
+      // console.log('OK');
     },
     onCancel() {
-      console.log('Cancel');
+      // console.log('Cancel');
     },
   });
 }
@@ -664,13 +692,13 @@ async function stopaRequest(){
       // GET api
       let res = await axios.patch(`http://127.0.0.1:8000/requests/stop/${requestId}`);
       if(res.status === 200) {
-          console.log("stop success!");
+          // console.log("stop success!");
           history.push("/myPost");
       }
     return;
   } catch (error) {
-      console.log(error)
-      console.log(error.response.status)
+      // console.log(error)
+      // console.log(error.response.status)
     }
 }
 
@@ -683,11 +711,11 @@ async function stopaRequest(){
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        console.log('OK');
+        // console.log('OK');
         stopaRequest();
       },
       onCancel() {
-        console.log('Cancel');
+        // console.log('Cancel');
       },
     });
   }
@@ -710,8 +738,8 @@ async function stopaRequest(){
         </div>
         {viewSelf
         ?      
-        <div className="collapse_position"  defaultActiveKey={['1']}>
-          <Collapse accordion >
+        <div className="collapse_position"  >
+          <Collapse accordion defaultActiveKey={['1']}>
             <Panel header="任務資訊" key="1">
               {basicArea}
               {taskArea}

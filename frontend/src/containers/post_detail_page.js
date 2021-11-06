@@ -338,7 +338,9 @@ const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" clas
 //   )
 // }
 const medal_name = ['實習生','新星','達人','專家','大師']
-const task_label = ["打蟑螂", "物品搬運", "載人", "辦活動"]
+const task_label = ["載人", "物品搬運","打蟑螂", "辦活動"]
+
+
 const requesterName = ["Jenny", "James"];
 const requesterGender = ["Female", "Male"];
 const requesterPhone = ["0912345678", "0987654321"];
@@ -393,10 +395,33 @@ const medalPart = (levels) => {
 
 
 
-// const requesterArea = []
-// for(var i = 0;i < requesterName.length;i++){
-//   requesterArea.push(item("用戶姓名",[(<p>{requesterName[i]}</p>)]));
-// }
+
+//接API
+const data = [
+  {
+    name: "Jenny",
+    gender: 'Female',
+    phone: '0912345678',
+    FB: 'facebook.com'
+  },
+  {
+    name: "James",
+    gender: 'Male',
+    phone: '0987654321',
+    FB: 'facebook.com/wpbag'
+  },
+  [
+    {
+      "phone_num": "0913579246",
+      "user_id": 2,
+      "dorm_id": 12,
+      "user_name": "小葉",
+      "gender": "F",
+      "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
+      "password": "pass2"
+    }
+  ]
+]
 
 //以上是應徵者相關資料
 
@@ -419,7 +444,8 @@ async function getaDriveRequest(){
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
                       from_id: e.DriveServicePost.from_id,
-                      to_id:e.DriveServicePost.to_id
+                      to_id:e.DriveServicePost.to_id,
+                      requester_id: e.Request.requester_id
                   }
               })
           )
@@ -447,7 +473,8 @@ async function getaKillRequest(){
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
-                      requester_location_id: e.KillCockroachServicePost.requester_location_id
+                      requester_location_id: e.KillCockroachServicePost.requester_location_id,
+                      requester_id: e.Request.requester_id
                   }
               })
           )
@@ -480,7 +507,8 @@ async function getaHeavyLiftingRequest(){
                       to_id: e.HeavyliftingServicePost.to_id,
                       to_floor: e.HeavyliftingServicePost.to_floor,
                       from_id: e.HeavyliftingServicePost.from_id,
-                      from_floor: e.HeavyliftingServicePost.from_floor
+                      from_floor: e.HeavyliftingServicePost.from_floor,
+                      requester_id: e.Request.requester_id
                   }
               })
           )
@@ -509,7 +537,8 @@ async function getaHostEventRequest(){
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
                       location_detail: e.HostEventPost.location_detail,
-                      event_location_id: e.HostEventPost.event_location_id
+                      event_location_id: e.HostEventPost.event_location_id,
+                      requester_id: e.Request.requester_id
                   }
               })
           )
@@ -563,16 +592,49 @@ async function applyaRequest(applierId){
     }
 }
 
+function showDeleteConfirm() {
+  confirm({
+    title: '確定要提早結束徵求嗎?',
+    icon: <ExclamationCircleOutlined />,
+    content: '一旦執行就不可回溯',
+    okText: 'Yes',
+    okType: 'danger',
+    cancelText: 'No',
+    onOk() {
+      console.log('OK');
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
+
+async function stopaRequest(){
+  try {
+      // GET api
+      let res = await axios.patch(`http://127.0.0.1:8000/requests/stop/${requestId}`);
+      if(res.status === 200) {
+          console.log("stop success!");
+          history.push("/myPost");
+      }
+    return;
+  } catch (error) {
+      console.log(error)
+      console.log(error.response.status)
+    }
+}
+
   function showDeleteConfirm() {
     confirm({
-      title: 'Are you sure delete this task?',
+      title: '確定要提早結束徵求嗎?',
       icon: <ExclamationCircleOutlined />,
-      content: 'Some descriptions',
+      content: '一旦執行就不可回溯',
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
       onOk() {
         console.log('OK');
+        stopaRequest();
       },
       onCancel() {
         console.log('Cancel');
@@ -588,14 +650,14 @@ async function applyaRequest(applierId){
         <div className="detail_header">
           {titleArea}
           {viewSelf === true && (<div className="detail_button">
-            <Space wrap>
+          <Space wrap>
               <Button  onClick={showDeleteConfirm} type="primary" danger>
                 提早結束徵求
               </Button>
             </Space>
             {/* <Modal title="確定要提早結束徵求嗎？" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
             </Modal>  */}
-          </div>)
+            </div>)
           }
         </div>
         {viewSelf
@@ -623,10 +685,18 @@ async function applyaRequest(applierId){
  
 
         {viewSelf === false && login === true && (<div className="detail_button">
-          <Button type="primary" onClick = { () => applyaRequest(userId)}>
+          {requestDetail.length !== 0 && requestDetail[0].requester_id != userId ?
+            <Button type="primary" onClick = {() => applyaRequest(userId)} >
             <a>{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
             {/* <Link to="/rating">我要參加</Link> */}
-          </Button>
+            </Button>
+            :
+            <Button type="primary" onClick = {() => applyaRequest(userId)} disabled>
+            <a>{serviceId !== 'host' ? "我要應徵": "我要參加"}</a>
+            {/* <Link to="/rating">我要參加</Link> */}
+            </Button>
+          }
+          
         </div>)
         }
     </div>

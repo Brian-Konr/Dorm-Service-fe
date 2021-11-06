@@ -4,7 +4,7 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Post_Table = ({Page, serviceStatus, userId}) => {
+const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
     // console.log("post table");
     const [index, setIndex] = useState(0); //待改，每輸入一筆資料 setIndex(index+1)
     const [dataList, setDataList] = useState([]);
@@ -197,22 +197,43 @@ const Post_Table = ({Page, serviceStatus, userId}) => {
     }
 
     
+    if(titleFilter != ""){
+        console.log("titleFilter  ", {titleFilter});
+        if(serviceStatus === "all"){
+            return <Table columns={columns} dataSource={dataList.filter(request => request.title.includes(titleFilter))} />
+        }
+        else if(serviceStatus === "kill_cockroach"){
+            return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] === '打蟑螂' && request.title.includes(titleFilter))} />
+        }
+        else if(serviceStatus === "heavylifting"){
+            return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '物品搬運' && request.title.includes(titleFilter))} />
+        }
+        else if(serviceStatus === "drive"){
+            return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '載人服務' && request.title.includes(titleFilter))} />
+        }
+        else if(serviceStatus === "host"){
+            return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '辦活動' && request.title.includes(titleFilter))} />
+        }
+    }
+    else{
+        if(serviceStatus === "all"){
+            return <Table columns={columns} dataSource={dataList} />
+        }
+        else if(serviceStatus === "kill_cockroach"){
+            return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] === '打蟑螂')} />
+        }
+        else if(serviceStatus === "heavylifting"){
+            return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '物品搬運')} />
+        }
+        else if(serviceStatus === "drive"){
+            return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '載人服務')} />
+        }
+        else if(serviceStatus === "host"){
+            return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '辦活動')} />
+        }
+    }
 
-    if(serviceStatus === "all"){
-        return <Table columns={columns} dataSource={dataList} />
-    }
-    else if(serviceStatus === "kill_cockroach"){
-        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] === '打蟑螂')} />
-    }
-    else if(serviceStatus === "heavylifting"){
-        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '物品搬運')} />
-    }
-    else if(serviceStatus === "drive"){
-        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '載人服務')} />
-    }
-    else if(serviceStatus === "host"){
-        return <Table columns={columns} dataSource={dataList.filter(request => request.service_item[0] == '辦活動')} />
-    }
+    
 
     
 

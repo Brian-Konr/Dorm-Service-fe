@@ -433,10 +433,10 @@ async function getaDriveRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
@@ -463,10 +463,10 @@ async function getaKillRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
@@ -492,10 +492,10 @@ async function getaHeavyLiftingRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
@@ -526,10 +526,10 @@ async function getaHostEventRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,

@@ -141,8 +141,8 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
                             return{
                                 key: e.request_id,
                                 title: e.title,
-                                activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 19),
-                                activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 19),
+                                activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 16),
+                                activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 16),
                                 service_item: ['載人服務'],
                                 click: ['載人服務'],
                                 requester_id: e.requester_id
@@ -152,8 +152,8 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
                             return{
                                 key: e.request_id,
                                 title: e.title,
-                                activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 19),
-                                activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 19),
+                                activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 16),
+                                activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 16),
                                 service_item: ['物品搬運'],
                                 click: ['物品搬運'],
                                 requester_id: e.requester_id
@@ -163,8 +163,8 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
                             return{
                                 key: e.request_id,
                                 title: e.title,
-                                activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 19),
-                                activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 19),
+                                activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 16),
+                                activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 16),
                                 service_item: ['打蟑螂'],
                                 click: ['打蟑螂'],
                                 requester_id: e.requester_id
@@ -174,8 +174,8 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
                             return{
                                 key: e.request_id,
                                 title: e.title,
-                                activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 19),
-                                activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 19),
+                                activity_start_time: e.act_start_time.slice(0,10) + "  " + e.act_start_time.slice(11, 16),
+                                activity_end_time: e.act_end_time.slice(0,10) + "  " + e.act_end_time.slice(11, 16),
                                 service_item: ['辦活動'],
                                 click: ['辦活動'],
                                 requester_id: e.requester_id

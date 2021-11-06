@@ -153,9 +153,7 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
           <div className="detailTitle">
             {taskTitle}
           </div>
-          {/* {item("蟑螂類型",[(<p>{type}</p>)])} */}
           {item("出沒地點",[(<p>{place}</p>)])}
-          {/* {item("會不會飛",[(<p>{flyText}</p>)])} */}
       </div>
       )
   }
@@ -332,96 +330,95 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
 //以下是應徵者相關資料
 // requestId
 const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" className="medal_item" />,<Icon icon="fa-solid:medal" color="#c9c9c9" height="20" className="medal_item" />,<Icon icon="whh:medalbronze" color="#d3976e" height="20" className="medal_item"/>,<Icon icon="whh:medalsilver" color="#b2c1c0" height="20" className="medal_item"/>,<Icon icon="whh:medalgold" color="#e9a012" height="20" className="medal_item"/>];
-// const medal_component = () => {
-//   return(
-
-//   )
-// }
 const medal_name = ['實習生','新星','達人','專家','大師']
 const task_label = ["載人", "物品搬運","打蟑螂", "辦活動"]
 
-
-const requesterName = ["Jenny", "James"];
-const requesterGender = ["Female", "Male"];
-const requesterPhone = ["0912345678", "0987654321"];
-const requesterFB = ["https://facebook.com/wpbag", "https://facebook.com/wpbag1"];
-const reward = [[1,3,2,4],[2,2,3,4]]
-const tempAccept = [false, true];
 // 這邊要讓他是hook
 // const [accept, setAccept] = useState(tempAccept);
 
-//一次輸入一整排
+//接API
+const datas = [
+  {
+    "phone_num": "0913579111",
+    "user_id": 1,
+    "dorm_id": 12,
+    "user_name": "小陳",
+    "gender": "F",
+    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
+    "password": "pass2",
+    'status': 0
+},
+  {
+    "phone_num": "0913579222",
+    "user_id": 2,
+    "dorm_id": 12,
+    "user_name": "小巫",
+    "gender": "M",
+    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
+    "password": "pass2",
+    'status': 1
+},
+  {
+    "phone_num": "0913579333",
+    "user_id": 3,
+    "dorm_id": 12,
+    "user_name": "小葉",
+    "gender": "F",
+    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
+    "password": "pass2",
+    'status': 2
+  }
+]
+
+const handleDenyEvent = (e) => {
+  console.log(e.id);
+}
+
+//一次輸入一整排勳章
 const medalPart = (levels) => {
-  console.log(levels)
+  // console.log(levels)
   let i = -1;
   const returnValue = []
   levels.map(
     level => {
       i++;
-      console.log(levels[i]-1)
-      console.log(task_label[i])
       returnValue.push(
         <div>
           <Popover content={task_label[i]+medal_name[levels[i]-1]}>
             {medal_component[levels[i]-1]}
           </Popover>
-          {/* 這邊加一個hover狀態的東西 */}
-          {/* <p>{task_label[i]}{medal_name[levels[i]-1]}</p> */}
         </div>
       )
     }
   )
   return(returnValue)
 }
-  
-  const format = (
-    <div>
+const tempApplier = [];
+
+const applierFormat = (data) => {
+  console.log("user_name = ", data['user_name']);
+  if(data['status'] !== 2){
+    tempApplier.push(
+      <div>
       <Divider orientation="left" plain>
-      應徵者1
+      
       </Divider>
       <div className="applier_name_area">
-        {item("用戶姓名",['巫芊瑩'])}
-        <div className="reward">
+        {item("用戶姓名",[data['user_name']])}
+        {/* <div className="reward">
           {[...medalPart(reward[0])]}
-        </div>
+        </div> */}
       </div>
-      {item("用戶性別",['Female' === 'Female' ? '女' : '男'])}
-      {tempAccept[0] 
-      ? <div>{item("用戶電話",['0912345678'])}{item("用戶臉書",['facebook.com'])}</div>
-      : <div ><Button className="refuse_button">拒絕</Button><Button type="primary" className="accept_button">接受</Button></div>
+      {item("用戶性別",[data['gender'] === 'F' ? '女' : '男'])}
+      {data['status'] === 1
+      ? <div>{item("用戶電話",[data['phone_num']])}{item("用戶臉書",[data['fb_url']])}</div>
+      : <div ><Button key={data['user_id']} className="refuse_button" onClick={(e) => handleDenyEvent(e)}>拒絕</Button><Button type="primary" className="accept_button">接受</Button></div>
       }
     </div>
-  )
+    )
+  }
+}
 
-
-
-
-//接API
-const data = [
-  {
-    name: "Jenny",
-    gender: 'Female',
-    phone: '0912345678',
-    FB: 'facebook.com'
-  },
-  {
-    name: "James",
-    gender: 'Male',
-    phone: '0987654321',
-    FB: 'facebook.com/wpbag'
-  },
-  [
-    {
-      "phone_num": "0913579246",
-      "user_id": 2,
-      "dorm_id": 12,
-      "user_name": "小葉",
-      "gender": "F",
-      "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
-      "password": "pass2"
-    }
-  ]
-]
 
 //以上是應徵者相關資料
 
@@ -436,10 +433,10 @@ async function getaDriveRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
@@ -466,10 +463,10 @@ async function getaKillRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
@@ -495,10 +492,10 @@ async function getaHeavyLiftingRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
@@ -529,10 +526,10 @@ async function getaHostEventRequest(){
               res.data.map(e => {
                     return{
                       key: e.Request.request_id,
-                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,19),
-                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,19),
-                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,19),
-                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,19),
+                      startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
+                      endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
+                      startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
+                      endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
                       fee : e.Request.reward,
                       DetailInfo: e.Request.description,
                       title: e.Request.title,
@@ -655,8 +652,6 @@ async function stopaRequest(){
                 提早結束徵求
               </Button>
             </Space>
-            {/* <Modal title="確定要提早結束徵求嗎？" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-            </Modal>  */}
             </div>)
           }
         </div>
@@ -669,9 +664,12 @@ async function stopaRequest(){
               {taskArea}
             </Panel>
             <Panel header="應徵者資訊" key="2">
-              {/* <p>Hello</p> */}
-              {format}
-              {/* unfinish */}
+              {datas.map(
+                (data) => {
+                  applierFormat(data);
+                }
+              )}
+              {[...tempApplier]}
             </Panel>
           </Collapse>
         </div>

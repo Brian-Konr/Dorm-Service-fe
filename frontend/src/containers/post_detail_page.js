@@ -626,9 +626,9 @@ async function stopaRequest(){
 
   function showDeleteConfirm() {
     confirm({
-      title: 'Are you sure stop this request?',
+      title: '確定要提早結束徵求嗎?',
       icon: <ExclamationCircleOutlined />,
-      content: 'There\'s no turning back from this',
+      content: '一旦執行就不可回溯',
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',

@@ -14,8 +14,13 @@ const Post_Detail_Page = ({login,name,setCurrent,current,viewSelf, userId}) => {
   const [start, setStart] = useState(true);
   const [location, setLocation] = useState([]);
   const [dorm, setDorm] = useState([]);
+  const [appliers, setAppliers] = useState([]);
   const { confirm } = Modal;
+  const [ApplierList, setApplierList] = useState([]);
+  const [renewApplier, setRenewApplier] = useState(false);
+
   let history = useHistory();
+
   
   
   // 以下勿刪除！
@@ -34,38 +39,42 @@ const medal_component = [<Icon icon="whh:medal" color="#c9c9c9" height="20" clas
 const medal_name = ['實習生','新星','達人','專家','大師']
 const task_label = ["載人", "物品搬運","打蟑螂", "辦活動"]
 
-const datas = [
-  {
-    "phone_num": "0913579111",
-    "user_id": 1,
-    "dorm_id": 12,
-    "user_name": "小陳",
-    "gender": "F",
-    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
-    "password": "pass2",
-    'status': 0
-},
-  {
-    "phone_num": "0913579222",
-    "user_id": 2,
-    "dorm_id": 12,
-    "user_name": "小巫",
-    "gender": "M",
-    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
-    "password": "pass2",
-    'status': 1
-},
-  {
-    "phone_num": "0913579333",
-    "user_id": 3,
-    "dorm_id": 12,
-    "user_name": "小葉",
-    "gender": "F",
-    "fb_url": "https://www.facebook.com/hsiaoli.yeh.1",
-    "password": "pass2",
-    'status': 0
+const applierFormat = (list, data) => {
+  if(accept[data['user_id']] !== 2){
+    list.push(
+      <div>
+      <Divider orientation="left" plain>
+      
+      </Divider>
+      <div className="applier_name_area">
+        {item("用戶姓名",[data['user_name']])}
+        {/* <div className="reward">
+          {[...medalPart(reward[0])]}
+        </div> */}
+      </div>
+      {item("用戶性別",[data['gender'] === 'F' ? '女' : '男'])}
+      {accept[data['user_id']] === 1 
+      ? <div>{item("用戶電話",[data['phone_num']])}{item("用戶臉書",[data['fb_url']])}</div>
+      : <div ><Button  className="refuse_button" onClick={() => handleDenyEvent(data['user_id'])}>拒絕</Button><Button type="primary" className="accept_button" onClick={() => handleAcceptEvent(data['user_id'])}>接受</Button></div>
+      }
+    </div>
+    )
   }
-]
+  else{
+    console.log("QAQ");
+  }
+}
+
+// const tempAccept = {}
+// appliers.map(
+//   applier => {
+//     tempAccept[applier['user_id']] = applier['status'];
+//   }
+// )
+//改變頁面狀態
+const [accept, setAccept] = useState({});
+
+
 
 //請勿刪除!以上為應徵者資料
 
@@ -117,8 +126,33 @@ const datas = [
     }
   }
 
+  async function getApplier(){
+    try {
+        // GET api
+        let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`, {});
+        
+        if(res.status === 200) {
+          setAppliers(
+            res.data.map(e => {
+              return{
+                phone_num: e.User.phone_num,
+                user_id: e.User.user_id,
+                dorm_id: e.User.dorm_id,
+                user_name: e.User.user_name,
+                gender: e.User.gender,
+                fb_url: e.User.fb_url,
+                status: e.Applier.status
+              }
+            }
+          )
+          )
+        }
+        return;
+    } catch (error) {
+        console.log(error);
+    }
+  }
   
-  console.log(dorm);
 
 
 
@@ -135,7 +169,6 @@ const datas = [
 
 
   let {serviceId, requestId} = useParams();
-  console.log(serviceId, requestId);
   
   
   // 共同區域
@@ -164,14 +197,13 @@ const datas = [
     let place = "place";
 
     if(start){
-      // getApplierList(); 
       getDorm();
       getLocation();
       getaKillRequest();
+      getApplier(); 
       setStart(false);
     }
     
-
     if(location.length != 0 && requestDetail.length != 0){
       location.map(e => {
         e.location_id == requestDetail[0].requester_location_id ? place = e.location_name : place = place
@@ -207,10 +239,10 @@ const datas = [
    
 
     if(start){
-      // getApplierList();
       getDorm();
       getLocation();
       getaHeavyLiftingRequest();
+      getApplier();
       setStart(false);
     }
 
@@ -251,10 +283,11 @@ const datas = [
     // const distance = "100 m";
 
     if(start){
-      // getApplierList();
+      
       getDorm();
       getLocation();
       getaDriveRequest();
+      getApplier();
       setStart(false);
     }
 
@@ -290,11 +323,32 @@ const datas = [
     const  location_detail = "no detail";
 
     if(start){
-      // getApplierList();
+      
       getDorm();
       getLocation();
       getaHostEventRequest();
+      getApplier();
       setStart(false);
+    }
+
+    if(renewApplier === false && appliers.length !== 0){
+
+      //更改接受狀態
+      const tempAccept = {};
+      appliers.map(
+        
+        applier => {
+          
+          tempAccept[applier['user_id']] = applier['status'];
+          
+        }
+      )
+
+      console.log("status", tempAccept);
+      setAccept(tempAccept);
+
+      
+      setRenewApplier(true);
     }
 
     if(location.length != 0 && requestDetail.length != 0){
@@ -370,15 +424,32 @@ const datas = [
 
 
 
-const tempAccept = {}
-datas.map(
-  data => {
-    tempAccept[data['user_id']] = data['status'];
-  }
-)
-//改變頁面狀態
-const [accept, setAccept] = useState(tempAccept);
 
+async function sendDeny(e){
+  try {
+      // GET api
+      let res = await axios.patch(`http://127.0.0.1:8000/requests/refuse`, { requestId: requestId, applierId: e});
+      if(res.status === 200) {
+          // history.push("/myPost");
+          console.log("ok");
+      }
+    return;
+  } catch (error) {
+    }
+}
+
+async function sendAccept(e){
+  try {
+      // GET api
+      let res = await axios.patch(`http://127.0.0.1:8000/requests/accept`, { requestId: requestId, applierId: e});
+      if(res.status === 200) {
+          // history.push("/myPost");
+          console.log("ok");
+      }
+    return;
+  } catch (error) {
+    }
+}
 
 const handleDenyEvent = (e) => {
   
@@ -388,13 +459,14 @@ const handleDenyEvent = (e) => {
   setAccept(tempAccept);
   //更新顯示內容
   const changeApplierList = [];
-  datas.map(
-    (data) => {
-      applierFormat(changeApplierList, data);
+  appliers.map(
+    (applier) => {
+      applierFormat(changeApplierList, applier);
     }
   )
   setApplierList(changeApplierList);
-  //do POST request
+  //do patch request
+  sendDeny(e);
 }
 
 const handleAcceptEvent = (e) => {
@@ -404,18 +476,17 @@ const handleAcceptEvent = (e) => {
   setAccept(tempAccept);
   const changeApplierList = [];
   //更新顯示內容
-  datas.map(
-    (data) => {
-      applierFormat(changeApplierList, data);
+  appliers.map(
+    (applier) => {
+      applierFormat(changeApplierList, applier);
     }
   )
   setApplierList(changeApplierList);
-
+  sendAccept(e);
 }
 
 //一次輸入一整排勳章
 const medalPart = (levels) => {
-  // console.log(levels)
   let i = -1;
   const returnValue = []
   levels.map(
@@ -433,36 +504,8 @@ const medalPart = (levels) => {
   return(returnValue)
 }
 
-const applierFormat = (list, data) => {
-  if(accept[data['user_id']] !== 2){
-    list.push(
-      <div>
-      <Divider orientation="left" plain>
-      
-      </Divider>
-      <div className="applier_name_area">
-        {item("用戶姓名",[data['user_name']])}
-        {/* <div className="reward">
-          {[...medalPart(reward[0])]}
-        </div> */}
-      </div>
-      {item("用戶性別",[data['gender'] === 'F' ? '女' : '男'])}
-      {accept[data['user_id']] === 1 
-      ? <div>{item("用戶電話",[data['phone_num']])}{item("用戶臉書",[data['fb_url']])}</div>
-      : <div ><Button  className="refuse_button" onClick={() => handleDenyEvent(data['user_id'])}>拒絕</Button><Button type="primary" className="accept_button" onClick={() => handleAcceptEvent(data['user_id'])}>接受</Button></div>
-      }
-    </div>
-    )
-  }
-}
 
-const tempApplier = [];
-datas.map(
-  (data) => {
-    applierFormat(tempApplier, data);
-  }
-)
-const [ApplierList, setApplierList] = useState(tempApplier)
+
 
 
 
@@ -509,6 +552,7 @@ async function getaKillRequest(){
       let res = await axios.get(`http://127.0.0.1:8000/requests/kill/${requestId}`);
       
       if(res.status === 200) {
+        console.log("success")
           setRequestDetail(
               res.data.map(e => {
                     return{
@@ -609,7 +653,7 @@ useEffect(() => {
   if(serviceId === 'host'){
     contentShow_Host();
   }
-}, [requestDetail, location]);
+}, [ApplierList, appliers, accept, requestDetail, location]);
 
 async function applyaRequest(applierId){
   try {
@@ -619,12 +663,10 @@ async function applyaRequest(applierId){
         "requestId": requestId
     });
     if(res.status === 201) {
-        // console.log("apply success!");
         history.push("/postSuccess");
     }
     return;
   } catch (error) {
-      // console.log(error.response.status)
       if(error.response.status === 409){
         message.error("You have already applied this request before!");
       }
@@ -632,8 +674,6 @@ async function applyaRequest(applierId){
         message.error("Please login first!");
       }
       else {
-        // console.log("applierId", applierId)
-        // console.log("requestId", requestId)
         message.error("There are some mistakes with your application!");
       }
     }
@@ -648,10 +688,8 @@ function showDeleteConfirm() {
     okType: 'danger',
     cancelText: 'No',
     onOk() {
-      // console.log('OK');
     },
     onCancel() {
-      // console.log('Cancel');
     },
   });
 }
@@ -661,13 +699,10 @@ async function stopaRequest(){
       // GET api
       let res = await axios.patch(`http://127.0.0.1:8000/requests/stop/${requestId}`);
       if(res.status === 200) {
-          // console.log("stop success!");
           history.push("/myPost");
       }
     return;
   } catch (error) {
-      // console.log(error)
-      // console.log(error.response.status)
     }
 }
 
@@ -680,16 +715,15 @@ async function stopaRequest(){
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        // console.log('OK');
         stopaRequest();
       },
       onCancel() {
-        // console.log('Cancel');
       },
     });
   }
 
-  // return 要寫在這邊
+  // console.log(ApplierList);
+
   return (
     
     <div>
@@ -714,13 +748,14 @@ async function stopaRequest(){
               {taskArea}
             </Panel>
             <Panel header="應徵者資訊" key="2">
-              {/* {
-                datas.map(
-                  (data) => {
-                    applierFormat(data);
+              {
+                renewApplier && ApplierList.length === 0 && 
+                appliers.map(
+                  (applier) => {
+                    applierFormat(ApplierList,applier);
                   }
-                )
-              } */}
+                ) 
+              }
               {[...ApplierList]}
             </Panel>
           </Collapse>

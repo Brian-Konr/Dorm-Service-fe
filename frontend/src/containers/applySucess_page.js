@@ -12,8 +12,9 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     const [requestDetail, setRequestDetail] = useState([]);
     const [start, setStart] = useState(true);
     const [location, setLocation] = useState([]);
-    const [dorm, setDorm] = useState([]);
+    const [dorm, setDorm] = useState({});
     const [userInfo, setUserInfo] = useState([]);
+    const [renewUserInfo, setRenewUserInfo] = useState(false);
     // const { confirm } = Modal;
     let history = useHistory();
 
@@ -25,6 +26,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     let fee = 100;
     let DetailInfo = "拜託趕快來嗚";
 
+    let tempRequesterId = ""
     const userName = "林一二"
     const gender = 'F'
     const phoneNum = '0912345678'
@@ -80,25 +82,26 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
 
 
   //tbd
-  async function getUserInfo(){
+  async function getUserInfo(input_requester_id){
     try {
         // GET api
-        let res = await axios.get(`http://127.0.0.1:8000/users/${requestDetail[0].requester_id}`);                              
+        // console.log("user id = ", input_requester_id)
+        let res = await axios.get(`http://127.0.0.1:8000/users/${input_requester_id}`);                              
         if(res.status === 200) {
+          console.log("data = ",res.data);
           setUserInfo(
-                res.data.map(e => {
-                      return{
-                        userName: e.userName,
-                        gender: e.gender,
-                        phoneNum: e.phoneNum,
-                        fbUrl: e.fbUrl
-                    }
-                })
-            )
+            {
+              userName: res.data.userName,
+              gender: res.data.gender === 'O' ? '其他' : res.data.gender === 'F' ? '女' : '男',
+              phoneNum: res.data.phoneNum,
+              fbUrl: res.data.fbUrl
+            }
+          )
         }
         return;
     } catch (error) {
-        // console.log(error);
+        console.log("QAQ")
+        console.log(error);
     }
   }
   //tbd
@@ -149,7 +152,6 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
       getDorm();
       getLocation();
       getaKillRequest();
-      getUserInfo();
       setStart(false);
     }
     
@@ -187,7 +189,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
       getDorm();
       getLocation();
       getaHeavyLiftingRequest();
-      getUserInfo();
+      // getUserInfo();
       setStart(false);
       console.log("requestDetail", requestDetail)
     }
@@ -227,7 +229,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
       getDorm();
       getLocation();
       getaDriveRequest();
-      getUserInfo();
+      // getUserInfo();
       setStart(false);
     }
 
@@ -260,8 +262,14 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
       getDorm();
       getLocation();
       getaHostEventRequest();
-      getUserInfo();
       setStart(false);
+    }
+
+    console.log("place",place)
+    if(tempRequesterId !== '' && renewUserInfo !== true){
+      console.log("tempRequesterId", tempRequesterId);
+      getUserInfo();
+      setRenewUserInfo(true);
     }
 
     if(location.length != 0 && requestDetail.length != 0){
@@ -301,7 +309,6 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
   )
 
   if(serviceId === 'kill_cockroach'){
-    // console.log("this is kill cockroach")
     contentShow_Kill();
   }
   if(serviceId === 'heavylifting'){
@@ -337,6 +344,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
         if(res.status === 200) {
             setRequestDetail(
                 res.data.map(e => {
+                      tempRequesterId = e.Request.requester_id;
                       return{
                         key: e.Request.request_id,
                         startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
@@ -352,6 +360,8 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
                     }
                 })
             )
+            getUserInfo(tempRequesterId);
+
         }
         return;
     } catch (error) {
@@ -365,8 +375,10 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
         let res = await axios.get(`http://127.0.0.1:8000/requests/kill/${requestId}`);
         
         if(res.status === 200) {
+            const tempRequestDetail = [];
             setRequestDetail(
                 res.data.map(e => {
+                      tempRequesterId = e.Request.requester_id;
                       return{
                         key: e.Request.request_id,
                         startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
@@ -381,6 +393,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
                     }
                 })
             )
+            getUserInfo(tempRequesterId);
         }
         return;
     } catch (error) {
@@ -395,6 +408,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
         if(res.status === 200) {
             setRequestDetail(
                 res.data.map(e => {
+                      tempRequesterId = e.Request.requester_id;
                       return{
                         key: e.Request.request_id,
                         startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
@@ -414,6 +428,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
                     }
                 })
             )
+            getUserInfo(tempRequesterId);
         }
         return;
     } catch (error) {
@@ -429,6 +444,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
         if(res.status === 200) {
             setRequestDetail(
                 res.data.map(e => {
+                      tempRequesterId = e.Request.requester_id;
                       return{
                         key: e.Request.request_id,
                         startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
@@ -444,6 +460,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
                     }
                 })
             )
+            getUserInfo(tempRequesterId);
         }
         return;
     } catch (error) {
@@ -464,13 +481,14 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     if(serviceId === 'host'){
       contentShow_Host();
     }
-  }, [requestDetail, location]);
+  }, [requestDetail, userInfo, location]);
 
   console.log("detail", requestDetail)
 
     return (
         <div>
-            {navBar}
+          {/* 因為在這個頁面跳另一個notification的功能有點問題，所以先把navigation bar mute掉了 */}
+            {/* {navBar} */}
             <div className = "detail_title_Area">
                  <Icon icon="line-md:confirm-circle" color="#14d61c" height="30" style={{marginTop:"1.5vh"}} />
                 <h1 className="detail_title" style={{paddingTop:'3vh'}}>&emsp;您的應徵已成功！請立即聯繫案主</h1>
@@ -479,14 +497,10 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
                 <Collapse accordion defaultActiveKey={['1']} >
                     <Panel header="案主資訊" key="1">
                       <div>
-                        <Divider orientation="left" plain>
-                        案主資訊
-                        </Divider>
-
-                        {item("用戶姓名",[(<p>{userInfo.length === 0 ? userName : userInfo[0].userName}</p>)])}
-                        {item("用戶性別",[(<p>{userInfo.length === 0 ? gender : userInfo[0].gender}</p>)])}
-                        {item("用戶電話",[(<p>{userInfo.length === 0 ? phoneNum : userInfo[0].phoneNum}</p>)])}
-                        {item("Facebook",[(<p>{userInfo.length === 0 ? fbUrl : userInfo[0].fbUrl}</p>)])}
+                        {item("用戶姓名",[(<p>{userInfo.length === 0 ? userName : userInfo.userName}</p>)])}
+                        {item("用戶性別",[(<p>{userInfo.length === 0 ? gender : userInfo.gender}</p>)])}
+                        {item("用戶電話",[(<p>{userInfo.length === 0 ? phoneNum : userInfo.phoneNum}</p>)])}
+                        {item("臉書網址",[(<p>{userInfo.length === 0 ? fbUrl : userInfo.fbUrl}</p>)])}
                         
                       </div>
                     </Panel>

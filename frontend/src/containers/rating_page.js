@@ -116,10 +116,12 @@ const Rating_Page = ({login,name,setCurrent,current, userId}) => {
                 )}
               />
             </div>
-            <Button className="cancel_button" onClick={() => window.history.back()}>取消</Button>
-            <Button type="primary" className="send_button" onClick={handleStarPost}><Link to="/history">送出</Link></Button>
-
-
+              {listData.length !== 0 && 
+              <div>
+                <Button className="cancel_button" onClick={() => window.history.back()}>取消</Button>
+                <Button type="primary" className="send_button" onClick={handleStarPost}><Link to="/history">送出</Link></Button>
+              </div>
+              }
             </div>
     )
 

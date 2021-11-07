@@ -203,6 +203,20 @@ const [accept, setAccept] = useState({});
       getApplier(); 
       setStart(false);
     }
+
+    if(renewApplier === false && appliers.length !== 0){
+
+      //更改接受狀態
+      const tempAccept = {};
+      appliers.map(
+        applier => {
+          tempAccept[applier['user_id']] = applier['status'];
+        }
+      )
+
+      setAccept(tempAccept);
+      setRenewApplier(true);
+    }
     
     if(location.length != 0 && requestDetail.length != 0){
       location.map(e => {
@@ -244,6 +258,20 @@ const [accept, setAccept] = useState({});
       getaHeavyLiftingRequest();
       getApplier();
       setStart(false);
+    }
+
+    if(renewApplier === false && appliers.length !== 0){
+
+      //更改接受狀態
+      const tempAccept = {};
+      appliers.map(
+        applier => {
+          tempAccept[applier['user_id']] = applier['status'];
+        }
+      )
+
+      setAccept(tempAccept);
+      setRenewApplier(true);
     }
 
     if(location.length != 0 && requestDetail.length != 0){
@@ -291,6 +319,20 @@ const [accept, setAccept] = useState({});
       setStart(false);
     }
 
+    if(renewApplier === false && appliers.length !== 0){
+
+      //更改接受狀態
+      const tempAccept = {};
+      appliers.map(
+        applier => {
+          tempAccept[applier['user_id']] = applier['status'];
+        }
+      )
+
+      setAccept(tempAccept);
+      setRenewApplier(true);
+    }
+
     if(location.length != 0 && requestDetail.length != 0){
       location.map(e => {
         e.location_id == requestDetail[0].to_id ? endPoint = e.location_name : endPoint = endPoint
@@ -336,18 +378,12 @@ const [accept, setAccept] = useState({});
       //更改接受狀態
       const tempAccept = {};
       appliers.map(
-        
         applier => {
-          
           tempAccept[applier['user_id']] = applier['status'];
-          
         }
       )
 
-      console.log("status", tempAccept);
       setAccept(tempAccept);
-
-      
       setRenewApplier(true);
     }
 

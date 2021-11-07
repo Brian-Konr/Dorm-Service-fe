@@ -56,7 +56,7 @@ const Personal_Page = ({login,name,setCurrent,current, userId}) => {
             <header> 
                 <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/></div>
             </header>
-            <div className="personal_Name">{name}</div>
+            {gender==='O'?<div className="personal_Name">{name}</div>:gender==='F'?<Icon icon="noto-v1:girl-light-skin-tone" color="#14d61c" height="100"  className="personal_avator"/>:gender==='M'?<Icon icon="noto-v1:boy-light-skin-tone" color="#14d61c" height="50" className="personal_avator"/>:null}
             <Divider orientation="left" plain>勳章牆</Divider>
             <div className="medal_part">
                 <div className="medal">

@@ -2,12 +2,10 @@ import React from 'react'
 import { Collapse, Button } from 'antd'
 import Navigation from './navigation';
 import { Icon } from '@iconify/react';
-import { Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 import axios from 'axios';
 import { Divider } from 'antd';
-import { useHistory } from 'react-router';
-import { useParams } from 'react-router';
 
 const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
 
@@ -15,6 +13,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     const [start, setStart] = useState(true);
     const [location, setLocation] = useState([]);
     const [dorm, setDorm] = useState([]);
+    const [userInfo, setUserInfo] = useState([]);
     // const { confirm } = Modal;
     let history = useHistory();
 
@@ -25,6 +24,11 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     const endHireTime = "2020.05.20";
     let fee = 100;
     let DetailInfo = "拜託趕快來嗚";
+
+    const userName = "林一二"
+    const gender = 'F'
+    const phoneNum = '0912345678'
+    const fbUrl = 'facebook.com'
 
       // get location detail
   async function getLocation(){
@@ -74,6 +78,35 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     }
   }
 
+
+  //tbd
+  async function getUserInfo(){
+    try {
+        // GET api
+        let res = await axios.get(`http://127.0.0.1:8000/users/${requestDetail[0].requester_id}`);                              
+        if(res.status === 200) {
+          setUserInfo(
+                res.data.map(e => {
+                      return{
+                        userName: e.userName,
+                        gender: e.gender,
+                        phoneNum: e.phoneNum,
+                        fbUrl: e.fbUrl
+                    }
+                })
+            )
+        }
+        return;
+    } catch (error) {
+        // console.log(error);
+    }
+  }
+  //tbd
+
+
+
+
+
   const actArea = [
     (<p>{requestDetail.length === 0 ? startActTime : requestDetail[0].startActTime}</p>),
     (<Icon icon="ic:baseline-arrow-right" height="10"/>),
@@ -86,6 +119,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
   ]
 
   let {serviceId, requestId} = useParams();
+  console.log("IDs = ", serviceId, requestId)
 
     
   
@@ -115,6 +149,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
       getDorm();
       getLocation();
       getaKillRequest();
+      getUserInfo();
       setStart(false);
     }
     
@@ -152,7 +187,9 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
       getDorm();
       getLocation();
       getaHeavyLiftingRequest();
+      getUserInfo();
       setStart(false);
+      console.log("requestDetail", requestDetail)
     }
 
     if(location.length != 0 && requestDetail.length != 0){
@@ -190,6 +227,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
       getDorm();
       getLocation();
       getaDriveRequest();
+      getUserInfo();
       setStart(false);
     }
 
@@ -222,6 +260,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
       getDorm();
       getLocation();
       getaHostEventRequest();
+      getUserInfo();
       setStart(false);
     }
 
@@ -262,12 +301,14 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
   )
 
   if(serviceId === 'kill_cockroach'){
+    // console.log("this is kill cockroach")
     contentShow_Kill();
   }
   if(serviceId === 'heavylifting'){
     contentShow_HeavyLifting();
   }
   if(serviceId === 'drive'){
+    console.log("get")
     contentShow_Drive();
   }
   if(serviceId === 'host'){
@@ -282,7 +323,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
 
       {item("活動區間",actArea)}
       {item("徵求區間",hireArea)}
-      {serviceId !== 'host' && item("願付金額",[<p></p>,(<p>{requestDetail.length === 0 ? fee : requestDetail[0].fee}</p>)])}
+      {serviceId !== 'host' && item("願付酬勞",[<p></p>,(<p>{requestDetail.length === 0 ? fee : requestDetail[0].fee}</p>)])}
       {item("詳細資訊",[(<p>{requestDetail.length === 0 ? DetailInfo : requestDetail[0].DetailInfo}</p>)])}
       
     </div>
@@ -293,7 +334,6 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     try {
         // GET api
         let res = await axios.get(`http://127.0.0.1:8000/requests/drive/${requestId}`);
-        
         if(res.status === 200) {
             setRequestDetail(
                 res.data.map(e => {
@@ -352,7 +392,6 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     try {
         // GET api
         let res = await axios.get(`http://127.0.0.1:8000/requests/heavyLifting/${requestId}`);
-        
         if(res.status === 200) {
             setRequestDetail(
                 res.data.map(e => {
@@ -427,6 +466,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     }
   }, [requestDetail, location]);
 
+  console.log("detail", requestDetail)
 
     return (
         <div>
@@ -438,6 +478,17 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
             <div className="collapse_position">
                 <Collapse accordion defaultActiveKey={['1']} >
                     <Panel header="案主資訊" key="1">
+                      <div>
+                        <Divider orientation="left" plain>
+                        案主資訊
+                        </Divider>
+
+                        {item("用戶姓名",[(<p>{userInfo.length === 0 ? userName : userInfo[0].userName}</p>)])}
+                        {item("用戶性別",[(<p>{userInfo.length === 0 ? gender : userInfo[0].gender}</p>)])}
+                        {item("用戶電話",[(<p>{userInfo.length === 0 ? phoneNum : userInfo[0].phoneNum}</p>)])}
+                        {item("Facebook",[(<p>{userInfo.length === 0 ? fbUrl : userInfo[0].fbUrl}</p>)])}
+                        
+                      </div>
                     </Panel>
                     <Panel header="任務資訊" key="2">
                     {basicArea}

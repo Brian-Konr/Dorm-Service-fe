@@ -43,7 +43,7 @@ const Notification = ({userId}) => {
     loadMoreData();
   }, []);
 
-  const task_label = ['kill_cockroach', 'heavylifting','drive', 'host']
+  const task_label = ['drive', 'heavylifting','kill_cockroach', 'host']
 
   return (
     <div
@@ -74,7 +74,7 @@ const Notification = ({userId}) => {
                   <Icon icon="ci:dot-02-s" color="#14d61c" height="50" />
                   <p>您應徵的任務<br/><div style={{fontWeight: 'bold'}}>{item.Request.title}</div>已被接受</p>
                 </div>
-                <Link to={`/ApplySuccess/${task_label[item.Request.service_id-1]}}/${item.Request.request_id}`} style={{paddingLeft: '23vw'}}>more...</Link>
+                <Link to={`/ApplySuccess/${task_label[item.Request.service_id-1]}/${item.Request.request_id}`} style={{paddingLeft: '23vw'}}>詳細資訊</Link>
               </div>
 
                 

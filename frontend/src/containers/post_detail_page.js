@@ -360,7 +360,7 @@ const datas = [
   
         {item("活動區間",actArea)}
         {item("徵求區間",hireArea)}
-        {serviceId !== 'host' && item("願付金額",[<p></p>,(<p>{requestDetail.length === 0 ? fee : requestDetail[0].fee}</p>)])}
+        {serviceId !== 'host' && item("願付酬勞",[<p></p>,(<p>{requestDetail.length === 0 ? fee : requestDetail[0].fee}</p>)])}
         {item("詳細資訊",[(<p>{requestDetail.length === 0 ? DetailInfo : requestDetail[0].DetailInfo}</p>)])}
         
       </div>

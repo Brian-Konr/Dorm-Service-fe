@@ -248,10 +248,10 @@ const [accept, setAccept] = useState({});
 
     if(location.length != 0 && requestDetail.length != 0){
       location.map(e => {
-        e.location_id == requestDetail[0].to_id ? endPoint = e.location_name + " " +  requestDetail[0].to_floor + " 樓" : endPoint = endPoint
+        e.location_id == requestDetail[0].to_id && requestDetail[0].to_floor !== 0 ?  endPoint = e.location_name + " " +  requestDetail[0].to_floor + " 樓" : e.location_id == requestDetail[0].to_id ? endPoint = e.location_name : endPoint = endPoint
       });
       location.map(e => {
-        e.location_id == requestDetail[0].from_id ? startPoint = e.location_name + " " + requestDetail[0].from_floor + " 樓" : startPoint = startPoint
+        e.location_id == requestDetail[0].from_id && requestDetail[0].from_floor !== 0 ? startPoint = e.location_name + " " + requestDetail[0].from_floor + " 樓" : e.location_id == requestDetail[0].from_id ? startPoint = e.location_name : startPoint = startPoint
       })
     }
 

@@ -58,12 +58,6 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             title: '',
             dataIndex: 'click',
             key: 'click',
-            // render: icon => <a>{icon}</a>,
-            // render: () => {  
-            //     return (
-            //         <Button type="default" shape="circle" href="/post_detail/th" icon={<ArrowRightOutlined />}/>
-            //     );
-            // },
             render: (_, rows) => (
                 <>
                     <Button key = {index} type="secondary">
@@ -200,7 +194,7 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
     }
 
     
-    if(titleFilter != "" && Page === "main"){
+    if(titleFilter != "" && Page === "main" || Page === "history"){
         console.log("titleFilter  ", {titleFilter});
         if(serviceStatus === "all"){
             return <Table columns={columns} dataSource={dataList.filter(request => request.title.includes(titleFilter))} />

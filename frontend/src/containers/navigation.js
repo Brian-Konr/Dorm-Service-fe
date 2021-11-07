@@ -6,7 +6,7 @@ import Login_And_SignUp from '../components/login_and_signUp';
 import Login_And_SignUp_With_Login from '../components/login_and_signUp_with_login';
 import Notification from '../components/notification';
 
-const Navigation = ({login,name,setCurrent,current}) => {
+const Navigation = ({login,name,setCurrent,current, userId}) => {
     const [click,setClick] = useState(false);
     const handleClick = (e) => {
         console.log('click ', e);
@@ -51,7 +51,7 @@ const Navigation = ({login,name,setCurrent,current}) => {
         </div> 
       </Menu> 
       </div>
-      {click?<Notification/>:null}
+      {click?<Notification userId={userId}/>:null}
       </>
 
 

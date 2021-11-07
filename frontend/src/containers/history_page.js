@@ -10,7 +10,7 @@ const History = ({login,name,setCurrent,current, userId}) => {
     return (
         <div id="root">
           <header> 
-              <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
+              <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/></div>
           </header> 
           <h1 className="page_title">歷史紀錄</h1>
           <div className="filter_and_search">

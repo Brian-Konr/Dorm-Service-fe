@@ -10,7 +10,7 @@ const My_Posting_Page = ({login,name,setCurrent,current, setViewSelf, userId}) =
     return (
         <div id="root">
           <header> 
-              <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
+              <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/></div>
           </header> 
           <h1 className="page_title">檢視發起中任務</h1>
           {/* <div className="post_subTitle">以下為您刊登中的任務列表：</div> */}

@@ -6,6 +6,7 @@ import { Button } from 'antd';
 
 const postSuccess_page = () => {
 
+
     return (
         <div className="succes_page">
             <Icon icon="akar-icons:check-box" color="green"height="150" />

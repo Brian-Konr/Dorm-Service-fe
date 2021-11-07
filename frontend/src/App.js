@@ -27,7 +27,7 @@ const App = () => {
   
   return (
     <Router>
-      <div className="App"> 
+      <div className="App">
           <Route path="/" exact component={() => <Main_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf} userId={userId}/>}/>
           <Route path="/addPost" exact component={() => <Add_Post_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
           <Route path="/myPost" component={() => <My_Posting_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf} userId={userId}/>}/>

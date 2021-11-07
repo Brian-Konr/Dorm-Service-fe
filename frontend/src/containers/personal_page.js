@@ -54,7 +54,7 @@ const Personal_Page = ({login,name,setCurrent,current, userId}) => {
     return(
         <>
             <header> 
-                <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
+                <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/></div>
             </header>
             <div className="personal_Name">{name}</div>
             <Divider orientation="left" plain>勳章牆</Divider>

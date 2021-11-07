@@ -113,12 +113,12 @@ const datas = [
         }
         return;
     } catch (error) {
-        // console.log(error);
+        console.log(error);
     }
   }
 
   
-  // console.log(dorm);
+  console.log(dorm);
 
 
 
@@ -135,14 +135,14 @@ const datas = [
 
 
   let {serviceId, requestId} = useParams();
-  // console.log(serviceId, requestId);
+  console.log(serviceId, requestId);
   
   
   // 共同區域
 
   const navBar = (
     <header>
-    <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
+    <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/></div>
     </header>
   )
   const item = (title, description) => {
@@ -164,7 +164,7 @@ const datas = [
     let place = "place";
 
     if(start){
-      getApplierList(); 
+      // getApplierList(); 
       getDorm();
       getLocation();
       getaKillRequest();
@@ -207,7 +207,7 @@ const datas = [
    
 
     if(start){
-      getApplierList();
+      // getApplierList();
       getDorm();
       getLocation();
       getaHeavyLiftingRequest();
@@ -251,7 +251,7 @@ const datas = [
     // const distance = "100 m";
 
     if(start){
-      getApplierList();
+      // getApplierList();
       getDorm();
       getLocation();
       getaDriveRequest();
@@ -290,7 +290,7 @@ const datas = [
     const  location_detail = "no detail";
 
     if(start){
-      getApplierList();
+      // getApplierList();
       getDorm();
       getLocation();
       getaHostEventRequest();
@@ -470,38 +470,7 @@ const [ApplierList, setApplierList] = useState(tempApplier)
 //以上是應徵者相關資料
 
 // 接 API 的 function
-async function getApplierList(){
-  try {
-      // GET api
-      let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`);
-      
-      if(res.status === 200) {
-          console.log("success")
-          setRequestDetail(
-              res.data.map(e => {
-                console.log("success")
-                    console.log(e);
-                    // return{
-                      // key: e.Request.request_id,
-                      // startActTime: e.Request.act_start_time.slice(0,10) + "  " + e.Request.act_start_time.slice(11,16),
-                      // endActTime: e.Request.act_end_time.slice(0,10) + "  " + e.Request.act_end_time.slice(11,16),
-                      // startHireTime: e.Request.start_time.slice(0,10) + "  " + e.Request.start_time.slice(11,16),
-                      // endHireTime: e.Request.end_time.slice(0,10) + "  " + e.Request.end_time.slice(11,16),
-                      // fee : e.Request.reward,
-                      // DetailInfo: e.Request.description,
-                      // title: e.Request.title,
-                      // from_id: e.DriveServicePost.from_id,
-                      // to_id:e.DriveServicePost.to_id,
-                      // requester_id: e.Request.requester_id
-                  // }
-              })
-          )
-      }
-      return;
-  } catch (error) {
-      console.log(error);
-  }
-}
+
 
 
 async function getaDriveRequest(){

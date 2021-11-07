@@ -1,6 +1,6 @@
-import React, { Component, useEffect } from 'react'
+import React from 'react'
 import Navigation from './navigation'
-import { Rate, Card,List, Avatar, Space, Button, PageHeader, message, Modal } from 'antd';
+import { Rate, Card,List, Avatar, Space, Button, PageHeader, message } from 'antd';
 import { useState } from 'react';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { Icon } from '@iconify/react';
@@ -8,84 +8,80 @@ import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 
-const Rating_Page = ({login,name,setCurrent,current}) => {
+const Rating_Page = ({login,name,setCurrent,current, userId}) => {
+
+
+    let appliersName = [],
+        appliersGender = [],
+        appliersNumber = 0;
 
     let {requestId} = useParams();
-    const [appliers, setAppliers] = useState([]);
-    const [dataDone, setDataDone] = useState(false);
-    const [values, setValues] = useState([]);
-    const [valueDone, setValueDone] = useState(false);
-    //default value
-    const navBar = (
-        <header>
-        <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
-        </header>
-      )
-    // let appliersName = ["Jenny","Andy","wendy","Timmy","Fish","Banana","Apple","Pie","Kiwi","Cake","Mango","Juice"]
-    // let appliersGender = ['Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male','Male', 'Female', 'Male']
-    // let appliersNumber = appliersName.length;
-
-    if(!valueDone) setVal();
-
-    async function setVal() {
+    async function getAppliers() {
       try {
         let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`);
         console.log(res.data);
-        let temp = []
-        for(let i = 0; i < res.data.length; i++) {
-          temp.push(3);
-        }
-        setValues(temp);
-        setValueDone(true);
+        // for(let i = 0; i < res.data.length; i++) {
+        //   appliersName.push(res.data[i].user_name);
+        //   appliersGender.push(res.data[i].gender)
+        // }
       } catch (error) {
         console.log(error);
       }
+    };
+
+    getAppliers();
+    //default value
+    const navBar = (
+        <header>
+        <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/></div>
+        </header>
+      )
+
+    //variable
+    // const appliersId = ['11','22','33']
+
+    //init everyone's rate to zero
+    const tempArr = []
+    for(var i = 0;i < appliersNumber;i++){
+        tempArr.push({value: 0});
     }
-    useEffect(() => {
-      setValueDone(true);
-    }, [values])
-    
-    if(valueDone && !dataDone && values.length !== 0) getData();
-    async function getData() {
-      let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`);
-      let list = res.data.map((e, index) => {
-        return {
-          title: e.user_name,
-          id: e.user_id,
-          avatar: e.gender === "M" ? (<Icon icon="noto-v1:boy-light-skin-tone" color="#c9c9c9" height="20" />) : (<Icon icon="noto:girl-light-skin-tone" color="#c9c9c9" height="20" />),
-          description: <div>
-            <Rate onChange = {(value) => handleRate(index, value)}></Rate>
-          </div>
-        }
-      })
-      setAppliers(list);
-      setDataDone(true);
+    const [rate, setRate] = useState(tempArr)
+
+
+    const handleStar = (id, inputValue) => {
+      let newArr = [...rate]; // copying the old datas array
+      newArr[id] = {value: inputValue};
+      setRate(newArr);
     }
 
-    function handleRate(index, value) {
-      let temp = Array.from(values);
-      temp[index] = value;
-      setValues(temp);
+    //星星顯示 and 最後應該POST上去的數值
+    let values = [];
+    for(let i = 0;i < appliersNumber;i++){
+      values.push(rate[i].value);
     }
 
-    async function handleStarPost() {
-      console.log(appliers, values);
+    const handleStarPost = () => {
       //do POST request
-      try {
-        for(let i = 0; i < values.length; i++) {
-          let res = await axios.patch("http://127.0.0.1:8000/users/rateRequest", {
-            requestId: requestId,
-            applierId: appliers[i].id,
-            score: values[i]
-          });
-        }
-        message.success("成功送出評分!");
-        window.history.back();
-      } catch(e) {
-        console.log(e);
-      }
+      message.success("成功送出評分!");
+      // window.history.back();
+
     }
     
+    //testing
+    const listData = [];
+    for (let i = 0; i < appliersNumber; i++) {
+      listData.push({
+        title: appliersName[i],
+        avatar: appliersGender[i] === 'Male' ? (<Icon icon="noto-v1:boy-light-skin-tone" color="#c9c9c9" height="20" />): (<Icon icon="noto:girl-light-skin-tone" color="#c9c9c9" height="20" />),
+        description:
+          (
+            <div style={{display: 'inline-box'}}> 
+              <Rate onChange={(value) => handleStar(i, value)} value={values[i]} />
+            </div>
+          )
+      });
+    }
+
       return(
           <div className="rating">
             {navBar}
@@ -106,7 +102,7 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
                   },
                   pageSize: 5,
                 }}
-                dataSource={appliers}
+                dataSource={listData}
                 renderItem={item => (
                   <List.Item
                     key={item.title}
@@ -114,17 +110,17 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
                     <List.Item.Meta
                       title={item.title}
                       avatar={item.avatar}
-                      description= {item.description}
+                      description={item.description}
                     />
                   </List.Item>
                 )}
               />
             </div>
             <Button className="cancel_button" onClick={() => window.history.back()}>取消</Button>
-            <Button type="primary" className="send_button" onClick={() => handleStarPost()}>送出</Button>
+            <Button type="primary" className="send_button" onClick={handleStarPost}><Link to="/history">送出</Link></Button>
 
 
-          </div>
+            </div>
     )
 
 

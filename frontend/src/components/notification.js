@@ -3,7 +3,7 @@ import { List, message, Avatar, Skeleton, Divider } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { withRouter } from 'react-router';
 
-const Notification = () => {
+const Notification = ({userId}) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -12,11 +12,17 @@ const Notification = () => {
       return;
     }
     setLoading(true);
-    fetch('https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo')
+    console.log(userId)
+    fetch(`http://127.0.0.1:8000/requests/${userId}`)
       .then(res => res.json())
       .then(body => {
-        setData([...data, ...body.results]);
+        console.log("notification success!");
+        console.log("body = ", body);
+        console.log("data = ", data);
+        // setData([...data, ...body]);
+        setData(body)
         setLoading(false);
+        console.log("new data = ", data);
       })
       .catch(() => {
         setLoading(false);
@@ -51,12 +57,14 @@ const Notification = () => {
           dataSource={data}
           renderItem={item => (
             <List.Item key={item.id}>
-              <List.Item.Meta
+              <p>hello</p>
+              {item.status === 1 && <p>you got the job!</p>}
+              {/* <List.Item.Meta
                 avatar={<Avatar src={item.picture.large} />}
                 title={<a href="https://ant.design">{item.name.last}</a>}
                 description={item.email}
               />
-              <div>Content</div>
+              <div>Content</div> */}
             </List.Item>
           )}
         />
@@ -66,3 +74,4 @@ const Notification = () => {
 };
 
 export default Notification;
+

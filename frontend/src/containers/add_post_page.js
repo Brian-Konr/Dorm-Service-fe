@@ -113,7 +113,7 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
   return (
     <>
       <header> 
-          <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current}/></div>
+          <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/></div>
       </header>
       <Divider orientation="left" plain>基本資訊</Divider>
       <Form

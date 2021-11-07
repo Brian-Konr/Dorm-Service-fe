@@ -126,7 +126,6 @@ const Post_Table = ({Page, serviceStatus, userId, titleFilter}) => {
             
             
             
-            
             if(res.status === 200) {
                 setDataList(
                     res.data.map(e => {

@@ -139,7 +139,7 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
           </Select>
         </Form.Item>
 
-        <Form.Item label="任務標題" name="title">
+        <Form.Item label="任務標題" name="title" required={true}>
           <Input placeholder="請輸入標題"/>
         </Form.Item>
 
@@ -163,7 +163,7 @@ const Add_Post_Page = ({login,name,setCurrent,current,userId}) => {
             label="詳細資訊"
             rules={[{ required: true, message: 'Please input Intro' }]}
         >
-        <Input.TextArea showCount maxLength={100} />
+        <Input.TextArea showCount maxLength={100} placeholder="可填寫地點、服務相關補充資訊"/>
       </Form.Item>
       
       {

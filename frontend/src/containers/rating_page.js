@@ -49,6 +49,7 @@ const Rating_Page = ({login,name,setCurrent,current}) => {
     if(valueDone && !dataDone && values.length !== 0) getData();
     async function getData() {
       let res = await axios.get(`http://127.0.0.1:8000/appliers/asked/${requestId}`);
+      console.log(res.data);
       let list = res.data.map((e, index) => {
         return {
           title: e.user_name,

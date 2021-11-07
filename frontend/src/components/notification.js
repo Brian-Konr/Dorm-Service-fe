@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { List, message, Avatar, Skeleton, Divider } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { withRouter } from 'react-router';
+import { Icon } from '@iconify/react';
+import { Link } from 'react-router-dom';
 
 const Notification = ({userId}) => {
   const [loading, setLoading] = useState(false);
@@ -20,7 +22,15 @@ const Notification = ({userId}) => {
         console.log("body = ", body);
         console.log("data = ", data);
         // setData([...data, ...body]);
-        setData(body)
+        const temp = [];
+        body.map(
+          item => {
+            if(item.status !== 0){
+              temp.push(item);
+            }
+          }
+        )
+        setData(temp)
         setLoading(false);
         console.log("new data = ", data);
       })
@@ -49,7 +59,6 @@ const Notification = ({userId}) => {
         dataLength={data.length}
         next={loadMoreData}
         hasMore={data.length < 50}
-        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
         endMessage={<Divider plain>There are no more notifications!</Divider>}
         scrollableTarget="scrollableDiv"
       >
@@ -57,14 +66,23 @@ const Notification = ({userId}) => {
           dataSource={data}
           renderItem={item => (
             <List.Item key={item.id}>
-              <p>hello</p>
-              {item.status === 1 && <p>you got the job!</p>}
-              {/* <List.Item.Meta
-                avatar={<Avatar src={item.picture.large} />}
-                title={<a href="https://ant.design">{item.name.last}</a>}
-                description={item.email}
-              />
-              <div>Content</div> */}
+              {item.status === 1 && 
+              <div>
+                <div className="notification_item">
+                  <Icon icon="ci:dot-02-s" color="#14d61c" height="50" />
+                  <p>您應徵的任務<br/><div style={{fontWeight: 'bold'}}>{item.Request.title}</div>已被接受</p>
+                </div>
+                <Link to="/ApplySuccess" style={{paddingLeft: '23vw'}}>more...</Link>
+              </div>
+
+                
+              }
+              {item.status === 2 && 
+                <div className="notification_item">
+                  <Icon icon="ci:dot-02-s" color="#D60808" height="50" />
+                  <p>您應徵的任務<br/><div style={{fontWeight: 'bold'}}>{item.Request.title}</div>已被拒絕</p>
+                </div>
+              }
             </List.Item>
           )}
         />

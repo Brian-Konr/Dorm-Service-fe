@@ -24,7 +24,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     const startHireTime = "2020.05.18";
     const endHireTime = "2020.05.20";
     let fee = 100;
-    let DetailInfo = "拜託趕快來嗚嗚"
+    let DetailInfo = "拜託趕快來嗚"
 
       // get location detail
   async function getLocation(){

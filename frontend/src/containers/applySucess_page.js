@@ -24,7 +24,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
     const startHireTime = "2020.05.18";
     const endHireTime = "2020.05.20";
     let fee = 100;
-    let DetailInfo = "拜託趕快來嗚"
+    let DetailInfo = "拜託趕快來嗚";
 
       // get location detail
   async function getLocation(){
@@ -432,7 +432,7 @@ const ApplySuccess = ({login,name,setCurrent,current,userId}) => {
         <div>
             {navBar}
             <div className = "detail_title_Area">
-                 {/* <Icon icon="line-md:confirm-circle" color="#14d61c" height="30" style={{marginTop:"1.5vh"}} /> */}
+                 <Icon icon="line-md:confirm-circle" color="#14d61c" height="30" style={{marginTop:"1.5vh"}} />
                 <h1 className="detail_title" style={{paddingTop:'3vh'}}>&emsp;您的應徵已成功！請立即聯繫案主</h1>
             </div>
             <div className="collapse_position">

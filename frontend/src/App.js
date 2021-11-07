@@ -26,7 +26,7 @@ const App = () => {
 */
   
   return (
-    <Router>
+    <Router> 
       <div className="App">
           <Route path="/" exact component={() => <Main_Page login={login} name={name} setCurrent={setCurrent} current={current} setViewSelf={setViewSelf} userId={userId}/>}/>
           <Route path="/addPost" exact component={() => <Add_Post_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
@@ -39,7 +39,7 @@ const App = () => {
           <Route path="/rating/:requestId" component={() => <Rating_Page login={login} name={name} setCurrent={setCurrent} current={current} userId = {userId}/>}/>
           <Route path="/history" component={() => <History login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
           <Route path="/personal" component={() => <Personal_Page login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
-          <Route path="/applySuccess" component={() => <ApplySuccess login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
+          <Route path="/applySuccess/:serviceId/:requestId" component={() => <ApplySuccess login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/>}/>
       </div>
     </Router>
   );

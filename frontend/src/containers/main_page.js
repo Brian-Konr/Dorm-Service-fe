@@ -12,7 +12,7 @@ const Main_Page = ({login,name,setCurrent,current, setViewSelf, userId}) => {
   // console.log("main page");
     return (
         <div id="root">
-          <header>
+          <header> 
               <div><Navigation login={login} name={name} setCurrent={setCurrent} current={current} userId={userId}/></div>
           </header> 
           <h1 className="page_title">刊登中任務</h1>

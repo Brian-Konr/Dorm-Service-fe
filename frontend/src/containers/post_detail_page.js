@@ -126,27 +126,6 @@ const [accept, setAccept] = useState({});
     }
   }
 
-  // async function getLocationDetail(locationId){
-  //   try {
-  //       // GET api
-  //       let res = await axios.get(`http://127.0.0.1:8000/locations/info/${locationId}`);
-        
-  //       if(res.status === 200) {
-  //         setRequestDetail(
-  //               res.data.map(e => {
-  //                     return{
-  //                       ...requestDetail,
-  //                       longitude: e.longitude,
-  //                       latitude: e.latitude
-  //                   }
-  //               })
-  //           )
-  //       }
-  //       return;
-  //   } catch (error) {
-  //       console.log(error);
-  //   }
-  // }
 
   async function getApplier(){
     try {

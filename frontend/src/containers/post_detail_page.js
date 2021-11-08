@@ -126,6 +126,28 @@ const [accept, setAccept] = useState({});
     }
   }
 
+  // async function getLocationDetail(locationId){
+  //   try {
+  //       // GET api
+  //       let res = await axios.get(`http://127.0.0.1:8000/locations/info/${locationId}`);
+        
+  //       if(res.status === 200) {
+  //         setRequestDetail(
+  //               res.data.map(e => {
+  //                     return{
+  //                       ...requestDetail,
+  //                       longitude: e.longitude,
+  //                       latitude: e.latitude
+  //                   }
+  //               })
+  //           )
+  //       }
+  //       return;
+  //   } catch (error) {
+  //       console.log(error);
+  //   }
+  // }
+
   async function getApplier(){
     try {
         // GET api
@@ -250,6 +272,11 @@ const [accept, setAccept] = useState({});
     const elevatorText = elevator ? "有" : "沒有"; 
     const type = "十張桌子"
     const weight = "10kg"
+    let startLongitude = 0;
+    let startLatitude = 0;
+    let endLongitude = 0;
+    let endLatitude = 0;
+    let url = "http://www.google.com";
    
 
     if(start){
@@ -276,11 +303,28 @@ const [accept, setAccept] = useState({});
 
     if(location.length != 0 && requestDetail.length != 0){
       location.map(e => {
-        e.location_id == requestDetail[0].to_id ? endPoint = e.location_name + " " +  requestDetail[0].to_floor + " 樓" : endPoint = endPoint
+        e.location_id == requestDetail[0].to_id && requestDetail[0].to_floor !== 0 ? endPoint = e.location_name + " " +  requestDetail[0].to_floor + " 樓" : e.location_id == requestDetail[0].to_id ? endPoint = e.location_name: endPoint = endPoint
       });
       location.map(e => {
-        e.location_id == requestDetail[0].from_id ? startPoint = e.location_name + " " + requestDetail[0].from_floor + " 樓" : startPoint = startPoint
-      })
+        e.location_id == requestDetail[0].from_id && requestDetail[0].from_floor !== 0 ? startPoint = e.location_name + " " + requestDetail[0].from_floor + " 樓" : e.location_id == requestDetail[0].from_id ? startPoint = e.location_name : startPoint = startPoint
+      });
+
+      location.map(e => {
+        if(e.location_id == requestDetail[0].to_id){
+          endLongitude = e.longitude;
+          endLatitude = e.latitude;
+        }
+        if(e.location_id == requestDetail[0].from_id){
+          startLongitude = e.longitude;
+          startLatitude = e.latitude;
+        }
+      });
+      url = "https://www.google.com.tw/maps/dir/" + startLatitude + "," + startLongitude + "/" + endLatitude + "," + endLongitude + "/@25.0159828,121.5327861,17z/data=!3m1!4b1!4m10!4m9!1m3!2m2!1d121.53995!2d25.01761!1m3!2m2!1d121.52997!2d25.01411!3e2"
+      console.log(url)
+      console.log("endLongitude ", endLongitude)
+      console.log("endLatitude ", endLatitude)
+      console.log("startLongitude ", startLongitude)
+      console.log("startLatitude ", startLatitude)
     }
 
     titleArea = (
@@ -298,8 +342,11 @@ const [accept, setAccept] = useState({});
         {item("預估終點",[(<p>{endPoint}</p>)])}
         {/* {item("預估距離",[(<p>{distance}</p>)])} */}
         {/* {item("有無電梯",[(<p>{elevatorText}</p>)])} */}
+        {item("規劃路線",[<a href={url} target="_blank"><Button>Map!</Button></a>])}
         {item("物件種類",[(<p>{requestDetail.length == 0 ? type : requestDetail[0].type}</p>)])}
         {item("預估重量",[(<p>{requestDetail.length == 0 ? weight : requestDetail[0].weight}</p>)])}
+        
+        {/* <a href="http://www.google.com" target="_blank"><Button>Click me !</Button></a> */}
     </div>
     )
 
@@ -309,6 +356,11 @@ const [accept, setAccept] = useState({});
     let startPoint = "place";
     let endPoint = "place";
     // const distance = "100 m";
+    let startLongitude = 0;
+    let startLatitude = 0;
+    let endLongitude = 0;
+    let endLatitude = 0;
+    let url = "http://www.google.com";
 
     if(start){
       
@@ -339,7 +391,18 @@ const [accept, setAccept] = useState({});
       });
       location.map(e => {
         e.location_id == requestDetail[0].from_id ? startPoint = e.location_name : startPoint = startPoint
-      })
+      });
+      location.map(e => {
+        if(e.location_id == requestDetail[0].to_id){
+          endLongitude = e.longitude;
+          endLatitude = e.latitude;
+        }
+        if(e.location_id == requestDetail[0].from_id){
+          startLongitude = e.longitude;
+          startLatitude = e.latitude;
+        }
+      });
+      url = "https://www.google.com.tw/maps/dir/" + startLatitude + "," + startLongitude + "/" + endLatitude + "," + endLongitude + "/@25.0159828,121.5327861,17z/data=!3m1!4b1!4m10!4m9!1m3!2m2!1d121.53995!2d25.01761!1m3!2m2!1d121.52997!2d25.01411!3e2";
     }
 
     titleArea = (
@@ -355,6 +418,7 @@ const [accept, setAccept] = useState({});
         </div>
         {item("預估起點",[(<p>{startPoint}</p>)])}
         {item("預估終點",[(<p>{endPoint}</p>)])}
+        {item("規劃路線",[<a href={url} target="_blank"><Button>Map!</Button></a>])}
         {/* {item("預估距離",[(<p>{distance}</p>)])} */}
     </div>
     )
